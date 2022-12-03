@@ -13,9 +13,9 @@ public class Connector {
     private Connection connection;
 
     public Connector() {
-        this.urlConnection = "jdbc:mysql://localhost:3306/sem";
-        this.user = "root";
-        this.password = "18072001@Kat";
+        this.urlConnection = DatabaseEnv.URL_CONNECTION;
+        this.user = DatabaseEnv.USER;
+        this.password = DatabaseEnv.PASSWORD;
         this.jdbcDriven();
     }
 
