@@ -7,10 +7,10 @@ public class App
 {
     public static void main(String[] args )
     {
-        Context controller = new Context();
-        ListingPage lp = new ListingPage(controller);
+        Context context = new Context();
+        ListingPage lp = new ListingPage(context);
 
-        controller.setLayerPanel(lp.getMainLayer());
-        controller.setVisible(true);
+        context.setLayerPanel(lp.getMainLayer());
+        context.setVisible(true);
     }
 }
