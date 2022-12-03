@@ -9,8 +9,11 @@ public abstract class ViewPanel {
 
     public ViewPanel(Context context) {
         this.context = context;
+        beforeInitComponents();
         initComponents();
     }
+
+    protected abstract void beforeInitComponents();
 
     protected abstract void initComponents();
 

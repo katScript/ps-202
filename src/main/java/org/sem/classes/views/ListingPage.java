@@ -29,6 +29,10 @@ public class ListingPage extends ViewPanel {
         return main;
     }
 
+    @Override
+    protected void beforeInitComponents() {}
+
+    @Override
     protected void initComponents() {
         main = new JPanel();
 
