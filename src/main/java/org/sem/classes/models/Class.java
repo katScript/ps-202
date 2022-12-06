@@ -1,6 +1,7 @@
 package org.sem.classes.models;
 
 public class Class {
+    // comment
     private Long id;
     private String className;
 
