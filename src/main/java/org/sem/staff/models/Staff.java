@@ -7,23 +7,50 @@ package org.sem.staff.models;
 import java.sql.Date;
 
 /**
- *
  * @author Win 10 Pro x64
  */
 public class Staff {
     private Long id;
     private String staffNo;
-    private  String fullname;
-    private  String email;
+    private String fullname;
+    private String email;
     private String phone;
-    private int gender;
+    // Boolean = Integer => 0, 1
+    private Boolean gender; // (0 ,1);
     private Date dob;
-    private  String address;
+    private String address;
 
-    public Staff(long aLong, String string) {
+    public Staff() {
     }
 
-    public Staff(Long id, String staffNo, String fullname, String email, String phone, int gender, Date dob, String address) {
+    public Staff(
+            String staffNo,
+            String fullname,
+            String email,
+            String phone,
+            Boolean gender,
+            Date dob,
+            String address
+    ) {
+        this.staffNo = staffNo;
+        this.fullname = fullname;
+        this.email = email;
+        this.phone = phone;
+        this.gender = gender;
+        this.dob = dob;
+        this.address = address;
+    }
+
+    public Staff(
+            Long id,
+            String staffNo,
+            String fullname,
+            String email,
+            String phone,
+            Boolean gender,
+            Date dob,
+            String address
+    ) {
         this.id = id;
         this.staffNo = staffNo;
         this.fullname = fullname;
@@ -74,11 +101,11 @@ public class Staff {
         this.phone = phone;
     }
 
-    public int getGender() {
+    public Boolean getGender() {
         return gender;
     }
 
-    public void setGender(int gender) {
+    public void setGender(Boolean gender) {
         this.gender = gender;
     }
 
@@ -98,7 +125,6 @@ public class Staff {
         this.address = address;
     }
 
-    
-    
+
 }
 

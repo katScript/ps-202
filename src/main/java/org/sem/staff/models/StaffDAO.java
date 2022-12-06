@@ -10,11 +10,11 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 import org.sem.database.DAOInterface;
 import org.sem.database.connection.Connector;
 
 /**
- *
  * @author Win 10 Pro x64
  */
 public class StaffDAO implements DAOInterface<Staff> {
@@ -22,8 +22,8 @@ public class StaffDAO implements DAOInterface<Staff> {
     private Connector connector;
     private final String tableName = "staff";
 
-    public StaffDAO(Connector connector) {
-        this.connector = connector;
+    public StaffDAO() {
+        this.connector = new Connector();
     }
 
     @Override
@@ -38,6 +38,7 @@ public class StaffDAO implements DAOInterface<Staff> {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setLong(1, id);
             // 3.execute query
+            // This execute have problem
             ResultSet rs = ps.executeQuery();
 //4
             Staff sf = null;
@@ -48,7 +49,7 @@ public class StaffDAO implements DAOInterface<Staff> {
                         rs.getString("full_name"),
                         rs.getString("email"),
                         rs.getString("phone"),
-                        rs.getInt("gender"),
+                        rs.getBoolean("gender"),
                         rs.getDate("dob"),
                         rs.getString("address")
                 );
@@ -71,21 +72,21 @@ public class StaffDAO implements DAOInterface<Staff> {
     }
 
     @Override
-    public List<org.sem.staff.models.Staff> getAll() {
+    public List<Staff> getAll() {
         try {
             // 1.get connection
             Connection con = this.connector
                     .startConnection().getConnection();
 
             // 2.prepare query
-            String sql = String.format("SELECT * FROM `%s`");
+            String sql = String.format("SELECT * FROM `%s`", getTableName());
             PreparedStatement ps = con.prepareStatement(sql);
 
             // 3.execute query
             ResultSet rs = ps.executeQuery();
 
             // 4.process query return data
-            List<org.sem.staff.models.Staff> result = new ArrayList<>();
+            List<Staff> result = new ArrayList<>();
 
             while (rs.next()) {
                 result.add(new Staff(
@@ -94,7 +95,7 @@ public class StaffDAO implements DAOInterface<Staff> {
                         rs.getString("full_name"),
                         rs.getString("email"),
                         rs.getString("phone"),
-                        rs.getInt("gender"),
+                        rs.getBoolean("gender"),
                         rs.getDate("dob"),
                         rs.getString("address")
                 ));
@@ -128,7 +129,6 @@ public class StaffDAO implements DAOInterface<Staff> {
             PreparedStatement ps;
 
             if (t.getId() != null) {
-
                 sql = String.format("UPDATE `%s`SET staff_no=?,full_name=?,email=?,phone=?,gender=?,dob=?,address=? WHERE id = ?", getTableName());
                 ps = con.prepareStatement(sql);
 
@@ -136,7 +136,7 @@ public class StaffDAO implements DAOInterface<Staff> {
                 ps.setString(2, t.getFullname());
                 ps.setString(3, t.getEmail());
                 ps.setString(4, t.getPhone());
-                ps.setInt(5, t.getGender());
+                ps.setBoolean(5, t.getGender());
                 ps.setDate(6, t.getDob());
                 ps.setString(7, t.getAddress());
                 ps.setLong(8, t.getId());
@@ -148,66 +148,53 @@ public class StaffDAO implements DAOInterface<Staff> {
                 ps.setString(2, t.getFullname());
                 ps.setString(3, t.getEmail());
                 ps.setString(4, t.getPhone());
-                ps.setInt(5, t.getGender());
+                ps.setBoolean(5, t.getGender());
                 ps.setDate(6, t.getDob());
                 ps.setString(7, t.getAddress());
-                ps.setLong(8, t.getId());
             }
-//3
+
             Boolean result = ps.execute();
-            //4
             if (result) {
                 ResultSet rs = ps.getGeneratedKeys();
                 t.setId(rs.getLong(1));
                 rs.close();
             }
-            //5
             ps.close();
-            //6return result
+
             return t;
         } catch (Exception e) {
-            //7
             throw new RuntimeException(e);
         } finally {
-            //8
             this.connector.closeConnection();
         }
     }
 
     @Override
     public Boolean delete(Staff t) {
-    // 1.get connection
+        // 1.get connection
         try {
             Connection con = this.connector.startConnection().getConnection();
 
             // 2.prepare query
-            // 2.1 check is new or not => aClass.getId() != null or not
-            // if new => use insert into query else update query
-         
+                // 2.1 check is new or not => aClass.getId() != null or not
+                // if new => use insert into query else update query
+            String sql = String.format("DELETE FROM `%s` WHERE `id` = ?", getTableName());
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setLong(1, t.getId());
 
-              String  sql = String.format("DELETE FROM `%s` WHERE `id` = ?", getTableName());
-              PreparedStatement   ps = con.prepareStatement(sql);
-              ps.setLong(1, t.getId());
-
-         
-//.execute query
             Boolean result = ps.execute();
-        
-            //5
             ps.close();
-            //6return result
+
             return result;
         } catch (Exception e) {
-            //7
             throw new RuntimeException(e);
         } finally {
-            //8.close database connection
             this.connector.closeConnection();
         }
     }
 
 
-     public String getTableName() {
+    public String getTableName() {
         return tableName;
     }
 
