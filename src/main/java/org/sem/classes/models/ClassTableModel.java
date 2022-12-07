@@ -12,6 +12,7 @@ public class ClassTableModel extends AbstractTableModel {
 
     private List<Class> classes = new ArrayList<>();
 
+    // will have demo when create searching feature
     public void setData(List<Class> classes) {
         setClasses(classes);
         fireTableDataChanged();

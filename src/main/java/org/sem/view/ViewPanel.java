@@ -11,11 +11,15 @@ public abstract class ViewPanel {
         this.context = context;
         beforeInitComponents();
         initComponents();
+        afterInitComponents();
     }
 
     protected abstract void beforeInitComponents();
 
     protected abstract void initComponents();
+    protected void afterInitComponents() {
+        this.getMainLayer().setBounds(0,0,800,450);
+    }
 
     public abstract JPanel getMainLayer();
 
