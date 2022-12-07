@@ -99,22 +99,51 @@ public class ClassDAO implements DAOInterface<Class> {
     public Class save(Class aClass) {
         try {
             // 1.get connection
+            Connection con = this.connector
+                    .startConnection().getConnection();
 
             // 2.prepare query
                 // 2.1 check is new or not => aClass.getId() != null or not
                 // if new => use insert into query else update query
+                 String sql;
+            PreparedStatement ps;
+            
+            if (aClass.getId() != null) {
+                sql = String.format("UPDATE `%s` SET `class_name` = ? WHERE `id` = ?", getTableName());
+                ps = con.prepareStatement(sql);
+                
+                ps.setString(1, aClass.getClassName());
+                ps.setLong(2, aClass.getId());
+                
+            } else {
+                sql = String.format("INSERT INTO `%s` (`class_name`) VALUES (?)", getTableName());
+                ps = con.prepareStatement(sql);
+                
+                ps.setString(1, aClass.getClassName());
+            }
 
             // 3.execute query
+            Boolean result = ps.execute();
 
             // 4.process query return data
+            if (result) {
+                ResultSet rs = ps.getGeneratedKeys();
+                aClass.setId(rs.getLong(1));
+                
+                rs.close();
+            }
 
             // 5.close transaction
+            ps.close();
 
             // 6.return result
         } catch (Exception e) {
             // 7.handle errors
+            throw new RuntimeException(e);
+
         } finally {
             // 8.close database connection
+            this.connector.closeConnection();
         }
 
         return null;
@@ -124,23 +153,33 @@ public class ClassDAO implements DAOInterface<Class> {
     public Boolean delete(Class aClass) {
         try {
             // 1.get connection
+            Connection con = this.connector
+                   .startConnection().getConnection();
 
             // 2.prepare query
+            String sql = String.format("DELETE FROM `%s` WHERE `id` = ?", getTableName());
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setLong(1, aClass.getId());
+           
 
             // 3.execute query
+            Boolean result = ps.execute();
 
             // 4.process query return data true or false => delete success or not
+            ps.close();
 
             // 5.close transaction
+            return result;
 
             // 6.return result
         } catch (Exception e) {
             // 7.handle errors
+             throw new RuntimeException(e);
         } finally {
             // 8.close database connection
+            this.connector.closeConnection();
         }
 
-        return null;
     }
 
     public Connector getConnector() {
