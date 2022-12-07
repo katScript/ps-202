@@ -109,19 +109,17 @@ public class ClassDAO implements DAOInterface<Class> {
             PreparedStatement ps;
             
             if (aClass.getId() != null) {
-                sql = String.format("UPDATE `%s` SET  id = ?, Class name = ?", getTableName());
-                ps = con.prepareStatement(sql);
-                
-                ps.setString(1, aClass.Long());
-                ps.setString(2, aClass.getClassName());
-                
-            } else {
-                sql = String.format("INSERT INTO `%s` (class_Name, id) VALUES (?,?,?)", getTableName());
+                sql = String.format("UPDATE `%s` SET `class_name` = ? WHERE `id` = ?", getTableName());
                 ps = con.prepareStatement(sql);
                 
                 ps.setString(1, aClass.getClassName());
-                ps.setString(2, aClass.getLong());
+                ps.setLong(2, aClass.getId());
                 
+            } else {
+                sql = String.format("INSERT INTO `%s` (`class_name`) VALUES (?)", getTableName());
+                ps = con.prepareStatement(sql);
+                
+                ps.setString(1, aClass.getClassName());
             }
 
             // 3.execute query
