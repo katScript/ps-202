@@ -21,11 +21,6 @@ import org.sem.staff.models.Staff;
 public class StudentDAO implements DAOInterface<Student>{
     private Connector connector;
     private final String tableName = "student";
-
-   
-
-    
-
     public StudentDAO() {
         this.connector = new Connector();
     }
@@ -44,7 +39,7 @@ public class StudentDAO implements DAOInterface<Student>{
             // 3.execute query
             // This execute have problem
             ResultSet rs = ps.executeQuery();
-//4
+
             Student st = null;
             if (rs.next()) {
                 st = new Student(
@@ -126,13 +121,13 @@ public class StudentDAO implements DAOInterface<Student>{
             Connection con = this.connector.startConnection().getConnection();
 
             // 2.prepare query
-            // 2.1 check is new or not => aClass.getId() != null or not
-            // if new => use insert into query else update query
+                // 2.1 check is new or not => aClass.getId() != null or not
+                // if new => use insert into query else update query
             String sql;
             PreparedStatement ps;
 
             if (t.getId() != null) {
-                sql = String.format("UPDATE `%s`SET roll_number=?,fullname=?,email=?,phone=?,gender=?,dob=?,address=? WHERE id = ?", getTableName());
+                sql = String.format("UPDATE `%s`SET `roll_number` = ?,`fullname` = ?, `email` = ?, `phone` = ?, `gender` = ?, `dob` = ?, `address` = ? WHERE `id` = ?", getTableName());
                 ps = con.prepareStatement(sql);
 
                 ps.setString(1, t.getRoll_number());
@@ -144,7 +139,7 @@ public class StudentDAO implements DAOInterface<Student>{
                 ps.setString(7, t.getAddress());
                 ps.setLong(8, t.getId());
             } else {
-                sql = String.format("INSERT INTO`%s` (roll_number,fullname,email,phone,gender,dob,address) VALUES(?,?,?,?,?,?,?)", getTableName());
+                sql = String.format("INSERT INTO`%s` (`roll_number`, `fullname`, `email`, `phone`, `gender`, `dob`, `address`) VALUES(?,?,?,?,?,?,?)", getTableName());
                 ps = con.prepareStatement(sql);
 
                 ps.setString(1, t.getRoll_number());

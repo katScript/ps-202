@@ -6,10 +6,6 @@ package org.sem.students.models;
 
 import java.sql.Date;
 
-/**
- *
- * @author ADMIN
- */
 public class Student {
     private Long id;
     private String roll_number;
@@ -23,7 +19,16 @@ public class Student {
     public Student() {
     }
 
-    public Student(Long id, String roll_number, String fullname, String email, String phone, Boolean gender, Date dob, String address) {
+    public Student(
+            Long id,
+            String roll_number,
+            String fullname,
+            String email,
+            String phone,
+            Boolean gender,
+            Date dob,
+            String address
+    ) {
         this.id = id;
         this.roll_number = roll_number;
         this.fullname = fullname;
@@ -97,6 +102,4 @@ public class Student {
     public void setAddress(String address) {
         this.address = address;
     }
-    
-    
 }
