@@ -10,6 +10,8 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import org.sem.database.DAO;
 import org.sem.database.DAOInterface;
 import org.sem.database.connection.Connector;
 
@@ -17,16 +19,13 @@ import org.sem.database.connection.Connector;
  *
  * @author 84379
  */
-public class SubjectDAO implements DAOInterface<Subject>{
-    private Connector connector;
-    private final String tableName = "subject";
-
+public class SubjectDAO extends DAO<Subject> {
     public SubjectDAO() {
-        this.connector = new Connector();
+        super("subject");
     }
 
     @Override
-    public Optional<Subject> get(Integer id) {
+    public Optional<Subject> get(Long id) {
         try {
             // 1.get connection
             Connection con = this.connector
@@ -188,17 +187,5 @@ public class SubjectDAO implements DAOInterface<Subject>{
             // 8.close database connection
             this.connector.closeConnection();
         }
-    }
-    
-    public String getTableName() {
-        return tableName;
-    }
-
-    public Connector getConnector() {
-        return connector;
-    }
-
-    public void setConnector(Connector connector) {
-        this.connector = connector;
     }
 }

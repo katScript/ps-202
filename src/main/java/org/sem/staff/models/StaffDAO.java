@@ -11,23 +11,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.sem.database.DAO;
 import org.sem.database.DAOInterface;
 import org.sem.database.connection.Connector;
 
 /**
  * @author Win 10 Pro x64
  */
-public class StaffDAO implements DAOInterface<Staff> {
-
-    private Connector connector;
-    private final String tableName = "staff";
-
+public class StaffDAO extends DAO<Staff> {
     public StaffDAO() {
-        this.connector = new Connector();
+        super("staff");
     }
 
     @Override
-    public Optional<Staff> get(Integer id) {
+    public Optional<Staff> get(Long id) {
         try {
             // 1.get connection
             Connection con = this.connector
@@ -191,18 +188,5 @@ public class StaffDAO implements DAOInterface<Staff> {
         } finally {
             this.connector.closeConnection();
         }
-    }
-
-
-    public String getTableName() {
-        return tableName;
-    }
-
-    public Connector getConnector() {
-        return connector;
-    }
-
-    public void setConnector(Connector connector) {
-        this.connector = connector;
     }
 }

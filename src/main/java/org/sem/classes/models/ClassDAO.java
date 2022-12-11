@@ -1,7 +1,6 @@
 package org.sem.classes.models;
 
-import org.sem.database.DAOInterface;
-import org.sem.database.connection.Connector;
+import org.sem.database.DAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,16 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class ClassDAO implements DAOInterface<Class> {
-    private Connector connector;
-    private final String tableName = "class";
-
+public class ClassDAO extends DAO<Class> {
     public ClassDAO() {
-        this.connector = new Connector();
+        super("class");
     }
 
     @Override
-    public Optional<Class> get(Integer id) {
+    public Optional<Class> get(Long id) {
         try {
             // 1.get connection
             Connection con = this.connector
@@ -180,17 +176,5 @@ public class ClassDAO implements DAOInterface<Class> {
             this.connector.closeConnection();
         }
 
-    }
-
-    public Connector getConnector() {
-        return connector;
-    }
-
-    public void setConnector(Connector connector) {
-        this.connector = connector;
-    }
-
-    public String getTableName() {
-        return tableName;
     }
 }

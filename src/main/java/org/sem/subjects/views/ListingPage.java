@@ -2,7 +2,7 @@ package org.sem.subjects.views;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
-import org.sem.controller.Context;
+import org.sem.context.Context;
 import org.sem.subjects.models.SubjectDAO;
 import org.sem.subjects.models.SubjectTableModel;
 import org.sem.view.ViewPanel;
