@@ -6,7 +6,7 @@ package org.sem.marks.views;
 
 
 import javax.swing.JPanel;
-import org.sem.controller.Context;
+import org.sem.context.Context;
 import org.sem.view.ViewPanel;
 /**
  *
