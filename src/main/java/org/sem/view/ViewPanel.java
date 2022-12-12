@@ -43,6 +43,8 @@ public abstract class ViewPanel {
     protected abstract void initComponents();
 
     protected void afterInitComponents() {
+        this.handleEvent();
+
         this.getMainLayer().setMaximumSize(new Dimension(Context.MAX_WIDTH, Context.MAX_HEIGHT));
         this.getMainLayer().setMinimumSize(new Dimension(Context.MIN_WIDTH, Context.MIN_HEIGHT));
         this.getMainLayer().setPreferredSize(new Dimension(Context.WIDTH, Context.HEIGHT));
@@ -50,10 +52,18 @@ public abstract class ViewPanel {
         this.getMainLayer().setBounds(0,0, Context.WIDTH, Context.HEIGHT);
     }
 
+    protected abstract void handleEvent();
+
     public abstract JPanel getMainLayer();
 
     public Context getContext() {
         return context;
+    }
+
+    public void showMessage() {
+        String message = (String) getContext().getSession().getData("message");
+        if (message != null)
+            JOptionPane.showMessageDialog(getMainLayer(), message);
     }
 
     public void setContext(Context context) {

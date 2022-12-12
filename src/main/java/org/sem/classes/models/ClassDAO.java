@@ -175,6 +175,43 @@ public class ClassDAO extends DAO<Class> {
             // 8.close database connection
             this.connector.closeConnection();
         }
+    }
 
+    public List<Class> getByStudentId(Long id) {
+        try {
+            // 1.get connection
+            Connection con = this.connector
+                    .startConnection().getConnection();
+
+            // 2.prepare query
+            String sql = String.format("SELECT * FROM `%s` AS `c` INNER JOIN `student_class` AS `sc` ON `c`.`id` = `sc`.`class_id` WHERE `sc`.`student_id` = ?", getTableName());
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setLong(1, id);
+
+            // 3.execute query
+            ResultSet rs = ps.executeQuery();
+
+            // 4.process query return data
+            List<Class> result = new ArrayList<>();
+            while (rs.next()) {
+                result.add(new Class(
+                        rs.getLong("id"),
+                        rs.getString("class_name")
+                ));
+            }
+
+            // 5.close transaction
+            ps.close();
+            rs.close();
+
+            // 6.return result
+            return result;
+        } catch (Exception e) {
+            // 7.handle errors
+            throw new RuntimeException(e);
+        } finally {
+            // 8.close database connection
+            this.connector.closeConnection();
+        }
     }
 }

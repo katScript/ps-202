@@ -1,8 +1,13 @@
 package org.sem.classes.models;
 
+import org.sem.students.models.Student;
+
+import java.util.List;
+
 public class Class {
     private Long id;
     private String className;
+    private List<Student> student;
 
     public Class() {}
 
@@ -30,11 +35,11 @@ public class Class {
         this.className = className;
     }
 
-    String getLong() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public List<Student> getStudent() {
+        return student;
     }
 
-    String Long() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void setStudent(List<Student> student) {
+        this.student = student;
     }
 }
