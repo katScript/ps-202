@@ -8,9 +8,10 @@ public class App
     public static void main(String[] args )
     {
         Context context = new Context();
-        LoginPage lp = new LoginPage(context);
+        context.setIsValidateUser(false);
+        LoginPage page = new LoginPage(context);
 
-        context.setLayerPanel(lp.getMainLayer());
+        context.setLayerPanel(page.getMainLayer());
         context.setVisible(true);
     }
 }

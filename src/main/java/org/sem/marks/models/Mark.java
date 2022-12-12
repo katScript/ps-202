@@ -4,6 +4,9 @@
  */
 package org.sem.marks.models;
 
+import org.sem.students.models.Student;
+import org.sem.subjects.models.Subject;
+
 /**
  *
  * @author 84379
@@ -14,6 +17,8 @@ public class Mark {
     private Float w_second_atterm;
     private Float p_first_atterm;
     private Float p_second_atterm;
+    private Student student;
+    private Subject subject;
 
     public Mark() {
     }
@@ -65,5 +70,20 @@ public class Mark {
     public void setP_second_atterm(Float p_second_atterm) {
         this.p_second_atterm = p_second_atterm;
     }
-    
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
+    }
+
+    public Subject getSubject() {
+        return subject;
+    }
+
+    public void setSubject(Subject subject) {
+        this.subject = subject;
+    }
 }

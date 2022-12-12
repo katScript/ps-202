@@ -33,8 +33,6 @@ public class EditPage extends ViewPanel {
         listing = new JButton();
         listing.setText("Listing");
         main.add(listing, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-
-        handleEvent();
     }
 
     protected void handleEvent() {

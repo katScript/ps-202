@@ -4,7 +4,12 @@
  */
 package org.sem.students.models;
 
+import org.sem.classes.models.Class;
+import org.sem.marks.models.Mark;
+
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Student {
     private Long id;
@@ -15,8 +20,11 @@ public class Student {
     private Boolean gender;
     private Date dob;
     private String address;
+    private List<Mark> studentMark;
+    private List<Class> classes;
 
     public Student() {
+        studentMark = new ArrayList<>();
     }
 
     public Student(
@@ -37,6 +45,7 @@ public class Student {
         this.gender = gender;
         this.dob = dob;
         this.address = address;
+        this.studentMark = new ArrayList<>();
     }
 
     public Long getId() {
@@ -101,5 +110,21 @@ public class Student {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public List<Mark> getStudentMark() {
+        return studentMark;
+    }
+
+    public void setStudentMark(List<Mark> studentMark) {
+        this.studentMark = studentMark;
+    }
+
+    public List<Class> getClasses() {
+        return classes;
+    }
+
+    public void setClasses(List<Class> classes) {
+        this.classes = classes;
     }
 }

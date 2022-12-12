@@ -10,23 +10,26 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import org.sem.database.DAO;
 import org.sem.database.DAOInterface;
 import org.sem.database.connection.Connector;
+import org.sem.students.models.StudentDAO;
+import org.sem.subjects.models.SubjectDAO;
 
 /**
  *
  * @author 84379
  */
-public class MarkDAO implements DAOInterface<Mark>{
-    private Connector connector;
-    private final String tableName = "mark";
+public class MarkDAO extends DAO<Mark> {
+    public static final String TABLE_NAME = "mark";
 
     public MarkDAO() {
-        this.connector = new Connector();
+        super(TABLE_NAME);
     }
 
     @Override
-    public Optional<Mark> get(Integer id) {
+    public Optional<Mark> get(Long id) {
         try {
             // 1.get connection
             Connection con = this.connector
@@ -193,15 +196,45 @@ public class MarkDAO implements DAOInterface<Mark>{
             this.connector.closeConnection();
         }
     }
-    public Connector getConnector() {
-        return connector;
-    }
 
-    public void setConnector(Connector connector) {
-        this.connector = connector;
-    }
+    public List<Mark> getByStudentId(Long id) {
+        try {
+            // 1.get connection
+            Connection con = this.connector
+                    .startConnection().getConnection();
 
-    public String getTableName() {
-        return tableName;
+            // 2.prepare query
+            String sql = String.format("SELECT * FROM `%s` WHERE `student_id` = ?", getTableName());
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setLong(1, id);
+
+            // 3.execute query
+            ResultSet rs = ps.executeQuery();
+
+            // 4.process query return data
+            List<Mark> result = new ArrayList<>();
+            while (rs.next()) {
+                result.add(new org.sem.marks.models.Mark(
+                        rs.getLong("id"),
+                        rs.getFloat("w_first_atterm"),
+                        rs.getFloat("w_second_atterm"),
+                        rs.getFloat("p_first_atterm"),
+                        rs.getFloat("p_second_atterm")
+                ));
+            }
+
+            // 5.close transaction
+            ps.close();
+            rs.close();
+
+            // 6.return result
+            return result;
+        } catch (Exception e) {
+            // 7.handle errors
+            throw new RuntimeException(e);
+        } finally {
+            // 8.close database connection
+            this.connector.closeConnection();
+        }
     }
 }

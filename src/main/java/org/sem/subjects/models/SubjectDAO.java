@@ -20,8 +20,10 @@ import org.sem.database.connection.Connector;
  * @author 84379
  */
 public class SubjectDAO extends DAO<Subject> {
+    public static final String TABLE_NAME = "subject";
+
     public SubjectDAO() {
-        super("subject");
+        super(TABLE_NAME);
     }
 
     @Override

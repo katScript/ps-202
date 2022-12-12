@@ -23,13 +23,9 @@ public class ListingPage extends ViewPanel {
 
     // 2. constructor has to be have Context class
     public ListingPage(Context context) {
-        super(context);
-        getContext().setPageTitle("Subjects listing page");
-
+        super(context, "Subjects listing page");
         // event of button point to other page
-
         // event of button run functional as edit, update, delete
-
     }
 
     @Override
@@ -50,6 +46,11 @@ public class ListingPage extends ViewPanel {
         subjectTable.setModel(stm);
 
         scrollPaneTable.setViewportView(subjectTable);
+    }
+
+    @Override
+    protected void handleEvent() {
+
     }
 
     @Override

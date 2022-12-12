@@ -6,7 +6,7 @@ package org.sem.marks.views;
 
 
 import javax.swing.JPanel;
-import org.sem.controller.Context;
+import org.sem.context.Context;
 import org.sem.view.ViewPanel;
 /**
  *
@@ -26,6 +26,11 @@ public class ListingPage extends ViewPanel{
     @Override
     protected void initComponents() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    protected void handleEvent() {
+
     }
 
     @Override

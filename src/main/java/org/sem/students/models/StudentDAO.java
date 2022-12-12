@@ -11,9 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.sem.classes.models.Class;
 import org.sem.database.DAO;
 import org.sem.database.DAOInterface;
 import org.sem.database.connection.Connector;
+import org.sem.marks.models.Mark;
 import org.sem.staff.models.Staff;
 
 /**
@@ -21,8 +23,10 @@ import org.sem.staff.models.Staff;
  * @author ADMIN
  */
 public class StudentDAO extends DAO<Student> {
+    public static final String TABLE_NAME = "student";
+
     public StudentDAO() {
-        super("student");
+        super(TABLE_NAME);
     }
 
     @Override
@@ -186,6 +190,51 @@ public class StudentDAO extends DAO<Student> {
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
+            this.connector.closeConnection();
+        }
+    }
+
+    public List<Student> getByClassId(Long id) {
+        try {
+            // 1.get connection
+            Connection con = this.connector
+                    .startConnection().getConnection();
+
+            // 2.prepare query
+            String sql = String.format("SELECT * FROM `%s` AS `s` INNER JOIN `student_class` AS `sc` ON `s`.`id` = `sc`.`student_id` WHERE `sc`.`class_id` = ?", getTableName());
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setLong(1, id);
+
+            // 3.execute query
+            ResultSet rs = ps.executeQuery();
+
+            // 4.process query return data
+            List<Student> result = new ArrayList<>();
+
+            while (rs.next()) {
+                result.add(new Student(
+                        rs.getLong("id"),
+                        rs.getString("staff_no"),
+                        rs.getString("full_name"),
+                        rs.getString("email"),
+                        rs.getString("phone"),
+                        rs.getBoolean("gender"),
+                        rs.getDate("dob"),
+                        rs.getString("address")
+                ));
+            }
+
+            // 5.close transaction
+            ps.close();
+            rs.close();
+
+            // 6.return result
+            return result;
+        } catch (Exception e) {
+            // 7.handle errors
+            throw new RuntimeException(e);
+        } finally {
+            // 8.close database connection
             this.connector.closeConnection();
         }
     }

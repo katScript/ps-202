@@ -7,8 +7,7 @@ import javax.swing.*;
 
 public class DashBoard extends ViewPanel {
     public DashBoard(Context context) {
-        super(context);
-        getContext().setPageTitle("Dash board");
+        super(context, "Dash board");
 
 
     }
@@ -20,6 +19,11 @@ public class DashBoard extends ViewPanel {
 
     @Override
     protected void initComponents() {
+
+    }
+
+    @Override
+    protected void handleEvent() {
 
     }
 

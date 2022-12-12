@@ -4,6 +4,8 @@ import org.sem.authenticate.models.User;
 import org.sem.authenticate.models.UserDAO;
 import org.sem.utils.sercurity.MD5Utils;
 
+import java.util.Optional;
+
 public class UserService {
     public UserDAO userDAO = new UserDAO();
 
@@ -32,7 +34,7 @@ public class UserService {
         }
     }
 
-    public User login(
+    public Optional<User> login(
             String userName,
             String password
     ) {
@@ -41,11 +43,9 @@ public class UserService {
                     () -> new RuntimeException("Wrong username or password!")
             );
 
-            if (user != null) return user;
+            return Optional.ofNullable(user);
         } catch (Exception e) {
-            return null;
+            return Optional.empty();
         }
-
-        return null;
     }
 }
