@@ -1,14 +1,14 @@
 package org.sem;
 
-import org.sem.classes.views.ListingPage;
-import org.sem.controller.Context;
+import org.sem.authenticate.views.LoginPage;
+import org.sem.context.Context;
 
 public class App 
 {
     public static void main(String[] args )
     {
         Context context = new Context();
-        ListingPage lp = new ListingPage(context);
+        LoginPage lp = new LoginPage(context);
 
         context.setLayerPanel(lp.getMainLayer());
         context.setVisible(true);

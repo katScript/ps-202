@@ -1,20 +1,22 @@
-package org.sem.classes.views;
+package org.sem.authenticate.views;
+
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
+import org.sem.context.Context;
+import org.sem.classes.views.ListingPage;
+import org.sem.view.ViewPanel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import com.intellij.uiDesigner.core.*;
-import org.sem.context.Context;
-import org.sem.view.ViewPanel;
-
-public class ListingPage extends ViewPanel {
+public class LoginPage extends ViewPanel {
     private JPanel main;
     private JButton edit;
 
-    public ListingPage(Context context) {
-        super(context, "Class listing page");
+    public LoginPage(Context context) {
+        super(context, "Login page");
     }
 
     public JPanel getMainLayer() {
@@ -30,7 +32,7 @@ public class ListingPage extends ViewPanel {
 
         main.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         edit = new JButton();
-        edit.setText("Edit");
+        edit.setText("Login");
         main.add(edit, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         handleEvent();
     }
@@ -39,8 +41,11 @@ public class ListingPage extends ViewPanel {
         edit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                EditPage editPage = new EditPage(getContext());
-                getContext().changeLayer(editPage.getMainLayer());
+                Context context = getContext();
+                context.setIsValidateUser(true);
+                context.getSession().setData("user", true);
+                ListingPage page = new ListingPage(context);
+                context.changeLayer(page.getMainLayer());
             }
         });
     }
