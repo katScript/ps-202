@@ -94,8 +94,8 @@ public class StudentDAO extends DAO<Student> {
             while (rs.next()) {
                 result.add(new Student(
                         rs.getLong("id"),
-                        rs.getString("staff_no"),
-                        rs.getString("full_name"),
+                        rs.getString("roll_number"),
+                        rs.getString("fullname"),
                         rs.getString("email"),
                         rs.getString("phone"),
                         rs.getBoolean("gender"),
@@ -214,8 +214,8 @@ public class StudentDAO extends DAO<Student> {
             while (rs.next()) {
                 result.add(new Student(
                         rs.getLong("id"),
-                        rs.getString("staff_no"),
-                        rs.getString("full_name"),
+                        rs.getString("roll_number"),
+                        rs.getString("fullname"),
                         rs.getString("email"),
                         rs.getString("phone"),
                         rs.getBoolean("gender"),
