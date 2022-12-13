@@ -3,8 +3,8 @@ package org.sem.authenticate.views;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import org.sem.context.Context;
+import org.sem.students.views.ListingPage;
 import org.sem.subjects.views.EditPage;
-import org.sem.subjects.views.ListingPage;
 import org.sem.view.ViewPanel;
 
 import javax.swing.*;
@@ -44,7 +44,7 @@ public class LoginPage extends ViewPanel {
                 Context context = getContext();
                 context.setIsValidateUser(true);
                 context.getSession().setData("user", true);
-                EditPage page = new EditPage(context);
+                ListingPage page = new ListingPage(context);
                 context.changeLayer(page.getMainLayer());
             }
         });
