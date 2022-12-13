@@ -1,10 +1,8 @@
 package org.sem.authenticate.views;
 
-import com.intellij.uiDesigner.core.GridConstraints;
-import com.intellij.uiDesigner.core.GridLayoutManager;
+import org.sem.classes.views.ListingPage;
 import org.sem.context.Context;
-import org.sem.students.views.ListingPage;
-import org.sem.subjects.views.EditPage;
+import org.sem.helper.ImageHelper;
 import org.sem.view.ViewPanel;
 
 import javax.swing.*;
@@ -13,11 +11,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class LoginPage extends ViewPanel {
+    private JButton jButton1;
+    private JButton jButton2;
+    private JLabel jLabel1;
+    private JLabel jLabel2;
+    private JLabel jLabel3;
+    private JPasswordField jPasswordField1;
+    private JTextField jTextField1;
     private JPanel main;
-    private JButton edit;
+
+    public ImageHelper imageHelper;
 
     public LoginPage(Context context) {
-        super(context, "Login page");
+        super(context, "Management / Login");
     }
 
     public JPanel getMainLayer() {
@@ -25,27 +31,97 @@ public class LoginPage extends ViewPanel {
     }
 
     @Override
-    protected void beforeInitComponents() {}
+    protected void beforeInitComponents() {
+        imageHelper = new ImageHelper();
+    }
 
     @Override
     protected void initComponents() {
         main = new JPanel();
+        jLabel1 = new JLabel();
+        jLabel2 = new JLabel();
+        jLabel3 = new JLabel();
+        jTextField1 = new JTextField();
+        jPasswordField1 = new JPasswordField();
+        jButton1 = new JButton();
+        jButton2 = new JButton();
 
-        main.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
-        edit = new JButton();
-        edit.setText("Login");
-        main.add(edit, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        jLabel1.setFont(new Font("Times New Roman", 1, 24)); // NOI18N
+        jLabel1.setForeground(new Color(0, 0, 204));
+        jLabel1.setHorizontalAlignment(SwingConstants.CENTER);
+        jLabel1.setText("STUDENT MANAGEMENT SYSTEM");
+
+        jLabel2.setFont(new Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel2.setIcon(new ImageIcon(imageHelper.getImage("/icons/user.png"))); // NOI18N
+        jLabel2.setText("Username");
+
+        jLabel3.setFont(new Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel3.setIcon(new ImageIcon(imageHelper.getImage("/icons/lock.png"))); // NOI18N
+        jLabel3.setText("Password");
+
+        jTextField1.setText("");
+        jPasswordField1.setText("");
+
+        jButton1.setBackground(new Color(255, 204, 204));
+        jButton1.setFont(new Font("Segoe UI", 1, 14)); // NOI18N
+        jButton1.setText("Login");
+
+        jButton2.setBackground(new Color(255, 255, 204));
+        jButton2.setFont(new Font("Segoe UI", 1, 14)); // NOI18N
+        jButton2.setText("Register");
+
+        GroupLayout mainLayout = new GroupLayout(main);
+        main.setLayout(mainLayout);
+        mainLayout.setHorizontalGroup(
+                mainLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGroup(mainLayout.createSequentialGroup()
+                                .addGroup(mainLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                        .addGroup(mainLayout.createSequentialGroup()
+                                                .addGap(79, 79, 79)
+                                                .addGroup(mainLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                                                        .addComponent(jLabel3, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(jLabel2, GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE))
+                                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addGroup(mainLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                                                        .addComponent(jTextField1, GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
+                                                        .addComponent(jPasswordField1)))
+                                        .addGroup(mainLayout.createSequentialGroup()
+                                                .addGap(193, 193, 193)
+                                                .addGroup(mainLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                                                        .addComponent(jButton1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(jButton2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jLabel1, GroupLayout.DEFAULT_SIZE, 487, Short.MAX_VALUE)
+        );
+        mainLayout.setVerticalGroup(
+                mainLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGroup(mainLayout.createSequentialGroup()
+                                .addGap(23, 23, 23)
+                                .addComponent(jLabel1)
+                                .addGap(27, 27, 27)
+                                .addGroup(mainLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                                        .addGroup(mainLayout.createSequentialGroup()
+                                                .addGroup(mainLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(jLabel2)
+                                                        .addComponent(jTextField1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                                                .addGap(35, 35, 35)
+                                                .addComponent(jPasswordField1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(jLabel3))
+                                .addGap(32, 32, 32)
+                                .addComponent(jButton1, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jButton2, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(13, Short.MAX_VALUE))
+        );
     }
 
     protected void handleEvent() {
-        edit.addActionListener(new ActionListener() {
+        jButton2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Context context = getContext();
-                context.setIsValidateUser(true);
-                context.getSession().setData("user", true);
-                ListingPage page = new ListingPage(context);
-                context.changeLayer(page.getMainLayer());
+                RegisterPage page = new RegisterPage(getContext());
+                getContext().changeLayer(page.getMainLayer());
+                page.showMessage();
             }
         });
     }
