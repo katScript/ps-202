@@ -58,8 +58,9 @@ public class Loginlayout extends javax.swing.JFrame {
 
         jPasswordField1.setText("12345678");
 
-        jButton1.setBackground(new java.awt.Color(255, 204, 204));
+        jButton1.setBackground(new java.awt.Color(0, 51, 204));
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(255, 255, 204));
         jButton1.setText("Login");
 
         jButton2.setBackground(new java.awt.Color(255, 255, 204));
