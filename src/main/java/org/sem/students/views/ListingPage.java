@@ -1,8 +1,12 @@
 package org.sem.students.views;
 
 import org.sem.context.Context;
+import org.sem.context.Session;
+import org.sem.dashboard.views.Dashboard;
+import org.sem.students.models.Student;
 import org.sem.students.models.StudentDAO;
 import org.sem.students.models.StudentTableModel;
+import org.sem.students.services.StudentService;
 import org.sem.view.ViewPanel;
 
 import javax.swing.*;
@@ -27,6 +31,7 @@ public class ListingPage extends ViewPanel {
     private javax.swing.JPanel main;
 
     public StudentDAO studentDAO;
+    public StudentService studentService;
 
     public ListingPage(Context context) {
         super(context, "Student");
@@ -35,6 +40,8 @@ public class ListingPage extends ViewPanel {
     @Override
     protected void beforeInitComponents() {
         studentDAO = new StudentDAO();
+        studentService = new StudentService();
+        getContext().getSession().setData("student", null);
     }
 
     @Override
@@ -55,25 +62,6 @@ public class ListingPage extends ViewPanel {
         jTextField1 = new javax.swing.JTextField();
         jButton9 = new javax.swing.JButton();
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-                new Object [][] {
-                        {null, null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null, null}
-                },
-                new String [] {
-                        "ID", "Roll number", "Full name", "DOB", "Gender", "Email", "Phone", "Address"
-                }
-        ) {
-            Class[] types = new Class [] {
-                    java.lang.Long.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
         jScrollPane1.setViewportView(jTable1);
         if (jTable1.getColumnModel().getColumnCount() > 0) {
             jTable1.getColumnModel().getColumn(0).setMaxWidth(300);
@@ -208,8 +196,42 @@ public class ListingPage extends ViewPanel {
         jButton1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                EditPage page = new EditPage(getContext());
-                getContext().changeLayer(page.getMainLayer());
+                try {
+                    int row = jTable1.getSelectedRow();
+                    Long id = (Long) jTable1.getValueAt(row, 0);
+
+                    Student student = studentDAO.get(id).orElse(null);
+
+                    if (student != null) {
+                        getContext().getSession().setData("student", student);
+                        EditPage page = new EditPage(getContext());
+                        getContext().changeLayer(page.getMainLayer());
+                    }
+
+                } catch (Exception ex) {
+                    getContext().getSession().setData("message", ex.getMessage());
+                    showMessage();
+                }
+            }
+        });
+
+        jButton2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    int row = jTable1.getSelectedRow();
+                    Long id = (Long) jTable1.getValueAt(row, 0);
+
+                    if (id != null) {
+                        studentService.deleteStudent(id);
+                        ListingPage page = new ListingPage(getContext());
+                        getContext().changeLayer(page.getMainLayer());
+                    }
+
+                } catch (Exception ex) {
+                    getContext().getSession().setData("message", ex.getMessage());
+                    showMessage();
+                }
             }
         });
 
@@ -217,6 +239,14 @@ public class ListingPage extends ViewPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 EditPage page = new EditPage(getContext());
+                getContext().changeLayer(page.getMainLayer());
+            }
+        });
+
+        jButton6.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Dashboard page = new Dashboard(getContext());
                 getContext().changeLayer(page.getMainLayer());
             }
         });

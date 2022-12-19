@@ -1,13 +1,13 @@
 package org.sem.subjects.views;
 
-import org.sem.classes.views.ListingPage;
 import org.sem.context.Context;
 import org.sem.context.Session;
+import org.sem.students.models.Student;
+import org.sem.subjects.models.Subject;
 import org.sem.subjects.services.SubjectService;
 import org.sem.view.ViewPanel;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -24,6 +24,7 @@ public class EditPage extends ViewPanel {
     private JPanel main;
 
     public SubjectService subjectService;
+    public Subject subjectData;
 
     public EditPage(Context context) {
         super(context, "Subject");
@@ -32,6 +33,8 @@ public class EditPage extends ViewPanel {
     @Override
     protected void beforeInitComponents() {
         subjectService = new SubjectService();
+        Session session = getContext().getSession();
+        subjectData = (Subject) session.getData("subject");
     }
 
     @Override
@@ -71,7 +74,7 @@ public class EditPage extends ViewPanel {
 
         jButton2.setBackground(new java.awt.Color(255, 255, 204));
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/sem/icons/back.png"))); // NOI18N
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/back.png"))); // NOI18N
         jButton2.setText("Back");
 
         javax.swing.GroupLayout mainLayout = new javax.swing.GroupLayout(main);
@@ -127,13 +130,36 @@ public class EditPage extends ViewPanel {
     }
 
     @Override
+    protected void afterInitComponents() {
+        super.afterInitComponents();
+        if (subjectData != null) {
+            jTextField2.setText(subjectData.getSubject_name());
+            jTextField3.setText(subjectData.getCode());
+            jTextField4.setText(subjectData.getTotalhour().toString());
+            jButton1.setText("Update");
+            getContext().setPageTitle("Subject / " + subjectData.getSubject_name());
+        } else {
+            jButton1.setText("Create new");
+            getContext().setPageTitle("Subject / Create new");
+        }
+    }
+
+    @Override
     protected void handleEvent() {
+        jButton2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ListingPage page = new ListingPage(getContext());
+                getContext().changeLayer(page.getMainLayer());
+            }
+        });
+
         jButton1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Session session = getContext().getSession();
+                Long id = subjectData != null ? subjectData.getId() : null;
                 subjectService.save(
-                        session.getData("id") == null ? null : Long.parseLong((String) session.getData("id")),
+                        id,
                         jTextField2.getText(),
                         jTextField3.getText(),
                         Double.parseDouble(jTextField4.getText())

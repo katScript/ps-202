@@ -2,7 +2,6 @@ package org.sem.dashboard.views;
 
 import org.sem.context.Context;
 import org.sem.helper.ImageHelper;
-import org.sem.students.views.ListingPage;
 import org.sem.view.ViewPanel;
 
 import javax.swing.*;
@@ -54,7 +53,7 @@ public class Dashboard extends ViewPanel {
         jButton4.setBackground(new Color(255, 255, 204));
         jButton4.setFont(new Font("Segoe UI", 1, 18)); // NOI18N
         jButton4.setIcon(new ImageIcon(imageHelper.getImage("/icons/checklist.png"))); // NOI18N
-        jButton4.setText("Mark");
+        jButton4.setText("Subject");
 
         jButton5.setBackground(new Color(255, 255, 204));
         jButton5.setFont(new Font("Segoe UI", 1, 18)); // NOI18N
@@ -102,10 +101,25 @@ public class Dashboard extends ViewPanel {
 
     @Override
     protected void handleEvent() {
+        jButton3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                org.sem.classes.views.ListingPage page = new org.sem.classes.views.ListingPage(getContext());
+                getContext().changeLayer(page.getMainLayer());
+            }
+        });
         jButton5.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ListingPage page = new ListingPage(getContext());
+                org.sem.students.views.ListingPage page = new org.sem.students.views.ListingPage(getContext());
+                getContext().changeLayer(page.getMainLayer());
+            }
+        });
+
+        jButton4.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                org.sem.subjects.views.ListingPage page = new org.sem.subjects.views.ListingPage(getContext());
                 getContext().changeLayer(page.getMainLayer());
             }
         });

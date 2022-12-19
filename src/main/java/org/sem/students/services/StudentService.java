@@ -2,14 +2,12 @@ package org.sem.students.services;
 
 import org.sem.classes.models.Class;
 import org.sem.classes.models.ClassDAO;
+import org.sem.helper.DateTimeHelper;
 import org.sem.marks.models.Mark;
 import org.sem.marks.models.MarkDAO;
 import org.sem.students.models.Student;
 import org.sem.students.models.StudentDAO;
 
-import java.sql.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class StudentService {
@@ -55,12 +53,12 @@ public class StudentService {
                     email,
                     phone,
                     gender,
-                    new Date(new SimpleDateFormat().parse(dob).getTime()),
+                    DateTimeHelper.stringToDate(dob),
                     address
             );
 
             studentDAO.save(student);
-        } catch (ParseException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
@@ -74,6 +72,4 @@ public class StudentService {
             throw new RuntimeException(e);
         }
     }
-
-
 }

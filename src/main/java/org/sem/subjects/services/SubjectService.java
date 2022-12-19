@@ -29,4 +29,14 @@ public class SubjectService {
             throw new RuntimeException(e);
         }
     }
+
+    public void deleteSubject(Long id) {
+        try {
+            Subject subject = subjectDAO.get(id).orElseThrow(() -> new RuntimeException("Student id not found!"));
+
+            subjectDAO.delete(subject);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

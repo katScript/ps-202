@@ -1,11 +1,18 @@
 package org.sem.students.views;
 
 import org.sem.context.Context;
+import org.sem.context.Session;
+import org.sem.helper.DateTimeHelper;
+import org.sem.students.models.Student;
+import org.sem.students.services.StudentService;
 import org.sem.view.ViewPanel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 public class EditPage extends ViewPanel {
     private javax.swing.JButton jButton1;
@@ -27,13 +34,19 @@ public class EditPage extends ViewPanel {
     private javax.swing.JTextField jTextField7;
     private javax.swing.JPanel main;
 
+    private StudentService studentService;
+    private Student studentData;
+
     public EditPage(Context context) {
         super(context, "Student");
     }
 
     @Override
     protected void beforeInitComponents() {
+        studentService = new StudentService();
 
+        Session session = getContext().getSession();
+        studentData = (Student) session.getData("student");
     }
 
     @Override
@@ -83,7 +96,7 @@ public class EditPage extends ViewPanel {
         jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel9.setText("Roll number");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Male", "Female" }));
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {"Female", "Male"}));
 
         jButton1.setBackground(new java.awt.Color(0, 51, 204));
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -92,7 +105,7 @@ public class EditPage extends ViewPanel {
 
         jButton2.setBackground(new java.awt.Color(255, 255, 204));
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/sem/icons/back.png"))); // NOI18N
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/back.png"))); // NOI18N
         jButton2.setText("Back");
 
         javax.swing.GroupLayout mainLayout = new javax.swing.GroupLayout(main);
@@ -174,8 +187,58 @@ public class EditPage extends ViewPanel {
     }
 
     @Override
+    protected void afterInitComponents() {
+        super.afterInitComponents();
+        if (studentData != null) {
+            jTextField1.setText(studentData.getRoll_number());
+            jTextField2.setText(studentData.getFullname());
+            jTextField7.setText(DateTimeHelper.dateToString(studentData.getDob()));
+            jComboBox2.setSelectedIndex(Boolean.compare(studentData.getGender(), false));
+            jTextField4.setText(studentData.getEmail());
+            jTextField5.setText(studentData.getPhone());
+            jTextField6.setText(studentData.getAddress());
+            jButton1.setText("Update");
+            getContext().setPageTitle("Student / " + studentData.getFullname());
+        } else {
+            jButton1.setText("Create new");
+            getContext().setPageTitle("Student / Create new");
+        }
+    }
+
+    @Override
     protected void handleEvent() {
         jButton1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    String rollNumber = jTextField1.getText();
+                    String fullName = jTextField2.getText();
+                    String dob = jTextField7.getText();
+                    Boolean gender = jComboBox2.getSelectedItem() == "Male";
+                    String email = jTextField4.getText();
+                    String phone = jTextField5.getText();
+                    String address = jTextField6.getText();
+                    Long id = studentData != null ? studentData.getId() : null;
+
+                    studentService.saveStudent(
+                            id,
+                            rollNumber,
+                            fullName,
+                            email,
+                            phone,
+                            gender,
+                            dob,
+                            address
+                    );
+
+                    ListingPage page = new ListingPage(getContext());
+                    getContext().changeLayer(page.getMainLayer());
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
+        jButton2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ListingPage page = new ListingPage(getContext());
