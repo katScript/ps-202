@@ -1,9 +1,14 @@
 package org.sem.authenticate.views;
 
+import org.sem.authenticate.services.UserService;
 import org.sem.context.Context;
+import org.sem.context.Session;
+import org.sem.helper.ImageHelper;
 import org.sem.view.ViewPanel;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class RegisterPage extends ViewPanel {
     private JButton jButton1;
@@ -18,13 +23,17 @@ public class RegisterPage extends ViewPanel {
     private JTextField jTextField2;
     private JPanel main;
 
+    public ImageHelper imageHelper;
+    private UserService userService;
+
     public RegisterPage(Context context) {
         super(context, "Management / Register");
     }
 
     @Override
     protected void beforeInitComponents() {
-
+        userService = new UserService();
+        imageHelper = new ImageHelper();
     }
 
     @Override
@@ -32,14 +41,14 @@ public class RegisterPage extends ViewPanel {
         main = new JPanel();
         jLabel1 = new JLabel();
         jLabel2 = new JLabel();
-        jTextField1 = new JTextField();
         jLabel3 = new JLabel();
-        jTextField2 = new JTextField();
         jLabel4 = new JLabel();
-        jPasswordField1 = new JPasswordField();
         jLabel5 = new JLabel();
-        jPasswordField2 = new JPasswordField();
         jButton1 = new JButton();
+        jTextField1 = new JTextField();
+        jTextField2 = new JTextField();
+        jPasswordField1 = new JPasswordField();
+        jPasswordField2 = new JPasswordField();
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 204));
@@ -55,16 +64,17 @@ public class RegisterPage extends ViewPanel {
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel4.setText("Password");
 
-        jPasswordField1.setText("12345678");
-
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel5.setText("Comfirm password");
-
-        jPasswordField2.setText("12345678");
 
         jButton1.setBackground(new java.awt.Color(255, 204, 204));
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton1.setText("Register");
+
+        jTextField1.setText("");
+        jTextField2.setText("");
+        jPasswordField1.setText("");
+        jPasswordField2.setText("");
 
         GroupLayout mainLayout = new GroupLayout(main);
         main.setLayout(mainLayout);
@@ -120,7 +130,32 @@ public class RegisterPage extends ViewPanel {
 
     @Override
     protected void handleEvent() {
+        jButton1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Session session = getContext().getSession();
+                if (jPasswordField1.getText().equals(jPasswordField2.getText())) {
+                    Boolean res = userService.registerUser(
+                            jTextField2.getText(),
+                            jPasswordField1.getText(),
+                            jTextField1.getText()
+                    );
 
+                    if (res) {
+                        session.setData("message", "Register user complete!");
+
+                        LoginPage page = new LoginPage(getContext());
+                        getContext().changeLayer(page.getMainLayer());
+                    } else {
+                        session.setData("message", "Cannot register user!");
+                    }
+                } else {
+                    session.setData("message", "Password not match!");
+                }
+
+                showMessage();
+            }
+        });
     }
 
     @Override

@@ -15,9 +15,9 @@ public class UserService {
             String email
     ) {
         try {
-            userDAO.findByUserName(userName).orElseThrow(
-                    () -> new RuntimeException("This user has exists!")
-            );
+            User loadUser = userDAO.findByUserName(userName).orElse(null);
+            if (loadUser != null)
+                return false;
 
             User user = new User(
                     null,

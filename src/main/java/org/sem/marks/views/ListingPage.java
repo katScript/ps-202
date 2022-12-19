@@ -12,7 +12,7 @@ import org.sem.view.ViewPanel;
  *
  * @author 84379
  */
-public class ListingPage extends ViewPanel{
+public class ListingPage extends ViewPanel {
 
     public ListingPage(Context context) {
         super(context);

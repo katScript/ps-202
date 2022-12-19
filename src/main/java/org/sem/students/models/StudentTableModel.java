@@ -1,5 +1,6 @@
 package org.sem.students.models;
 
+import org.sem.helper.DateTimeHelper;
 import org.sem.marks.models.Mark;
 
 import javax.swing.table.AbstractTableModel;
@@ -50,9 +51,9 @@ public class StudentTableModel extends AbstractTableModel {
             case 4:
                 return s.getPhone();
             case 5:
-                return s.getGender() ? "Female" : "Male";
+                return s.getGender() ? "Male" : "Female";
             case 6:
-                return s.getDob();
+                return DateTimeHelper.dateToString(s.getDob());
             case 7:
                 return s.getAddress();
         }
