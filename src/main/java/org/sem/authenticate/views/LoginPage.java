@@ -1,7 +1,10 @@
 package org.sem.authenticate.views;
 
-import org.sem.classes.views.ListingPage;
+import org.sem.authenticate.models.User;
+import org.sem.authenticate.services.UserService;
 import org.sem.context.Context;
+import org.sem.context.Session;
+import org.sem.dashboard.views.Dashboard;
 import org.sem.helper.ImageHelper;
 import org.sem.view.ViewPanel;
 
@@ -21,6 +24,7 @@ public class LoginPage extends ViewPanel {
     private JPanel main;
 
     public ImageHelper imageHelper;
+    public UserService userService;
 
     public LoginPage(Context context) {
         super(context, "Management / Login");
@@ -33,6 +37,7 @@ public class LoginPage extends ViewPanel {
     @Override
     protected void beforeInitComponents() {
         imageHelper = new ImageHelper();
+        userService = new UserService();
     }
 
     @Override
@@ -116,12 +121,34 @@ public class LoginPage extends ViewPanel {
     }
 
     protected void handleEvent() {
+        jButton1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Session session = getContext().getSession();
+                User user = userService.login(
+                        jTextField1.getText(),
+                        jPasswordField1.getText()
+                ).orElse(null);
+
+                if (user != null) {
+                    getContext().getSession().setData("user", user);
+
+                    Dashboard page = new Dashboard(getContext());
+                    getContext().changeLayer(page.getMainLayer());
+                    return;
+                } else {
+                    session.setData("message", "Username or password not correct!");
+                }
+
+                showMessage();
+            }
+        });
+
         jButton2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 RegisterPage page = new RegisterPage(getContext());
                 getContext().changeLayer(page.getMainLayer());
-                page.showMessage();
             }
         });
     }

@@ -25,6 +25,7 @@ public abstract class ViewPanel {
 
     private void processPageContent() {
         Session session = this.context.getSession();
+        showMessage();
 
         if (this.context.isValidateUser() && session.getData("user") == null) {
             this.context.setIsValidateUser(false);
@@ -64,6 +65,8 @@ public abstract class ViewPanel {
         String message = (String) getContext().getSession().getData("message");
         if (message != null)
             JOptionPane.showMessageDialog(getMainLayer(), message);
+
+        getContext().getSession().setData("message", null);
     }
 
     public void setContext(Context context) {
