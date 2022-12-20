@@ -16,7 +16,7 @@ import org.sem.database.DAO;
 import org.sem.database.DAOInterface;
 import org.sem.database.connection.Connector;
 import org.sem.marks.models.Mark;
-import org.sem.staff.models.Staff;
+import org.sem.staffs.models.Staff;
 
 /**
  *
