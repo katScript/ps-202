@@ -124,23 +124,21 @@ public class LoginPage extends ViewPanel {
         jButton1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Session session = getContext().getSession();
-                User user = userService.login(
-                        jTextField1.getText(),
-                        jPasswordField1.getText()
-                ).orElse(null);
+                try {
+                    User user = userService.login(
+                            jTextField1.getText(),
+                            jPasswordField1.getText()
+                    ).orElseThrow(() -> new RuntimeException("Username or password not correct!"));
 
-                if (user != null) {
                     getContext().getSession().setData("user", user);
 
                     Dashboard page = new Dashboard(getContext());
                     getContext().changeLayer(page.getMainLayer());
-                    return;
-                } else {
-                    session.setData("message", "Username or password not correct!");
+                } catch (Exception ex) {
+                    getContext().getSession().setData("message", ex.getMessage());
+                    showMessage();
                 }
 
-                showMessage();
             }
         });
 

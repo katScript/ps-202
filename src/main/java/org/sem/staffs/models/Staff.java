@@ -24,24 +24,6 @@ public class Staff {
     }
 
     public Staff(
-            String staffNo,
-            String fullname,
-            String email,
-            String phone,
-            Boolean gender,
-            Date dob,
-            String address
-    ) {
-        this.staffNo = staffNo;
-        this.fullname = fullname;
-        this.email = email;
-        this.phone = phone;
-        this.gender = gender;
-        this.dob = dob;
-        this.address = address;
-    }
-
-    public Staff(
             Long id,
             String staffNo,
             String fullname,
