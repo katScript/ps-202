@@ -12,8 +12,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.sem.database.DAO;
-import org.sem.database.DAOInterface;
-import org.sem.database.connection.Connector;
 
 /**
  * @author Win 10 Pro x64
