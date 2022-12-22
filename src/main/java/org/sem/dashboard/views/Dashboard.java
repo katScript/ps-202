@@ -1,6 +1,7 @@
 package org.sem.dashboard.views;
 
 import org.sem.context.Context;
+import org.sem.context.Redirect;
 import org.sem.helper.ImageHelper;
 import org.sem.view.ViewPanel;
 
@@ -104,23 +105,27 @@ public class Dashboard extends ViewPanel {
         jButton3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                org.sem.classes.views.ListingPage page = new org.sem.classes.views.ListingPage(getContext());
-                getContext().changeLayer(page.getMainLayer());
+                Redirect.target(new org.sem.classes.views.ListingPage(getContext()));
             }
         });
         jButton5.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                org.sem.students.views.ListingPage page = new org.sem.students.views.ListingPage(getContext());
-                getContext().changeLayer(page.getMainLayer());
+                Redirect.target(new org.sem.students.views.ListingPage(getContext()));
             }
         });
 
         jButton4.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                org.sem.subjects.views.ListingPage page = new org.sem.subjects.views.ListingPage(getContext());
-                getContext().changeLayer(page.getMainLayer());
+                Redirect.target(new org.sem.subjects.views.ListingPage(getContext()));
+            }
+        });
+
+        jButton2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Redirect.target(new org.sem.staffs.views.ListingPage(getContext()));
             }
         });
     }

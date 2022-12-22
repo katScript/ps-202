@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package org.sem.staff.models;
+package org.sem.staffs.models;
 
 import java.sql.Date;
 
@@ -21,24 +21,6 @@ public class Staff {
     private String address;
 
     public Staff() {
-    }
-
-    public Staff(
-            String staffNo,
-            String fullname,
-            String email,
-            String phone,
-            Boolean gender,
-            Date dob,
-            String address
-    ) {
-        this.staffNo = staffNo;
-        this.fullname = fullname;
-        this.email = email;
-        this.phone = phone;
-        this.gender = gender;
-        this.dob = dob;
-        this.address = address;
     }
 
     public Staff(
