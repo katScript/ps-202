@@ -46,7 +46,9 @@ public class StaffDAO extends DAO<Staff> {
                         rs.getString("phone"),
                         rs.getBoolean("gender"),
                         rs.getDate("dob"),
-                        rs.getString("address")
+                        rs.getString("address"),
+                        rs.getDate("created_at"),
+                        rs.getDate("updated_at")
                 );
 
             }
@@ -92,7 +94,9 @@ public class StaffDAO extends DAO<Staff> {
                         rs.getString("phone"),
                         rs.getBoolean("gender"),
                         rs.getDate("dob"),
-                        rs.getString("address")
+                        rs.getString("address"),
+                        rs.getDate("created_at"),
+                        rs.getDate("updated_at")
                 ));
             }
 

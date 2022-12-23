@@ -7,6 +7,8 @@ package org.sem.marks.models;
 import org.sem.students.models.Student;
 import org.sem.subjects.models.Subject;
 
+import java.sql.Date;
+
 /**
  *
  * @author 84379
@@ -19,6 +21,8 @@ public class Mark {
     private Float p_second_atterm;
     private Student student;
     private Subject subject;
+    private Date createdAt;
+    private Date updatedAt;
 
     public Mark() {
     }
@@ -29,6 +33,17 @@ public class Mark {
         this.w_second_atterm = w_second_atterm;
         this.p_first_atterm = p_first_atterm;
         this.p_second_atterm = p_second_atterm;
+    }
+
+    public Mark(Long id, Float w_first_atterm, Float w_second_atterm, Float p_first_atterm, Float p_second_atterm,
+                Date createdAt, Date updatedAt) {
+        this.id = id;
+        this.w_first_atterm = w_first_atterm;
+        this.w_second_atterm = w_second_atterm;
+        this.p_first_atterm = p_first_atterm;
+        this.p_second_atterm = p_second_atterm;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public Long getId() {
@@ -85,5 +100,21 @@ public class Mark {
 
     public void setSubject(Subject subject) {
         this.subject = subject;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

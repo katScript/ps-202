@@ -12,6 +12,9 @@ import org.sem.view.ViewPanel;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 
 public class ListingPage extends ViewPanel {
     private javax.swing.JButton jButton1;
@@ -32,6 +35,7 @@ public class ListingPage extends ViewPanel {
 
     public StudentDAO studentDAO;
     public StudentService studentService;
+    public StudentTableModel studentTableModel;
 
     public ListingPage(Context context) {
         super(context, "Student");
@@ -41,6 +45,7 @@ public class ListingPage extends ViewPanel {
     protected void beforeInitComponents() {
         studentDAO = new StudentDAO();
         studentService = new StudentService();
+        studentTableModel = new StudentTableModel();
         getContext().getSession().setData("student", null);
     }
 
@@ -97,7 +102,6 @@ public class ListingPage extends ViewPanel {
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/next.png"))); // NOI18N
 
         jComboBox1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4" }));
         jComboBox1.setPreferredSize(new java.awt.Dimension(72, 23));
 
         jButton7.setBackground(new java.awt.Color(204, 204, 255));
@@ -110,7 +114,7 @@ public class ListingPage extends ViewPanel {
         jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/back.png"))); // NOI18N
         jButton6.setText("Back");
 
-        jTextField1.setText("Search...");
+        jTextField1.setText("");
         jTextField1.setMinimumSize(new java.awt.Dimension(64, 23));
         jTextField1.setPreferredSize(new java.awt.Dimension(64, 23));
 
@@ -188,7 +192,8 @@ public class ListingPage extends ViewPanel {
     protected void afterInitComponents() {
         super.afterInitComponents();
 
-        jTable1.setModel(getStudentModel());
+        jTable1.setModel(studentTableModel);
+        changeTableModelData(studentDAO.getAll());
     }
 
     @Override
@@ -250,6 +255,55 @@ public class ListingPage extends ViewPanel {
                 getContext().changeLayer(page.getMainLayer());
             }
         });
+
+        jButton9.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String searchValue = jTextField1.getText();
+
+                List<Student> students = studentDAO.searchByName(searchValue);
+                changeTableModelData(students);
+            }
+        });
+
+        jComboBox1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Integer pageNumber = jComboBox1.getSelectedIndex() + 1;
+                changePageNumber(pageNumber);
+            }
+        });
+
+        jButton4.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Integer totalPage = studentTableModel.getTotalPage();
+                changePageNumber(totalPage);
+            }
+        });
+
+        jButton7.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                changePageNumber(1);
+            }
+        });
+
+        jButton5.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int pageNumber = jComboBox1.getSelectedIndex();
+                changePageNumber(pageNumber + 2);
+            }
+        });
+
+        jButton8.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int pageNumber = jComboBox1.getSelectedIndex();
+                changePageNumber(pageNumber);
+            }
+        });
     }
 
     @Override
@@ -257,9 +311,30 @@ public class ListingPage extends ViewPanel {
         return main;
     }
 
-    public StudentTableModel getStudentModel() {
-        StudentTableModel studentTableModel = new StudentTableModel();
-        studentTableModel.setData(studentDAO.getAll());
-        return studentTableModel;
+    public void changeTableModelData(List<Student> students) {
+        studentTableModel.setPageData(students);
+        updateToolBar();
+        jComboBox1.setSelectedIndex(0);
+    }
+
+    public void changePageNumber(Integer pageNumber) {
+        studentTableModel.setCurrentPageNumber(pageNumber);
+        updateToolBar();
+        jComboBox1.setSelectedIndex(studentTableModel.getCurrentPageNumber() - 1);
+    }
+
+    private void updateToolBar() {
+        Integer length = studentTableModel.getTotalPage();
+        String[] pageNumbers = new String[length];
+        for (int i = 1; i <= length; ++i) {
+            pageNumbers[i - 1] = String.valueOf(i);
+        }
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(pageNumbers));
+        jButton4.setEnabled(!studentTableModel.getLast());
+        jButton7.setEnabled(!studentTableModel.getFirst());
+
+        jButton5.setEnabled(!studentTableModel.getLast());
+        jButton8.setEnabled(!studentTableModel.getFirst());
     }
 }

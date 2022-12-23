@@ -51,7 +51,9 @@ public class MarkDAO extends DAO<Mark> {
                         rs.getFloat("w_first_atterm"),
                         rs.getFloat("w_second_atterm"),
                         rs.getFloat("p_first_atterm"),
-                        rs.getFloat("p_second_atterm")
+                        rs.getFloat("p_second_atterm"),
+                        rs.getDate("created_at"),
+                        rs.getDate("updated_at")
                 );
             }
 
@@ -92,7 +94,9 @@ public class MarkDAO extends DAO<Mark> {
                         rs.getFloat("w_first_atterm"),
                         rs.getFloat("w_second_atterm"),
                         rs.getFloat("p_first_atterm"),
-                        rs.getFloat("p_second_atterm")
+                        rs.getFloat("p_second_atterm"),
+                        rs.getDate("created_at"),
+                        rs.getDate("updated_at")
                 ));
             }
 

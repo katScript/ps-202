@@ -19,10 +19,11 @@ public class Staff {
     private Boolean gender; // (0 ,1);
     private Date dob;
     private String address;
+    private Date createdAt;
+    private Date updatedAt;
 
     public Staff() {
     }
-
     public Staff(
             Long id,
             String staffNo,
@@ -41,6 +42,29 @@ public class Staff {
         this.gender = gender;
         this.dob = dob;
         this.address = address;
+    }
+
+    public Staff(
+            Long id,
+            String staffNo,
+            String fullname,
+            String email,
+            String phone,
+            Boolean gender,
+            Date dob,
+            String address,
+            Date createdAt, Date updatedAt
+    ) {
+        this.id = id;
+        this.staffNo = staffNo;
+        this.fullname = fullname;
+        this.email = email;
+        this.phone = phone;
+        this.gender = gender;
+        this.dob = dob;
+        this.address = address;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public Long getId() {
@@ -108,5 +132,20 @@ public class Staff {
     }
 
 
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 }
 
