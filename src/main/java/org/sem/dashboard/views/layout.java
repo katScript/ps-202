@@ -34,7 +34,6 @@ public class layout extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -108,9 +107,6 @@ public class layout extends javax.swing.JFrame {
 
         jMenu1.setText("Account");
 
-        jMenuItem1.setText("Change Password");
-        jMenu1.add(jMenuItem1);
-
         jMenuItem2.setText("Log Out");
         jMenu1.add(jMenuItem2);
 
@@ -179,7 +175,6 @@ public class layout extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel main;
     // End of variables declaration//GEN-END:variables
