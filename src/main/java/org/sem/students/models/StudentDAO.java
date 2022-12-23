@@ -49,7 +49,9 @@ public class StudentDAO extends DAO<Student> {
                         rs.getString("phone"),
                         rs.getBoolean("gender"),
                         rs.getDate("dob"),
-                        rs.getString("address")
+                        rs.getString("address"),
+                        rs.getDate("created_at"),
+                        rs.getDate("updated_at")
                 );
 
             }
@@ -95,7 +97,9 @@ public class StudentDAO extends DAO<Student> {
                         rs.getString("phone"),
                         rs.getBoolean("gender"),
                         rs.getDate("dob"),
-                        rs.getString("address")
+                        rs.getString("address"),
+                        rs.getDate("created_at"),
+                        rs.getDate("updated_at")
                 ));
             }
 
@@ -216,6 +220,53 @@ public class StudentDAO extends DAO<Student> {
                         rs.getBoolean("gender"),
                         rs.getDate("dob"),
                         rs.getString("address")
+                ));
+            }
+
+            // 5.close transaction
+            ps.close();
+            rs.close();
+
+            // 6.return result
+            return result;
+        } catch (Exception e) {
+            // 7.handle errors
+            throw new RuntimeException(e);
+        } finally {
+            // 8.close database connection
+            this.connector.closeConnection();
+        }
+    }
+
+    public List<Student> searchByName(String name) {
+        try {
+            // 1.get connection
+            Connection con = this.connector
+                    .startConnection().getConnection();
+
+            // 2.prepare query
+            String sql = "SELECT * FROM `" + getTableName() + "` WHERE (`fullname` is null or `fullname` like concat('%', ?, '%'))";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, name);
+
+            // 3.execute query
+            ResultSet rs = ps.executeQuery();
+
+            // 4.process query return data
+            List<Student> result = new ArrayList<>();
+
+            while (rs.next()) {
+                result.add(new Student(
+                        rs.getLong("id"),
+                        rs.getString("roll_number"),
+                        rs.getString("fullname"),
+                        rs.getString("email"),
+                        rs.getString("phone"),
+                        rs.getBoolean("gender"),
+                        rs.getDate("dob"),
+                        rs.getString("address"),
+                        rs.getDate("created_at"),
+                        rs.getDate("updated_at")
                 ));
             }
 

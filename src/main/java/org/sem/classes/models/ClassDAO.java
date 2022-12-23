@@ -34,7 +34,9 @@ public class ClassDAO extends DAO<Class> {
             if (rs.next()) {
                 cs = new Class(
                         rs.getLong("id"),
-                        rs.getString("class_name")
+                        rs.getString("class_name"),
+                        rs.getDate("created_at"),
+                        rs.getDate("updated_at")
                 );
             }
 
@@ -72,7 +74,9 @@ public class ClassDAO extends DAO<Class> {
             while (rs.next()) {
                 result.add(new Class(
                         rs.getLong("id"),
-                        rs.getString("class_name")
+                        rs.getString("class_name"),
+                        rs.getDate("created_at"),
+                        rs.getDate("updated_at")
                 ));
             }
 

@@ -8,6 +8,8 @@ import org.sem.marks.models.MarkDAO;
 import org.sem.students.models.Student;
 import org.sem.students.models.StudentDAO;
 
+import java.awt.print.PageFormat;
+import java.awt.print.Pageable;
 import java.util.List;
 
 public class StudentService {

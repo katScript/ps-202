@@ -22,11 +22,12 @@ public class Student {
     private String address;
     private List<Mark> studentMark;
     private List<Class> classes;
+    private Date createdAt;
+    private Date updatedAt;
 
     public Student() {
         studentMark = new ArrayList<>();
     }
-
     public Student(
             Long id,
             String roll_number,
@@ -46,6 +47,30 @@ public class Student {
         this.dob = dob;
         this.address = address;
         this.studentMark = new ArrayList<>();
+    }
+
+    public Student(
+            Long id,
+            String roll_number,
+            String fullname,
+            String email,
+            String phone,
+            Boolean gender,
+            Date dob,
+            String address,
+            Date createdAt, Date updatedAt
+    ) {
+        this.id = id;
+        this.roll_number = roll_number;
+        this.fullname = fullname;
+        this.email = email;
+        this.phone = phone;
+        this.gender = gender;
+        this.dob = dob;
+        this.address = address;
+        this.studentMark = new ArrayList<>();
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public Long getId() {
@@ -126,5 +151,21 @@ public class Student {
 
     public void setClasses(List<Class> classes) {
         this.classes = classes;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

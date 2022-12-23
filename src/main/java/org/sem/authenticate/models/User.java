@@ -1,10 +1,14 @@
 package org.sem.authenticate.models;
 
+import java.sql.Date;
+
 public class User {
     private Long id;
     private String userName;
     private String password;
     private String email;
+    private Date createdAt;
+    private Date updatedAt;
 
     public User() {}
 
@@ -18,6 +22,21 @@ public class User {
         this.userName = userName;
         this.password = password;
         this.email = email;
+    }
+
+    public User(
+            Long id,
+            String userName,
+            String password,
+            String email,
+            Date createdAt, Date updatedAt
+    ) {
+        this.id = id;
+        this.userName = userName;
+        this.password = password;
+        this.email = email;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public Long getId() {
@@ -50,5 +69,21 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

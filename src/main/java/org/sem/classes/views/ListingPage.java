@@ -2,6 +2,7 @@ package org.sem.classes.views;
 
 import javax.swing.*;
 
+import org.sem.classes.models.Class;
 import org.sem.classes.models.ClassDAO;
 import org.sem.classes.models.ClassTableModel;
 import org.sem.classes.service.ClassService;
@@ -192,6 +193,25 @@ public class ListingPage extends ViewPanel {
     }
 
     protected void handleEvent() {
+        jButton6.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    int row = jTable1.getSelectedRow();
+                    Long id = (Long) jTable1.getValueAt(row, 0);
+                    Class aClass = classDAO.get(id).orElseThrow(() -> new RuntimeException("Class not found!"));
+
+                    if (aClass != null) {
+                        getContext().getSession().setData("class", aClass);
+                        Redirect.target(new EditPage(getContext()));
+                    }
+
+                } catch (Exception ex) {
+                    getContext().getSession().setData("message", ex.getMessage());
+                    showMessage();
+                }
+            }
+        });
         jButton7.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -214,7 +234,7 @@ public class ListingPage extends ViewPanel {
         jButton8.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Redirect.target(new EditPage(getContext()));
+                Redirect.target(new CreateNewPage(getContext()));
             }
         });
 
