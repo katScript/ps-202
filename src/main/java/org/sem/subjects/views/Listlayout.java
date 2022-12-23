@@ -30,13 +30,13 @@ public class Listlayout extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
-        jTextField2 = new javax.swing.JTextField();
+        lastBtn = new javax.swing.JButton();
+        nextBtn = new javax.swing.JButton();
+        pageSelect = new javax.swing.JComboBox<>();
+        previousBtn = new javax.swing.JButton();
+        firstBtn = new javax.swing.JButton();
+        searchBtn = new javax.swing.JButton();
+        searchInput = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
         jButton9 = new javax.swing.JButton();
@@ -73,34 +73,34 @@ public class Listlayout extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jTable1);
 
-        jButton3.setBackground(new java.awt.Color(204, 204, 255));
-        jButton3.setText("Last");
+        lastBtn.setBackground(new java.awt.Color(204, 204, 255));
+        lastBtn.setText("Last");
 
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/sem/icons/next.png"))); // NOI18N
+        nextBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/sem/icons/next.png"))); // NOI18N
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4" }));
-        jComboBox1.setPreferredSize(new java.awt.Dimension(72, 23));
+        pageSelect.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4" }));
+        pageSelect.setPreferredSize(new java.awt.Dimension(72, 23));
 
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/sem/icons/left-chevron.png"))); // NOI18N
+        previousBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/sem/icons/left-chevron.png"))); // NOI18N
 
-        jButton6.setBackground(new java.awt.Color(204, 204, 255));
-        jButton6.setText("First");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
+        firstBtn.setBackground(new java.awt.Color(204, 204, 255));
+        firstBtn.setText("First");
+        firstBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
+                firstBtnActionPerformed(evt);
             }
         });
 
-        jButton7.setBackground(new java.awt.Color(255, 229, 229));
-        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/sem/icons/search-interface-symbol.png"))); // NOI18N
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
+        searchBtn.setBackground(new java.awt.Color(255, 229, 229));
+        searchBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/sem/icons/search-interface-symbol.png"))); // NOI18N
+        searchBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
+                searchBtnActionPerformed(evt);
             }
         });
 
-        jTextField2.setText("Search...");
-        jTextField2.setPreferredSize(new java.awt.Dimension(64, 23));
+        searchInput.setText("Search...");
+        searchInput.setPreferredSize(new java.awt.Dimension(64, 23));
 
         jButton2.setBackground(new java.awt.Color(255, 204, 204));
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -137,19 +137,19 @@ public class Listlayout extends javax.swing.JFrame {
                             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(6, 6, 6)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(searchInput, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, 0)
-                                .addComponent(jButton7)
+                                .addComponent(searchBtn)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(firstBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton5)
+                                .addComponent(previousBtn)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(pageSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton4)
+                                .addComponent(nextBtn)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(lastBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(14, 14, 14))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -168,14 +168,14 @@ public class Listlayout extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton4, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton5)
-                    .addComponent(jButton6)
+                    .addComponent(nextBtn, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(pageSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(previousBtn)
+                    .addComponent(firstBtn)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jButton7, javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jButton3))
+                        .addComponent(searchBtn, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(searchInput, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lastBtn))
                 .addGap(5, 5, 5)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -190,13 +190,13 @@ public class Listlayout extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+    private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton7ActionPerformed
+    }//GEN-LAST:event_searchBtnActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+    private void firstBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_firstBtnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton6ActionPerformed
+    }//GEN-LAST:event_firstBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -234,19 +234,19 @@ public class Listlayout extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton firstBtn;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JButton lastBtn;
+    private javax.swing.JButton nextBtn;
+    private javax.swing.JComboBox<String> pageSelect;
+    private javax.swing.JButton previousBtn;
+    private javax.swing.JButton searchBtn;
+    private javax.swing.JTextField searchInput;
     // End of variables declaration//GEN-END:variables
 }
