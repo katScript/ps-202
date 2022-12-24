@@ -7,6 +7,7 @@ import org.sem.classes.service.ClassService;
 import org.sem.context.Context;
 import org.sem.students.models.Student;
 import org.sem.students.models.StudentDAO;
+import org.sem.students.services.StudentService;
 import org.sem.view.ViewPanel;
 
 import javax.swing.*;
@@ -39,6 +40,7 @@ public class EditPage extends ViewPanel {
     public ClassStudentTableModel studentTableModel;
     public Class classData;
     public ClassService classService;
+    public StudentService studentService;
 
     public EditPage (Context context) {
         super(context, "Class edit page");
@@ -54,6 +56,7 @@ public class EditPage extends ViewPanel {
         studentDAO = new StudentDAO();
         studentTableModel = new ClassStudentTableModel();
         classService = new ClassService();
+        studentService = new StudentService();
 
         classData = (Class) getContext().getSession().getData("class");
     }
@@ -223,7 +226,7 @@ public class EditPage extends ViewPanel {
         jLabel2.setText(classData.getClassName());
         jTable1.setModel(studentTableModel);
 
-        changeTableModelData(studentDAO.getByClassId(classData.getId()));
+        changeTableModelData(studentService.getStudentByClassId(classData.getId()));
     }
 
     protected void handleEvent() {
@@ -234,13 +237,21 @@ public class EditPage extends ViewPanel {
                 getContext().changeLayer(page.getMainLayer());
             }
         });
+        jButton3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SelectStudent page = new SelectStudent(getContext());
+                getContext().changeLayer(page.getMainLayer());
+            }
+        });
+
         jButton4.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int row = jTable1.getSelectedRow();
                 Long id = (Long) jTable1.getValueAt(row, 0);
                 classService.removeStudent(classData.getId(), id);
-                changeTableModelData(studentDAO.getByClassId(classData.getId()));
+                changeTableModelData(studentService.getStudentByClassId(classData.getId()));
             }
         });
 

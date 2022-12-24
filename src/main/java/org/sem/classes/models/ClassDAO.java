@@ -288,4 +288,43 @@ public class ClassDAO extends DAO<Class> {
             this.connector.closeConnection();
         }
     }
+
+    public void addStudentToClass(Class aClass, Student student) {
+        try {
+            // 1.get connection
+            Connection con = this.connector
+                    .startConnection().getConnection();
+
+            // 2.prepare query
+            // 2.1 check is new or not => aClass.getId() != null or not
+            // if new => use insert into query else update query
+            String sql = String.format("INSERT INTO `%s` (`class_id`, `student_id`) VALUES (?, ?)", "student_class");
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setLong(1, aClass.getId());
+            ps.setLong(2, student.getId());
+
+            // 3.execute query
+            Boolean result = ps.execute();
+
+            // 4.process query return data
+            if (result) {
+                ResultSet rs = ps.getGeneratedKeys();
+                aClass.setId(rs.getLong(1));
+
+                rs.close();
+            }
+
+            // 5.close transaction
+            ps.close();
+
+            // 6.return result
+        } catch (Exception e) {
+            // 7.handle errors
+            throw new RuntimeException(e);
+
+        } finally {
+            // 8.close database connection
+            this.connector.closeConnection();
+        }
+    }
 }
