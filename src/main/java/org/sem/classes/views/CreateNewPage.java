@@ -101,7 +101,7 @@ public class CreateNewPage extends ViewPanel {private javax.swing.JButton jButto
                     classService.saveClass(null, jTextField1.getText());
                     Redirect.target(new ListingPage(getContext()));
                 } catch (Exception ex) {
-                    getContext().getSession().setData("message", ex.getMessage());
+                    getContext().getSession().setData("message", ex.getCause().getMessage());
                     showMessage();
                 }
             }

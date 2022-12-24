@@ -36,7 +36,7 @@ public class Listlayout extends javax.swing.JFrame {
         pageSelect = new javax.swing.JComboBox<>();
         previousBtn = new javax.swing.JButton();
         firstBtn = new javax.swing.JButton();
-        serachInput = new javax.swing.JTextField();
+        searchInput = new javax.swing.JTextField();
         searchBtn = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
@@ -95,9 +95,9 @@ public class Listlayout extends javax.swing.JFrame {
             }
         });
 
-        serachInput.setText("Search...");
-        serachInput.setMinimumSize(new java.awt.Dimension(64, 23));
-        serachInput.setPreferredSize(new java.awt.Dimension(64, 23));
+        searchInput.setText("Search...");
+        searchInput.setMinimumSize(new java.awt.Dimension(64, 23));
+        searchInput.setPreferredSize(new java.awt.Dimension(64, 23));
 
         searchBtn.setBackground(new java.awt.Color(255, 229, 229));
         searchBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/sem/icons/search-interface-symbol.png"))); // NOI18N
@@ -136,7 +136,7 @@ public class Listlayout extends javax.swing.JFrame {
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainLayout.createSequentialGroup()
                                 .addGap(6, 6, 6)
-                                .addComponent(serachInput, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(searchInput, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, 0)
                                 .addComponent(searchBtn)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -179,7 +179,7 @@ public class Listlayout extends javax.swing.JFrame {
                     .addComponent(searchBtn, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lastBtn)
-                        .addComponent(serachInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(searchInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(8, 8, 8)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -263,6 +263,6 @@ public class Listlayout extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> pageSelect;
     private javax.swing.JButton previousBtn;
     private javax.swing.JButton searchBtn;
-    private javax.swing.JTextField serachInput;
+    private javax.swing.JTextField searchInput;
     // End of variables declaration//GEN-END:variables
 }

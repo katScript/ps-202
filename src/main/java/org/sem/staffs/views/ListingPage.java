@@ -208,7 +208,7 @@ public class ListingPage extends ViewPanel {
                         Redirect.target(new org.sem.staffs.views.ListingPage(getContext()));
                     }
                 } catch (Exception ex) {
-                    getContext().getSession().setData("message", ex.getMessage());
+                    getContext().getSession().setData("message", ex.getCause().getMessage());
                     showMessage();
                 }
             }
@@ -229,7 +229,7 @@ public class ListingPage extends ViewPanel {
                         Redirect.target(new EditPage(getContext()));
                     }
                 } catch (Exception ex) {
-                    getContext().getSession().setData("message", ex.getMessage());
+                    getContext().getSession().setData("message", ex.getCause().getMessage());
                     showMessage();
                 }
             }

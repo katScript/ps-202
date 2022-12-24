@@ -9,11 +9,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public class StudentTableModel extends AbstractTableModel {
-    private List<String> columnNames = new ArrayList<>(
-            Arrays.asList("ID", "Roll number", "Full name", "Email", "Phone number", "Gender", "Date of bird", "Address")
+    protected List<String> columnNames = new ArrayList<>(
+            Arrays.asList("ID", "Roll number", "Full name", "Email", "Phone number", "Created At", "Updated At")
     );
+    protected List<Student> students = new ArrayList<>();
 
-    private List<Student> students = new ArrayList<>();
     private Integer pageSize = 5;
     private List<List<Student>> data = new ArrayList<>();
     private Integer totalPage;
@@ -22,34 +22,6 @@ public class StudentTableModel extends AbstractTableModel {
     private Integer currentPageNumber;
 
     public StudentTableModel() {}
-
-    public StudentTableModel(List<Student> students) {
-        setPageData(students);
-    }
-
-    public void setPageData(List<Student> students) {
-        int i = 0;
-        data.clear();
-        List<Student> term = new ArrayList<>();
-
-        for (Student obj : students) {
-            if (i < pageSize) {
-                term.add(obj);
-                i++;
-            } else {
-                data.add(term);
-                term = new ArrayList<>() {{ add(obj); }};
-                i = 1;
-            }
-        }
-
-        if (!term.isEmpty()) {
-            data.add(term);
-        }
-
-        totalPage = data.size();
-        setCurrentPageNumber(1);
-    }
 
     public void setData(List<Student> students) {
         setStudents(students);
@@ -86,11 +58,9 @@ public class StudentTableModel extends AbstractTableModel {
             case 4:
                 return s.getPhone();
             case 5:
-                return s.getGender() ? "Male" : "Female";
+                return DateTimeHelper.dateToString(s.getCreatedAt(), "dd/M/yyyy hh:mm:ss");
             case 6:
-                return DateTimeHelper.dateToString(s.getDob());
-            case 7:
-                return s.getAddress();
+                return DateTimeHelper.dateToString(s.getUpdatedAt(), "dd/M/yyyy hh:mm:ss");
         }
         return null;
     }
@@ -101,6 +71,33 @@ public class StudentTableModel extends AbstractTableModel {
 
     public void setStudents(List<Student> students) {
         this.students = students;
+    }
+
+    public void setPageData(List<Student> students) {
+        int i = 0;
+        data.clear();
+        List<Student> term = new ArrayList<>();
+
+        for (Student obj : students) {
+            if (i < pageSize) {
+                term.add(obj);
+                i++;
+            } else {
+                data.add(term);
+                term = new ArrayList<>() {{ add(obj); }};
+                i = 1;
+            }
+        }
+
+        if (!term.isEmpty()) {
+            data.add(term);
+        }
+
+        if (data.size() == 0)
+            data.add(term);
+
+        totalPage = data.size();
+        setCurrentPageNumber(1);
     }
 
     public Integer getTotalPage() {

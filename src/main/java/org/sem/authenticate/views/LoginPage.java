@@ -3,7 +3,6 @@ package org.sem.authenticate.views;
 import org.sem.authenticate.models.User;
 import org.sem.authenticate.services.UserService;
 import org.sem.context.Context;
-import org.sem.context.Session;
 import org.sem.dashboard.views.Dashboard;
 import org.sem.helper.ImageHelper;
 import org.sem.view.ViewPanel;
@@ -135,7 +134,7 @@ public class LoginPage extends ViewPanel {
                     Dashboard page = new Dashboard(getContext());
                     getContext().changeLayer(page.getMainLayer());
                 } catch (Exception ex) {
-                    getContext().getSession().setData("message", ex.getMessage());
+                    getContext().getSession().setData("message", ex.getCause().getMessage());
                     showMessage();
                 }
 

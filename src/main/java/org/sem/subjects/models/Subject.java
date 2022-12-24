@@ -4,7 +4,7 @@
  */
 package org.sem.subjects.models;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  *
@@ -15,8 +15,8 @@ public class Subject {
     private String subject_name;
     private String code;
     private Double total_hour;
-    private Date createdAt;
-    private Date updatedAt;
+    private Timestamp createdAt;
+    private Timestamp updatedAt;
 
     public Subject() {
     }
@@ -29,7 +29,7 @@ public class Subject {
     }
 
     public Subject(Long id, String subject_name, String code, Double total_hour,
-                   Date createdAt, Date updatedAt
+                   Timestamp createdAt, Timestamp updatedAt
     ) {
         this.id = id;
         this.subject_name = subject_name;
@@ -75,19 +75,19 @@ public class Subject {
         return this;
     }
 
-    public Date getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Date getUpdatedAt() {
+    public Timestamp getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
+    public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
     }
 }

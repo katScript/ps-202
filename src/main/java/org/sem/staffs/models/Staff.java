@@ -4,6 +4,7 @@
  */
 package org.sem.staffs.models;
 
+import java.sql.Timestamp;
 import java.sql.Date;
 
 /**
@@ -19,8 +20,8 @@ public class Staff {
     private Boolean gender; // (0 ,1);
     private Date dob;
     private String address;
-    private Date createdAt;
-    private Date updatedAt;
+    private Timestamp createdAt;
+    private Timestamp updatedAt;
 
     public Staff() {
     }
@@ -53,7 +54,7 @@ public class Staff {
             Boolean gender,
             Date dob,
             String address,
-            Date createdAt, Date updatedAt
+            Timestamp createdAt, Timestamp updatedAt
     ) {
         this.id = id;
         this.staffNo = staffNo;
@@ -132,19 +133,19 @@ public class Staff {
     }
 
 
-    public Date getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Date getUpdatedAt() {
+    public Timestamp getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
+    public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
     }
 }

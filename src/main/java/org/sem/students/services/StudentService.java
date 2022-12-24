@@ -8,9 +8,8 @@ import org.sem.marks.models.MarkDAO;
 import org.sem.students.models.Student;
 import org.sem.students.models.StudentDAO;
 
-import java.awt.print.PageFormat;
-import java.awt.print.Pageable;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class StudentService {
     public StudentDAO studentDAO;
@@ -48,6 +47,8 @@ public class StudentService {
             String address
     ) {
         try {
+            validate(rollNumber,fullName,email,phone,gender,dob,address);
+
             Student student = new Student(
                     id,
                     rollNumber,
@@ -73,5 +74,34 @@ public class StudentService {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void validate(
+            String rollNumber,
+          String fullName,
+          String email,
+          String phone,
+          Boolean gender,
+          String dob,
+          String address
+    ) {
+        if (rollNumber == null || rollNumber.equals(""))
+            throw new RuntimeException("Roll number must not be null!");
+        if (fullName == null || fullName.equals(""))
+            throw new RuntimeException("FullName must not be null!");
+        if (email == null || email.equals(""))
+            throw new RuntimeException("Email must not be null!");
+        if (phone == null || phone.equals(""))
+            throw new RuntimeException("Phone must not be null!");
+        if (dob == null || dob.equals(""))
+            throw new RuntimeException("Dob must not be null!");
+        if (address == null || address.equals(""))
+            throw new RuntimeException("Address must not be null!");
+
+        if (!Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$").matcher(email).matches())
+            throw new RuntimeException("Email not valid!");
+
+        if (!Pattern.compile("^\\d{10}$").matcher(phone).matches())
+            throw new RuntimeException("Phone number not valid!");
     }
 }
