@@ -49,8 +49,8 @@ public class SubjectDAO extends DAO<Subject> {
                         rs.getString("subject_name"),
                         rs.getString("code"),
                         rs.getDouble("total_hour"),
-                        rs.getDate("created_at"),
-                        rs.getDate("updated_at")
+                        rs.getTimestamp("created_at"),
+                        rs.getTimestamp("updated_at")
                 );
             }
 
@@ -91,8 +91,8 @@ public class SubjectDAO extends DAO<Subject> {
                         rs.getString("subject_name"),
                         rs.getString("code"),
                         rs.getDouble("total_hour"),
-                        rs.getDate("created_at"),
-                        rs.getDate("updated_at")
+                        rs.getTimestamp("created_at"),
+                        rs.getTimestamp("updated_at")
                 ));
             }
 

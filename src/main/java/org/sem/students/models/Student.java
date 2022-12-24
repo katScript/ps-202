@@ -8,6 +8,7 @@ import org.sem.classes.models.Class;
 import org.sem.marks.models.Mark;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,8 +23,8 @@ public class Student {
     private String address;
     private List<Mark> studentMark;
     private List<Class> classes;
-    private Date createdAt;
-    private Date updatedAt;
+    private Timestamp createdAt;
+    private Timestamp updatedAt;
 
     public Student() {
         studentMark = new ArrayList<>();
@@ -58,7 +59,7 @@ public class Student {
             Boolean gender,
             Date dob,
             String address,
-            Date createdAt, Date updatedAt
+            Timestamp createdAt, Timestamp updatedAt
     ) {
         this.id = id;
         this.roll_number = roll_number;
@@ -153,19 +154,19 @@ public class Student {
         this.classes = classes;
     }
 
-    public Date getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Date getUpdatedAt() {
+    public Timestamp getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
+    public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
     }
 }

@@ -50,8 +50,8 @@ public class StudentDAO extends DAO<Student> {
                         rs.getBoolean("gender"),
                         rs.getDate("dob"),
                         rs.getString("address"),
-                        rs.getDate("created_at"),
-                        rs.getDate("updated_at")
+                        rs.getTimestamp("created_at"),
+                        rs.getTimestamp("updated_at")
                 );
 
             }
@@ -98,8 +98,8 @@ public class StudentDAO extends DAO<Student> {
                         rs.getBoolean("gender"),
                         rs.getDate("dob"),
                         rs.getString("address"),
-                        rs.getDate("created_at"),
-                        rs.getDate("updated_at")
+                        rs.getTimestamp("created_at"),
+                        rs.getTimestamp("updated_at")
                 ));
             }
 
@@ -219,7 +219,9 @@ public class StudentDAO extends DAO<Student> {
                         rs.getString("phone"),
                         rs.getBoolean("gender"),
                         rs.getDate("dob"),
-                        rs.getString("address")
+                        rs.getString("address"),
+                        rs.getTimestamp("created_at"),
+                        rs.getTimestamp("updated_at")
                 ));
             }
 
@@ -265,8 +267,8 @@ public class StudentDAO extends DAO<Student> {
                         rs.getBoolean("gender"),
                         rs.getDate("dob"),
                         rs.getString("address"),
-                        rs.getDate("created_at"),
-                        rs.getDate("updated_at")
+                        rs.getTimestamp("created_at"),
+                        rs.getTimestamp("updated_at")
                 ));
             }
 

@@ -230,8 +230,8 @@ public class UserDAO extends DAO<User> {
                     rs.getString("user_name"),
                     rs.getString("password"),
                     rs.getString("email"),
-                    rs.getDate("created_at"),
-                    rs.getDate("updated_at")
+                    rs.getTimestamp("created_at"),
+                    rs.getTimestamp("updated_at")
             );
         } catch (SQLException e) {
             throw new RuntimeException(e);

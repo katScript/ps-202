@@ -212,7 +212,7 @@ public class ListingPage extends ViewPanel {
                     }
 
                 } catch (Exception ex) {
-                    getContext().getSession().setData("message", ex.getMessage());
+                    getContext().getSession().setData("message", ex.getCause().getMessage());
                     showMessage();
                 }
             }
@@ -231,7 +231,7 @@ public class ListingPage extends ViewPanel {
                     }
 
                 } catch (Exception ex) {
-                    getContext().getSession().setData("message", ex.getMessage());
+                    getContext().getSession().setData("message", ex.getCause().getMessage());
                     showMessage();
                 }
             }

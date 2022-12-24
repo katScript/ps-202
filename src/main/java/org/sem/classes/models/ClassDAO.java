@@ -1,6 +1,7 @@
 package org.sem.classes.models;
 
 import org.sem.database.DAO;
+import org.sem.students.models.Student;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -35,8 +36,8 @@ public class ClassDAO extends DAO<Class> {
                 cs = new Class(
                         rs.getLong("id"),
                         rs.getString("class_name"),
-                        rs.getDate("created_at"),
-                        rs.getDate("updated_at")
+                        rs.getTimestamp("created_at"),
+                        rs.getTimestamp("updated_at")
                 );
             }
 
@@ -75,8 +76,8 @@ public class ClassDAO extends DAO<Class> {
                 result.add(new Class(
                         rs.getLong("id"),
                         rs.getString("class_name"),
-                        rs.getDate("created_at"),
-                        rs.getDate("updated_at")
+                        rs.getTimestamp("created_at"),
+                        rs.getTimestamp("updated_at")
                 ));
             }
 
@@ -209,6 +210,75 @@ public class ClassDAO extends DAO<Class> {
             rs.close();
 
             // 6.return result
+            return result;
+        } catch (Exception e) {
+            // 7.handle errors
+            throw new RuntimeException(e);
+        } finally {
+            // 8.close database connection
+            this.connector.closeConnection();
+        }
+    }
+
+    public List<Class> searchByName(String name) {
+        try {
+            // 1.get connection
+            Connection con = this.connector
+                    .startConnection().getConnection();
+
+            // 2.prepare query
+            String sql = "SELECT * FROM `" + getTableName() + "` WHERE (`class_name` is null or `class_name` like concat('%', ?, '%'))";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, name);
+
+            // 3.execute query
+            ResultSet rs = ps.executeQuery();
+
+            // 4.process query return data
+            List<Class> result = new ArrayList<>();
+            while (rs.next()) {
+                result.add(new Class(
+                        rs.getLong("id"),
+                        rs.getString("class_name"),
+                        rs.getTimestamp("created_at"),
+                        rs.getTimestamp("updated_at")
+                ));
+            }
+
+            // 5.close transaction
+            ps.close();
+            rs.close();
+
+            // 6.return result
+            return result;
+        } catch (Exception e) {
+            // 7.handle errors
+            throw new RuntimeException(e);
+        } finally {
+            // 8.close database connection
+            this.connector.closeConnection();
+        }
+    }
+
+    public Boolean removeStudent(Class aClass, Student student) {
+        try {
+            // 1.get connection
+            Connection con = this.connector
+                    .startConnection().getConnection();
+
+            // 2.prepare query
+            String sql = String.format("DELETE FROM `%s` WHERE `class_id` = ? AND `student_id` = ?", "student_class");
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setLong(1, aClass.getId());
+            ps.setLong(2, student.getId());
+
+            // 3.execute query
+            Boolean result = ps.execute();
+
+            // 4.process query return data true or false => delete success or not
+            ps.close();
+
+            // 5.close transaction
             return result;
         } catch (Exception e) {
             // 7.handle errors

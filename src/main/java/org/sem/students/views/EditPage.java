@@ -1,5 +1,7 @@
 package org.sem.students.views;
 
+import org.sem.classes.models.ClassDAO;
+import org.sem.classes.models.ClassTableModel;
 import org.sem.context.Context;
 import org.sem.context.Redirect;
 import org.sem.context.Session;
@@ -42,6 +44,9 @@ public class EditPage extends ViewPanel {
     private StudentService studentService;
     private Student studentData;
 
+    public ClassTableModel classTableModel;
+    public ClassDAO classDAO;
+
     public EditPage(Context context) {
         super(context, "Student");
     }
@@ -49,6 +54,8 @@ public class EditPage extends ViewPanel {
     @Override
     protected void beforeInitComponents() {
         studentService = new StudentService();
+        classTableModel = new ClassTableModel();
+        classDAO = new ClassDAO();
 
         Session session = getContext().getSession();
         studentData = (Student) session.getData("student");
@@ -228,6 +235,7 @@ public class EditPage extends ViewPanel {
     @Override
     protected void afterInitComponents() {
         super.afterInitComponents();
+        jTable1.setModel(classTableModel);
         if (studentData != null) {
             jTextField1.setText(studentData.getRoll_number());
             jTextField2.setText(studentData.getFullname());
@@ -238,6 +246,8 @@ public class EditPage extends ViewPanel {
             jTextField6.setText(studentData.getAddress());
             jButton1.setText("Update");
             getContext().setPageTitle("Student / " + studentData.getFullname());
+
+            classTableModel.setPageData(classDAO.getByStudentId(studentData.getId()));
         } else {
             jButton1.setText("Create new");
             getContext().setPageTitle("Student / Create new");
@@ -275,7 +285,8 @@ public class EditPage extends ViewPanel {
                     ListingPage page = new ListingPage(getContext());
                     getContext().changeLayer(page.getMainLayer());
                 } catch (Exception ex) {
-                    throw new RuntimeException(ex);
+                    getContext().getSession().setData("message", ex.getCause().getMessage());
+                    showMessage();
                 }
             }
         });

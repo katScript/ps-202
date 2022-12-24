@@ -7,7 +7,7 @@ package org.sem.marks.models;
 import org.sem.students.models.Student;
 import org.sem.subjects.models.Subject;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  *
@@ -21,8 +21,8 @@ public class Mark {
     private Float p_second_atterm;
     private Student student;
     private Subject subject;
-    private Date createdAt;
-    private Date updatedAt;
+    private Timestamp createdAt;
+    private Timestamp updatedAt;
 
     public Mark() {
     }
@@ -36,7 +36,7 @@ public class Mark {
     }
 
     public Mark(Long id, Float w_first_atterm, Float w_second_atterm, Float p_first_atterm, Float p_second_atterm,
-                Date createdAt, Date updatedAt) {
+                Timestamp createdAt, Timestamp updatedAt) {
         this.id = id;
         this.w_first_atterm = w_first_atterm;
         this.w_second_atterm = w_second_atterm;
@@ -102,19 +102,19 @@ public class Mark {
         this.subject = subject;
     }
 
-    public Date getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Date getUpdatedAt() {
+    public Timestamp getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
+    public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
     }
 }
