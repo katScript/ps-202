@@ -50,7 +50,7 @@ public class ListingPage extends ViewPanel {
         classDAO = new ClassDAO();
         classService = new ClassService();
         classTableModel = new ClassTableModel();
-        getContext().getSession().setData("class", null);
+        getContext().getSession().removeData("class");
     }
 
     @Override
@@ -231,7 +231,6 @@ public class ListingPage extends ViewPanel {
                         getContext().getSession().setData("class", aClass);
                         Redirect.target(new EditPage(getContext()));
                     }
-
                 } catch (Exception ex) {
                     getContext().getSession().setData("message", ex.getCause().getMessage());
                     showMessage();
@@ -250,7 +249,6 @@ public class ListingPage extends ViewPanel {
                         ListingPage page = new ListingPage(getContext());
                         getContext().changeLayer(page.getMainLayer());
                     }
-
                 } catch (Exception ex) {
                     getContext().getSession().setData("message", ex.getCause().getMessage());
                     showMessage();

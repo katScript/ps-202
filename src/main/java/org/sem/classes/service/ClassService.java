@@ -5,6 +5,8 @@ import org.sem.classes.models.ClassDAO;
 import org.sem.students.models.Student;
 import org.sem.students.models.StudentDAO;
 
+import java.util.List;
+
 public class ClassService {
     public ClassDAO classDAO;
     public StudentDAO studentDAO;
@@ -46,6 +48,17 @@ public class ClassService {
             Student student = studentDAO.get(studentId).orElseThrow(() -> new RuntimeException("Class id not found!"));
 
             classDAO.removeStudent(aClass, student);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void addStudentToClass(Long classId, Long studentId) {
+        try {
+            Class aClass = classDAO.get(classId).orElseThrow(() -> new RuntimeException("Class id not found!"));
+            Student student = studentDAO.get(studentId).orElseThrow(() -> new RuntimeException("Class id not found!"));
+
+            classDAO.addStudentToClass(aClass, student);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

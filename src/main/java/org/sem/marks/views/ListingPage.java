@@ -6,32 +6,49 @@ package org.sem.marks.views;
 
 
 import javax.swing.JPanel;
+
+import org.sem.classes.models.Class;
+import org.sem.classes.models.ClassTableModel;
 import org.sem.context.Context;
 import org.sem.context.Redirect;
+import org.sem.marks.models.Mark;
+import org.sem.marks.models.MarkDAO;
+import org.sem.marks.models.MarkTableModel;
+import org.sem.marks.service.MarkService;
+import org.sem.students.models.Student;
 import org.sem.view.ViewPanel;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 /**
  *
  * @author 84379
  */
-public class ListingPage extends ViewPanel {private javax.swing.JButton jButton1;
+public class ListingPage extends ViewPanel {
+    private javax.swing.JButton firstBtn;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JEditorPane jEditorPane1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
+    private javax.swing.JButton lastBtn;
     private javax.swing.JPanel main;
+    private javax.swing.JButton nextBtn;
+    private javax.swing.JComboBox<String> pageSelect;
+    private javax.swing.JButton previousBtn;
+    private javax.swing.JButton searchBtn;
+    private javax.swing.JTextField searchInput;
+
+    public MarkDAO markDAO;
+    public MarkTableModel markTableModel;
+    public MarkService markService;
+    public Student studentData;
 
     public ListingPage(Context context) {
         super(context, "Student / Mark");
@@ -39,7 +56,12 @@ public class ListingPage extends ViewPanel {private javax.swing.JButton jButton1
 
     @Override
     protected void beforeInitComponents() {
+        markDAO = new MarkDAO();
+        markTableModel = new MarkTableModel();
+        markService = new MarkService();
 
+        studentData = (Student) getContext().getSession().getData("student");
+        getContext().getSession().removeData("mark");
     }
 
     @Override
@@ -53,34 +75,17 @@ public class ListingPage extends ViewPanel {private javax.swing.JButton jButton1
         jLabel1 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jButton6 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
+        lastBtn = new javax.swing.JButton();
+        nextBtn = new javax.swing.JButton();
+        pageSelect = new javax.swing.JComboBox<>();
+        previousBtn = new javax.swing.JButton();
+        firstBtn = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
+        searchInput = new javax.swing.JTextField();
+        searchBtn = new javax.swing.JButton();
 
         jScrollPane2.setViewportView(jEditorPane1);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-                new Object [][] {
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null}
-                },
-                new String [] {
-                        "ID", "W_first_atterm", "W_second_atterm", "P_first_atterm", "P_second_atterm"
-                }
-        ) {
-            Class[] types = new Class [] {
-                    java.lang.Long.class, java.lang.Float.class, java.lang.Float.class, java.lang.Float.class, java.lang.Float.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
         jScrollPane1.setViewportView(jTable1);
         if (jTable1.getColumnModel().getColumnCount() > 0) {
             jTable1.getColumnModel().getColumn(0).setMaxWidth(500);
@@ -105,23 +110,28 @@ public class ListingPage extends ViewPanel {private javax.swing.JButton jButton1
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add.png"))); // NOI18N
         jButton3.setText("Add new");
 
-        jButton4.setBackground(new java.awt.Color(204, 204, 255));
-        jButton4.setText("Last");
+        lastBtn.setBackground(new java.awt.Color(204, 204, 255));
+        lastBtn.setText("Last");
 
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/next.png"))); // NOI18N
+        nextBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/next.png"))); // NOI18N
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4" }));
-        jComboBox1.setMinimumSize(new java.awt.Dimension(72, 23));
+        pageSelect.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4" }));
+        pageSelect.setMinimumSize(new java.awt.Dimension(72, 23));
 
-        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/left-chevron.png"))); // NOI18N
+        previousBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/left-chevron.png"))); // NOI18N
 
-        jButton7.setBackground(new java.awt.Color(204, 204, 255));
-        jButton7.setText("First");
+        firstBtn.setBackground(new java.awt.Color(204, 204, 255));
+        firstBtn.setText("First");
 
         jButton8.setBackground(new java.awt.Color(255, 255, 204));
         jButton8.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/back.png"))); // NOI18N
         jButton8.setText("Back");
+
+        searchInput.setText("Search...");
+
+        searchBtn.setBackground(new java.awt.Color(255, 229, 229));
+        searchBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/search-interface-symbol.png"))); // NOI18N
 
         javax.swing.GroupLayout mainLayout = new javax.swing.GroupLayout(main);
         main.setLayout(mainLayout);
@@ -136,16 +146,20 @@ public class ListingPage extends ViewPanel {private javax.swing.JButton jButton1
                                 .addComponent(jButton1)
                                 .addGap(53, 53, 53))
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainLayout.createSequentialGroup()
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(28, 28, 28)
+                                .addComponent(searchInput, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, 0)
+                                .addComponent(searchBtn)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(firstBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(previousBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(pageSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(nextBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lastBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(15, 15, 15))
                         .addGroup(mainLayout.createSequentialGroup()
                                 .addGap(26, 26, 26)
@@ -170,11 +184,14 @@ public class ListingPage extends ViewPanel {private javax.swing.JButton jButton1
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jButton5)
-                                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jButton6)
-                                        .addComponent(jButton7)
-                                        .addComponent(jButton4))
+                                        .addComponent(nextBtn)
+                                        .addComponent(pageSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(previousBtn)
+                                        .addComponent(firstBtn)
+                                        .addComponent(lastBtn)
+                                        .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                .addComponent(searchInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(searchBtn)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -183,7 +200,16 @@ public class ListingPage extends ViewPanel {private javax.swing.JButton jButton1
                                         .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(jButton3))
                                 .addContainerGap())
-        );    
+        );
+    }
+
+    @Override
+    protected void afterInitComponents() {
+        super.afterInitComponents();
+
+        jTable1.setModel(markTableModel);
+        changeTableModelData(markService.getByStudentId(studentData.getId()));
+        searchInput.setText("");
     }
 
     @Override
@@ -194,10 +220,111 @@ public class ListingPage extends ViewPanel {private javax.swing.JButton jButton1
                 Redirect.target(new org.sem.students.views.EditPage(getContext()));
             }
         });
+
+        jButton3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Redirect.target(new EditPage(getContext()));
+            }
+        });
+
+        jButton1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    int row = jTable1.getSelectedRow();
+                    Long id = (Long) jTable1.getValueAt(row, 0);
+
+                    if (id != null) {
+                        Mark mark = markDAO.get(id).orElseThrow(() -> new RuntimeException("Mark not found! Please try again!"));
+                        getContext().getSession().setData("mark", mark);
+                        Redirect.target(new EditPage(getContext()));
+                    }
+                } catch (Exception ex) {
+                    getContext().getSession().setData("message", ex.getCause().getMessage());
+                    showMessage();
+                }
+            }
+        });
+
+        searchBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String searchValue = searchInput.getText();
+
+                List<Mark> marks = markDAO.searchByName(searchValue);
+                changeTableModelData(marks);
+            }
+        });
+
+        pageSelect.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Integer pageNumber = pageSelect.getSelectedIndex() + 1;
+                changePageNumber(pageNumber);
+            }
+        });
+
+        lastBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Integer totalPage = markTableModel.getTotalPage();
+                changePageNumber(totalPage);
+            }
+        });
+
+        firstBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                changePageNumber(1);
+            }
+        });
+
+        nextBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int pageNumber = pageSelect.getSelectedIndex();
+                changePageNumber(pageNumber + 2);
+            }
+        });
+
+        previousBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int pageNumber = pageSelect.getSelectedIndex();
+                changePageNumber(pageNumber);
+            }
+        });
     }
 
     @Override
     public JPanel getMainLayer() {
         return main;
+    }
+
+    public void changeTableModelData(List<Mark> marks) {
+        markTableModel.setPageData(marks);
+        updateToolBar();
+    }
+
+    public void changePageNumber(Integer pageNumber) {
+        markTableModel.setCurrentPageNumber(pageNumber);
+        updateToolBar();
+        pageSelect.setSelectedIndex(markTableModel.getCurrentPageNumber() - 1);
+    }
+
+    private void updateToolBar() {
+        Integer length = markTableModel.getTotalPage();
+        String[] pageNumbers = new String[length];
+        for (int i = 1; i <= length; ++i) {
+            pageNumbers[i - 1] = String.valueOf(i);
+        }
+
+        pageSelect.setModel(new javax.swing.DefaultComboBoxModel<>(pageNumbers));
+        lastBtn.setEnabled(!markTableModel.getLast());
+        firstBtn.setEnabled(!markTableModel.getFirst());
+
+        nextBtn.setEnabled(!markTableModel.getLast());
+        previousBtn.setEnabled(!markTableModel.getFirst());
     }
 }

@@ -25,7 +25,7 @@ public class StudentService {
     public Student getStudent(Long id) {
         try {
             Student student = studentDAO.get(id).orElseThrow(() -> new RuntimeException("Student not found!"));
-            List<Mark> markList = markDAO.getByStudentId(student.getId());
+            List<Mark> markList = markDAO.getByStudent(student);
             List<Class> classes = classDAO.getByStudentId(student.getId());
 
             student.setStudentMark(markList);
@@ -71,6 +71,26 @@ public class StudentService {
             Student student = studentDAO.get(id).orElseThrow(() -> new RuntimeException("Student id not found!"));
 
             studentDAO.delete(student);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<Student> getStudentByClassId(Long id) {
+        try {
+            Class aClass = classDAO.get(id).orElseThrow(() -> new RuntimeException("Student id not found!"));
+
+            return studentDAO.getByClass(aClass);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<Student> getStudentNotInClassByClassId(Long id) {
+        try {
+            Class aClass = classDAO.get(id).orElseThrow(() -> new RuntimeException("Student id not found!"));
+
+            return studentDAO.getStudentNotInClass(aClass);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

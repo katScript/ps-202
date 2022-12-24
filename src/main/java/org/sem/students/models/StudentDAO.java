@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.sem.classes.models.Class;
 import org.sem.database.DAO;
 
 /**
@@ -193,7 +194,7 @@ public class StudentDAO extends DAO<Student> {
         }
     }
 
-    public List<Student> getByClassId(Long id) {
+    public List<Student> getByClass(Class aClass) {
         try {
             // 1.get connection
             Connection con = this.connector
@@ -202,7 +203,54 @@ public class StudentDAO extends DAO<Student> {
             // 2.prepare query
             String sql = String.format("SELECT * FROM `%s` AS `s` INNER JOIN `student_class` AS `sc` ON `s`.`id` = `sc`.`student_id` WHERE `sc`.`class_id` = ?", getTableName());
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setLong(1, id);
+            ps.setLong(1, aClass.getId());
+
+            // 3.execute query
+            ResultSet rs = ps.executeQuery();
+
+            // 4.process query return data
+            List<Student> result = new ArrayList<>();
+
+            while (rs.next()) {
+                result.add(new Student(
+                        rs.getLong("id"),
+                        rs.getString("roll_number"),
+                        rs.getString("fullname"),
+                        rs.getString("email"),
+                        rs.getString("phone"),
+                        rs.getBoolean("gender"),
+                        rs.getDate("dob"),
+                        rs.getString("address"),
+                        rs.getTimestamp("created_at"),
+                        rs.getTimestamp("updated_at")
+                ));
+            }
+
+            // 5.close transaction
+            ps.close();
+            rs.close();
+
+            // 6.return result
+            return result;
+        } catch (Exception e) {
+            // 7.handle errors
+            throw new RuntimeException(e);
+        } finally {
+            // 8.close database connection
+            this.connector.closeConnection();
+        }
+    }
+
+    public List<Student> getStudentNotInClass(Class aClass) {
+        try {
+            // 1.get connection
+            Connection con = this.connector
+                    .startConnection().getConnection();
+
+            // 2.prepare query
+            String sql = String.format("SELECT * FROM `%s` AS `s` WHERE `s`.`id` NOT IN(SELECT `st`.`id` FROM `student` AS `st` LEFT JOIN `student_class` AS `sc` ON `st`.`id` = `sc`.`student_id` WHERE `sc`.`class_id` = ?)", getTableName());
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setLong(1, aClass.getId());
 
             // 3.execute query
             ResultSet rs = ps.executeQuery();
