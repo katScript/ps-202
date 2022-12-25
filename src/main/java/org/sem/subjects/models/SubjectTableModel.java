@@ -13,6 +13,13 @@ public class SubjectTableModel extends AbstractTableModel {
 
     private List<Subject> subjects = new ArrayList<>();
 
+    private Integer pageSize = 5;
+    private List<List<Subject>> data = new ArrayList<>();
+    private Integer totalPage;
+    private Boolean isFirst;
+    private Boolean isLast;
+    private Integer currentPageNumber;
+
     public void setData(List<Subject> subjects) {
         setSubjects(subjects);
         fireTableDataChanged();
@@ -57,5 +64,79 @@ public class SubjectTableModel extends AbstractTableModel {
         }
 
         return null;
+    }
+
+    public void setPageData(List<Subject> subjects) {
+        int i = 0;
+        data.clear();
+        List<Subject> term = new ArrayList<>();
+
+        for (Subject obj : subjects) {
+            if (i < pageSize) {
+                term.add(obj);
+                i++;
+            } else {
+                data.add(term);
+                term = new ArrayList<>() {{ add(obj); }};
+                i = 1;
+            }
+        }
+
+        if (!term.isEmpty()) {
+            data.add(term);
+        }
+
+        if (data.size() == 0)
+            data.add(term);
+
+        totalPage = data.size();
+        setCurrentPageNumber(1);
+    }
+
+    public Integer getTotalPage() {
+        return totalPage;
+    }
+
+    public void setTotalPage(Integer totalPage) {
+        this.totalPage = totalPage;
+    }
+
+    public Integer getCurrentPageNumber() {
+        return currentPageNumber;
+    }
+
+    public List<Subject> getCurrentPage() {
+        return data.get(currentPageNumber - 1);
+    }
+
+    public void setCurrentPageNumber(Integer currentPageNumber) {
+        this.currentPageNumber = currentPageNumber;
+        setFirst(currentPageNumber.equals(1));
+        setLast(currentPageNumber.equals(totalPage));
+        setData(getCurrentPage());
+    }
+
+    public Boolean getLast() {
+        return isLast;
+    }
+
+    public void setLast(Boolean last) {
+        isLast = last;
+    }
+
+    public Boolean getFirst() {
+        return isFirst;
+    }
+
+    public void setFirst(Boolean first) {
+        isFirst = first;
+    }
+
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
     }
 }

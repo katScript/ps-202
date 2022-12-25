@@ -2,6 +2,7 @@ package org.sem.subjects.views;
 
 import org.sem.context.Context;
 import org.sem.dashboard.views.Dashboard;
+import org.sem.marks.models.Mark;
 import org.sem.subjects.models.Subject;
 import org.sem.subjects.models.SubjectDAO;
 import org.sem.subjects.models.SubjectTableModel;
@@ -11,29 +12,28 @@ import org.sem.view.ViewPanel;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 // 1. extends class ViewPanel
 public class ListingPage extends ViewPanel {
     //============ critical value ===========
+    private javax.swing.JButton firstBtn;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JButton lastBtn;
+    private javax.swing.JButton nextBtn;
+    private javax.swing.JComboBox<String> pageSelect;
+    private javax.swing.JButton previousBtn;
+    private javax.swing.JButton searchBtn;
+    private javax.swing.JTextField searchInput;
 
     private JPanel main;
     //=======================================
-    private JTable subjectTable;
-    private JScrollPane scrollPaneTable;
 
     // data access variable
     public SubjectDAO subjectDAO;
@@ -43,8 +43,6 @@ public class ListingPage extends ViewPanel {
     // 2. constructor has to be have Context class
     public ListingPage(Context context) {
         super(context, "Subjects listing page");
-        // event of button point to other page
-        // event of button run functional as edit, update, delete
     }
 
     @Override
@@ -62,13 +60,13 @@ public class ListingPage extends ViewPanel {
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
-        jTextField2 = new javax.swing.JTextField();
+        lastBtn = new javax.swing.JButton();
+        nextBtn = new javax.swing.JButton();
+        pageSelect = new javax.swing.JComboBox<>();
+        previousBtn = new javax.swing.JButton();
+        firstBtn = new javax.swing.JButton();
+        searchBtn = new javax.swing.JButton();
+        searchInput = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
         jButton9 = new javax.swing.JButton();
@@ -84,23 +82,24 @@ public class ListingPage extends ViewPanel {
 
         jScrollPane1.setViewportView(jTable1);
 
-        jButton3.setBackground(new java.awt.Color(204, 204, 255));
-        jButton3.setText("Last");
+        lastBtn.setBackground(new java.awt.Color(204, 204, 255));
+        lastBtn.setText("Last");
 
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/next.png"))); // NOI18N
+        nextBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/next.png"))); // NOI18N
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4" }));
-        jComboBox1.setPreferredSize(new java.awt.Dimension(72, 23));
+        pageSelect.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4" }));
+        pageSelect.setPreferredSize(new java.awt.Dimension(72, 23));
 
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/left-chevron.png"))); // NOI18N
+        previousBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/left-chevron.png"))); // NOI18N
 
-        jButton6.setBackground(new java.awt.Color(204, 204, 255));
-        jButton6.setText("First");
-        jButton7.setBackground(new java.awt.Color(255, 229, 229));
-        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/search-interface-symbol.png"))); // NOI18N
+        firstBtn.setBackground(new java.awt.Color(204, 204, 255));
+        firstBtn.setText("First");
 
-        jTextField2.setText("Search...");
-        jTextField2.setPreferredSize(new java.awt.Dimension(64, 23));
+        searchBtn.setBackground(new java.awt.Color(255, 229, 229));
+        searchBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/search-interface-symbol.png"))); // NOI18N
+
+        searchInput.setText("Search...");
+        searchInput.setPreferredSize(new java.awt.Dimension(64, 23));
 
         jButton2.setBackground(new java.awt.Color(255, 204, 204));
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -137,19 +136,19 @@ public class ListingPage extends ViewPanel {
                                                         .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                         .addGroup(layout.createSequentialGroup()
                                                                 .addGap(6, 6, 6)
-                                                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addComponent(searchInput, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                 .addGap(0, 0, 0)
-                                                                .addComponent(jButton7)
+                                                                .addComponent(searchBtn)
                                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addComponent(firstBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                .addComponent(jButton5)
+                                                                .addComponent(previousBtn)
                                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addComponent(pageSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                .addComponent(jButton4)
+                                                                .addComponent(nextBtn)
                                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                                .addComponent(lastBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                                 .addGap(14, 14, 14))
                                         .addGroup(layout.createSequentialGroup()
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -168,14 +167,14 @@ public class ListingPage extends ViewPanel {
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jButton4, javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jButton5)
-                                        .addComponent(jButton6)
+                                        .addComponent(nextBtn, javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(pageSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(previousBtn)
+                                        .addComponent(firstBtn)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(jButton7, javax.swing.GroupLayout.Alignment.TRAILING)
-                                                .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(jButton3))
+                                                .addComponent(searchBtn, javax.swing.GroupLayout.Alignment.TRAILING)
+                                                .addComponent(searchInput, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(lastBtn))
                                 .addGap(5, 5, 5)
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
@@ -191,7 +190,9 @@ public class ListingPage extends ViewPanel {
     @Override
     protected void afterInitComponents() {
         super.afterInitComponents();
-        jTable1.setModel(getSubjectTableModel());
+        jTable1.setModel(subjectTableModel);
+        changeTableModelData(subjectDAO.getAll());
+        searchInput.setText("");
     }
 
     @Override
@@ -203,7 +204,7 @@ public class ListingPage extends ViewPanel {
                     int row = jTable1.getSelectedRow();
                     Long id = (Long) jTable1.getValueAt(row, 0);
 
-                    Subject subject = subjectDAO.get(id).orElse(null);
+                    Subject subject = subjectDAO.get(id).orElseThrow(() -> new RuntimeException("Subject not found!"));
 
                     if (subject != null) {
                         getContext().getSession().setData("subject", subject);
@@ -212,7 +213,7 @@ public class ListingPage extends ViewPanel {
                     }
 
                 } catch (Exception ex) {
-                    getContext().getSession().setData("message", ex.getCause().getMessage());
+                    getContext().getSession().setData("message", ex.getCause() != null ? ex.getCause().getMessage() : ex.getMessage());
                     showMessage();
                 }
             }
@@ -251,6 +252,55 @@ public class ListingPage extends ViewPanel {
                 getContext().changeLayer(page.getMainLayer());
             }
         });
+
+        searchBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String searchValue = searchInput.getText();
+
+                List<Subject> subjects = subjectDAO.searchByName(searchValue);
+                changeTableModelData(subjects);
+            }
+        });
+
+        pageSelect.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Integer pageNumber = pageSelect.getSelectedIndex() + 1;
+                changePageNumber(pageNumber);
+            }
+        });
+
+        lastBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Integer totalPage = subjectTableModel.getTotalPage();
+                changePageNumber(totalPage);
+            }
+        });
+
+        firstBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                changePageNumber(1);
+            }
+        });
+
+        nextBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int pageNumber = pageSelect.getSelectedIndex();
+                changePageNumber(pageNumber + 2);
+            }
+        });
+
+        previousBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int pageNumber = pageSelect.getSelectedIndex();
+                changePageNumber(pageNumber);
+            }
+        });
     }
 
     @Override
@@ -258,9 +308,30 @@ public class ListingPage extends ViewPanel {
         return main;
     }
 
-    public SubjectTableModel getSubjectTableModel() {
-        SubjectTableModel subjectTableModel = new SubjectTableModel();
-        subjectTableModel.setData(subjectDAO.getAll());
-        return subjectTableModel;
+
+    public void changeTableModelData(List<Subject> subjects) {
+        subjectTableModel.setPageData(subjects);
+        updateToolBar();
+    }
+
+    public void changePageNumber(Integer pageNumber) {
+        subjectTableModel.setCurrentPageNumber(pageNumber);
+        updateToolBar();
+        pageSelect.setSelectedIndex(subjectTableModel.getCurrentPageNumber() - 1);
+    }
+
+    private void updateToolBar() {
+        Integer length = subjectTableModel.getTotalPage();
+        String[] pageNumbers = new String[length];
+        for (int i = 1; i <= length; ++i) {
+            pageNumbers[i - 1] = String.valueOf(i);
+        }
+
+        pageSelect.setModel(new javax.swing.DefaultComboBoxModel<>(pageNumbers));
+        lastBtn.setEnabled(!subjectTableModel.getLast());
+        firstBtn.setEnabled(!subjectTableModel.getFirst());
+
+        nextBtn.setEnabled(!subjectTableModel.getLast());
+        previousBtn.setEnabled(!subjectTableModel.getFirst());
     }
 }

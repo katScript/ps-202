@@ -5,6 +5,8 @@ import org.sem.authenticate.services.UserService;
 import org.sem.context.Context;
 import org.sem.dashboard.views.Dashboard;
 import org.sem.helper.ImageHelper;
+import org.sem.staffs.models.Staff;
+import org.sem.staffs.models.StaffDAO;
 import org.sem.view.ViewPanel;
 
 import javax.swing.*;
@@ -24,6 +26,7 @@ public class LoginPage extends ViewPanel {
 
     public ImageHelper imageHelper;
     public UserService userService;
+    public StaffDAO staffDAO;
 
     public LoginPage(Context context) {
         super(context, "Management / Login");
@@ -37,6 +40,7 @@ public class LoginPage extends ViewPanel {
     protected void beforeInitComponents() {
         imageHelper = new ImageHelper();
         userService = new UserService();
+        staffDAO = new StaffDAO();
     }
 
     @Override
@@ -129,7 +133,10 @@ public class LoginPage extends ViewPanel {
                             jPasswordField1.getText()
                     ).orElseThrow(() -> new RuntimeException("Username or password not correct!"));
 
+                    Staff staff = staffDAO.getByUser(user).orElseThrow(() -> new RuntimeException("Staff data not found!"));
+
                     getContext().getSession().setData("user", user);
+                    getContext().getSession().setData("user_information", staff);
 
                     Dashboard page = new Dashboard(getContext());
                     getContext().changeLayer(page.getMainLayer());

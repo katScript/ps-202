@@ -47,7 +47,7 @@ public class StudentService {
             String address
     ) {
         try {
-            validate(rollNumber,fullName,email,phone,gender,dob,address);
+            validate(rollNumber,fullName,email,phone,dob,address);
 
             Student student = new Student(
                     id,
@@ -101,7 +101,6 @@ public class StudentService {
           String fullName,
           String email,
           String phone,
-          Boolean gender,
           String dob,
           String address
     ) {

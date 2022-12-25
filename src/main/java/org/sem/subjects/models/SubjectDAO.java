@@ -7,6 +7,7 @@ package org.sem.subjects.models;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -44,14 +45,7 @@ public class SubjectDAO extends DAO<Subject> {
             // 4.process query return data
             org.sem.subjects.models.Subject cs = null;
             if (rs.next()) {
-                cs = new org.sem.subjects.models.Subject(
-                        rs.getLong("id"),
-                        rs.getString("subject_name"),
-                        rs.getString("code"),
-                        rs.getDouble("total_hour"),
-                        rs.getTimestamp("created_at"),
-                        rs.getTimestamp("updated_at")
-                );
+                cs = processBindSubjectData(rs);
             }
 
             // 5.close transaction
@@ -86,14 +80,7 @@ public class SubjectDAO extends DAO<Subject> {
             // 4.process query return data
             List<org.sem.subjects.models.Subject> result = new ArrayList<>();
             while (rs.next()) {
-                result.add(new org.sem.subjects.models.Subject(
-                        rs.getLong("id"),
-                        rs.getString("subject_name"),
-                        rs.getString("code"),
-                        rs.getDouble("total_hour"),
-                        rs.getTimestamp("created_at"),
-                        rs.getTimestamp("updated_at")
-                ));
+                result.add(processBindSubjectData(rs));
             }
 
             // 5.close transaction
@@ -192,6 +179,56 @@ public class SubjectDAO extends DAO<Subject> {
         } finally {
             // 8.close database connection
             this.connector.closeConnection();
+        }
+    }
+
+    public List<Subject> searchByName(String name) {
+        try {
+            // 1.get connection
+            Connection con = this.connector
+                    .startConnection().getConnection();
+
+            // 2.prepare query
+            String sql = "SELECT * FROM `" + getTableName() + "` WHERE (`subject_name` is null or `subject_name` like concat('%', ?, '%'))";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, name);
+
+            // 3.execute query
+            ResultSet rs = ps.executeQuery();
+
+            // 4.process query return data
+            List<org.sem.subjects.models.Subject> result = new ArrayList<>();
+            while (rs.next()) {
+                result.add(processBindSubjectData(rs));
+            }
+
+            // 5.close transaction
+            ps.close();
+            rs.close();
+
+            // 6.return result
+            return result;
+        } catch (Exception e) {
+            // 7.handle errors
+            throw new RuntimeException(e);
+        } finally {
+            // 8.close database connection
+            this.connector.closeConnection();
+        }
+    }
+
+    private Subject processBindSubjectData(ResultSet rs) {
+        try {
+            return new Subject(
+                    rs.getLong("id"),
+                    rs.getString("subject_name"),
+                    rs.getString("code"),
+                    rs.getDouble("total_hour"),
+                    rs.getTimestamp("created_at"),
+                    rs.getTimestamp("updated_at")
+            );
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 }

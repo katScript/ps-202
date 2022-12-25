@@ -4,6 +4,8 @@
  */
 package org.sem.staffs.models;
 
+import org.sem.authenticate.models.User;
+
 import java.sql.Timestamp;
 import java.sql.Date;
 
@@ -20,6 +22,7 @@ public class Staff {
     private Boolean gender; // (0 ,1);
     private Date dob;
     private String address;
+    private User user;
     private Timestamp createdAt;
     private Timestamp updatedAt;
 
@@ -147,6 +150,14 @@ public class Staff {
 
     public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
 

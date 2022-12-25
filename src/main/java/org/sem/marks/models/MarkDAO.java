@@ -122,22 +122,26 @@ public class MarkDAO extends DAO<Mark> {
             PreparedStatement ps;
             
             if (t.getId() != null) {
-                sql = String.format("UPDATE `%s` SET w_first_atterm = ?, w_second_atterm = ?, p_first_atterm = ?, p_second_atterm = ? WHERE id = ?", getTableName());
+                sql = String.format("UPDATE `%s` SET w_first_atterm = ?, w_second_atterm = ?, p_first_atterm = ?, p_second_atterm = ?, student_id = ?, subject_id = ? WHERE id = ?", getTableName());
                 ps = con.prepareStatement(sql);
                 
                 ps.setFloat(1, t.getW_first_atterm());
                 ps.setFloat(2, t.getW_second_atterm());
                 ps.setFloat(3, t.getP_first_atterm());
                 ps.setFloat(4, t.getP_second_atterm());
-                ps.setLong(5, t.getId());
+                ps.setLong(5, t.getStudent().getId());
+                ps.setLong(6, t.getSubject().getId());
+                ps.setLong(7, t.getId());
             } else {
-                sql = String.format("INSERT INTO `%s` (w_first_atterm, w_second_atterm, p_first_atterm,p_second_atterm) VALUES (?,?,?,?)", getTableName());
+                sql = String.format("INSERT INTO `%s` (w_first_atterm, w_second_atterm, p_first_atterm,p_second_atterm, student_id, subject_id) VALUES (?,?,?,?,?,?)", getTableName());
                 ps = con.prepareStatement(sql);
                 
                 ps.setFloat(1, t.getW_first_atterm());
                 ps.setFloat(2, t.getW_second_atterm());
                 ps.setFloat(3, t.getP_first_atterm());
                 ps.setFloat(4, t.getP_second_atterm());
+                ps.setLong(5, t.getStudent().getId());
+                ps.setLong(6, t.getSubject().getId());
             }
 
             // 3.execute query
@@ -229,16 +233,17 @@ public class MarkDAO extends DAO<Mark> {
         }
     }
 
-    public List<Mark> searchByName(String name) {
+    public List<Mark> searchByNameAndStudent(String name, Student student) {
         try {
             // 1.get connection
             Connection con = this.connector
                     .startConnection().getConnection();
 
             // 2.prepare query
-            String sql = "SELECT * FROM `" + getTableName() + "` AS `m` LEFT JOIN `subject` AS `s` ON `s`.`id` = `m`.`subject_id` WHERE (`s`.`subject_name` is null or `s`.`subject_name` like concat('%', ?, '%'))";
+            String sql = "SELECT * FROM `" + getTableName() + "` AS `m` LEFT JOIN `subject` AS `s` ON `s`.`id` = `m`.`subject_id` WHERE (`s`.`subject_name` is null or `s`.`subject_name` like concat('%', ?, '%')) AND `student_id` = ?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, name);
+            ps.setLong(1, student.getId());
 
             // 3.execute query
             ResultSet rs = ps.executeQuery();

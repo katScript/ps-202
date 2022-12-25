@@ -2,6 +2,7 @@ package org.sem.authenticate.views;
 
 import org.sem.authenticate.services.UserService;
 import org.sem.context.Context;
+import org.sem.context.Redirect;
 import org.sem.context.Session;
 import org.sem.helper.ImageHelper;
 import org.sem.view.ViewPanel;
@@ -135,25 +136,23 @@ public class RegisterPage extends ViewPanel {
             public void actionPerformed(ActionEvent e) {
                 Session session = getContext().getSession();
                 if (jPasswordField1.getText().equals(jPasswordField2.getText())) {
-                    Boolean res = userService.registerUser(
-                            jTextField2.getText(),
-                            jPasswordField1.getText(),
-                            jTextField1.getText()
-                    );
+                    try {
+                        userService.registerUser(
+                                jTextField2.getText(),
+                                jPasswordField1.getText(),
+                                jTextField1.getText()
+                        );
 
-                    if (res) {
-                        session.setData("message", "Register user complete!");
-
-                        LoginPage page = new LoginPage(getContext());
-                        getContext().changeLayer(page.getMainLayer());
-                    } else {
-                        session.setData("message", "Cannot register user!");
+                        Redirect.target(new LoginPage(getContext()));
+                    } catch (Exception ex) {
+                        session.setData("message", ex.getMessage());
+                        showMessage();
                     }
                 } else {
                     session.setData("message", "Password not match!");
+                    showMessage();
                 }
 
-                showMessage();
             }
         });
     }
