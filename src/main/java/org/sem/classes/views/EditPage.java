@@ -7,6 +7,7 @@ import org.sem.classes.service.ClassService;
 import org.sem.context.Context;
 import org.sem.students.models.Student;
 import org.sem.students.models.StudentDAO;
+import org.sem.students.models.StudentTableModel;
 import org.sem.students.services.StudentService;
 import org.sem.view.ViewPanel;
 
@@ -37,7 +38,7 @@ public class EditPage extends ViewPanel {
 
     public ClassDAO classDAO;
     public StudentDAO studentDAO;
-    public ClassStudentTableModel studentTableModel;
+    public StudentTableModel studentTableModel;
     public Class classData;
     public ClassService classService;
     public StudentService studentService;
@@ -54,7 +55,7 @@ public class EditPage extends ViewPanel {
     protected void beforeInitComponents() {
         classDAO = new ClassDAO();
         studentDAO = new StudentDAO();
-        studentTableModel = new ClassStudentTableModel();
+        studentTableModel = new StudentTableModel();
         classService = new ClassService();
         studentService = new StudentService();
 
