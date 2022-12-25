@@ -62,6 +62,7 @@ public class ListingPage extends ViewPanel {
 
         studentData = (Student) getContext().getSession().getData("student");
         getContext().getSession().removeData("mark");
+        getContext().getSession().removeData("subject");
     }
 
     @Override
@@ -252,7 +253,7 @@ public class ListingPage extends ViewPanel {
             public void actionPerformed(ActionEvent e) {
                 String searchValue = searchInput.getText();
 
-                List<Mark> marks = markDAO.searchByName(searchValue);
+                List<Mark> marks = markDAO.searchByNameAndStudent(searchValue, studentData);
                 changeTableModelData(marks);
             }
         });

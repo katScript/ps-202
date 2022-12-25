@@ -1,6 +1,8 @@
 package org.sem.authenticate.models;
 
 import org.sem.database.DAO;
+import org.sem.staffs.models.Staff;
+import org.sem.staffs.models.StaffDAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -206,6 +208,41 @@ public class UserDAO extends DAO<User> {
             User us = null;
             if (rs.next()) {
                 us = processBindUserData(rs);
+            }
+
+            // 5.close transaction
+            ps.close();
+            rs.close();
+
+            // 6.return result
+            return Optional.ofNullable(us);
+        } catch (Exception e) {
+            // 7.handle errors
+            throw new RuntimeException(e);
+        } finally {
+            // 8.close database connection
+            this.connector.closeConnection();
+        }
+    }
+
+    public Optional<User> findByStaff(Staff staff) {
+        try {
+            // 1.get connection
+            Connection con = this.connector
+                    .startConnection().getConnection();
+
+            // 2.prepare query
+            String sql = String.format("SELECT * FROM `%s` AS `u` LEFT JOIN `staff` AS `s` ON `s`.`user_id` = `u`.`id` WHERE `s`.`id` = ?", getTableName());
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setLong(1, staff.getId());
+            // 3.execute query
+            // This execute have problem
+            ResultSet rs = ps.executeQuery();
+
+            User us = null;
+            if (rs.next()) {
+                us = processBindUserData(rs);
+
             }
 
             // 5.close transaction

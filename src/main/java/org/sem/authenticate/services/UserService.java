@@ -9,15 +9,19 @@ import java.util.Optional;
 public class UserService {
     public UserDAO userDAO = new UserDAO();
 
-    public Boolean registerUser(
+    public User registerUser(
             String userName,
             String password,
             String email
     ) {
         try {
+            if (!userName.matches("^[a-zA-Z0-9]+$"))
+                throw new RuntimeException("Username not valid");
+
             User loadUser = userDAO.findByUserName(userName).orElse(null);
+
             if (loadUser != null)
-                return false;
+                throw new RuntimeException("User had exists!");
 
             User user = new User(
                     null,
@@ -26,11 +30,9 @@ public class UserService {
                     email
             );
 
-            userDAO.save(user);
-
-            return true;
-        } catch (Exception e) {
-            return false;
+            return userDAO.save(user);
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
         }
     }
 
