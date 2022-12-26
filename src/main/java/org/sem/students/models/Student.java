@@ -6,6 +6,7 @@ package org.sem.students.models;
 
 import org.sem.classes.models.Class;
 import org.sem.marks.models.Mark;
+import org.sem.schedule.models.Daily;
 
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -25,6 +26,7 @@ public class Student {
     private List<Class> classes;
     private Timestamp createdAt;
     private Timestamp updatedAt;
+    private Daily daily;
 
     public Student() {
         studentMark = new ArrayList<>();
@@ -168,5 +170,13 @@ public class Student {
 
     public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public Daily getDaily() {
+        return daily;
+    }
+
+    public void setDaily(Daily daily) {
+        this.daily = daily;
     }
 }

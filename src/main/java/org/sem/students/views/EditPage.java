@@ -1,11 +1,13 @@
 package org.sem.students.views;
 
+import org.sem.classes.models.Class;
 import org.sem.classes.models.ClassDAO;
 import org.sem.classes.models.ClassTableModel;
 import org.sem.context.Context;
 import org.sem.context.Redirect;
 import org.sem.context.Session;
 import org.sem.helper.DateTimeHelper;
+import org.sem.schedule.views.ScheduleStudentList;
 import org.sem.students.models.Student;
 import org.sem.students.services.StudentService;
 import org.sem.view.ViewPanel;
@@ -302,6 +304,25 @@ public class EditPage extends ViewPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Redirect.target(new org.sem.marks.views.ListingPage(getContext()));
+            }
+        });
+
+        jButton4.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    int row = jTable1.getSelectedRow();
+                    Long id = (Long) jTable1.getValueAt(row, 0);
+
+                    if (id != null) {
+                        Class classData = classDAO.get(id).orElseThrow(() -> new RuntimeException("Class not found!"));
+                        getContext().getSession().setData("class", classData);
+                        Redirect.target(new ScheduleStudentList(getContext()));
+                    }
+                } catch (Exception ex) {
+                    getContext().getSession().setData("message", ex.getMessage());
+                    showMessage();
+                }
             }
         });
     }

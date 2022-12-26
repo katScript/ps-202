@@ -1,15 +1,13 @@
 package org.sem.schedule.models;
 
+import org.sem.classes.models.Class;
 import org.sem.database.DAO;
 import org.sem.staffs.models.Staff;
 import org.sem.staffs.models.StaffDAO;
 import org.sem.students.models.Student;
 import org.sem.students.models.StudentDAO;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -114,20 +112,21 @@ public class DailyDAO extends DAO<Daily> {
                 sql = String.format("UPDATE `%s` SET `staff_id` = ?, `student_id` = ?, `schedule_id` = ?, `present` = ? WHERE `id` = ?", getTableName());
                 ps = con.prepareStatement(sql);
 
-                ps.setLong(1, daily.getStaff().getId());
-                ps.setLong(2, daily.getStudent().getId());
-                ps.setLong(3, daily.getSchedule().getId());
-                ps.setBoolean(4, daily.getPresent());
                 ps.setLong(5, daily.getId());
             } else {
                 sql = String.format("INSERT INTO `%s` (`staff_id`,`student_id`,`schedule_id`,`present`) VALUES (?,?,?,?)", getTableName());
                 ps = con.prepareStatement(sql);
-
-                ps.setLong(1, daily.getStaff().getId());
-                ps.setLong(2, daily.getStudent().getId());
-                ps.setLong(3, daily.getSchedule().getId());
-                ps.setBoolean(4, daily.getPresent());
             }
+
+            if (daily.getStaff() == null || daily.getStaff().getId() == null) {
+                ps.setNull(1, Types.BIGINT);
+            } else {
+                ps.setLong(1, daily.getStaff().getId());
+            }
+
+            ps.setLong(2, daily.getStudent().getId());
+            ps.setLong(3, daily.getSchedule().getId());
+            ps.setBoolean(4, daily.getPresent());
 
             // 3.execute query
             Boolean result = ps.execute();
@@ -197,7 +196,7 @@ public class DailyDAO extends DAO<Daily> {
             );
 
             Staff staff = staffDAO.get(rs.getLong("staff_id"))
-                    .orElseThrow(() -> new RuntimeException("Staff not found!"));
+                    .orElse(null);
             Student student = studentDAO.get(rs.getLong("student_id"))
                     .orElseThrow(() -> new RuntimeException("Student not found!"));
             Schedule schedule = scheduleDAO.get(rs.getLong("schedule_id"))
@@ -210,6 +209,42 @@ public class DailyDAO extends DAO<Daily> {
             return daily;
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public Optional<Daily> getByStudentAndSchedule(Student student, Schedule schedule) {
+        try {
+            // 1.get connection
+            Connection con = this.connector
+                    .startConnection().getConnection();
+
+            // 2.prepare query
+            String sql = String.format("SELECT * FROM `%s` WHERE `student_id` = ? AND `schedule_id` = ? LIMIT 1", getTableName());
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setLong(1, student.getId());
+            ps.setLong(2, schedule.getId());
+
+            // 3.execute query
+            ResultSet rs = ps.executeQuery();
+
+            // 4.process query return data
+            Daily result = null;
+            while (rs.next()) {
+                result = processDailyObjectData(rs);
+            }
+
+            // 5.close transaction
+            ps.close();
+            rs.close();
+
+            // 6.return result
+            return Optional.ofNullable(result);
+        } catch (Exception e) {
+            // 7.handle errors
+            throw new RuntimeException(e);
+        } finally {
+            // 8.close database connection
+            this.connector.closeConnection();
         }
     }
 }

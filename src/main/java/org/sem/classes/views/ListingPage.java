@@ -318,12 +318,6 @@ public class ListingPage extends ViewPanel {
         });
     }
 
-    private ClassTableModel getClassTableModel() {
-        ClassTableModel classTableModel = new ClassTableModel();
-        classTableModel.setData(classDAO.getAll());
-        return classTableModel;
-    }
-
     public void changeTableModelData(List<Class> classes) {
         classTableModel.setPageData(classes);
         updateToolBar();

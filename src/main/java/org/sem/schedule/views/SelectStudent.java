@@ -1,13 +1,15 @@
-package org.sem.classes.views;
+package org.sem.schedule.views;
 
 
 import org.sem.classes.models.Class;
-import org.sem.classes.service.ClassService;
 import org.sem.context.Context;
 import org.sem.context.Redirect;
+import org.sem.schedule.models.Schedule;
+import org.sem.schedule.models.SelectStudentModel;
+import org.sem.schedule.services.DailyService;
+import org.sem.staffs.models.Staff;
 import org.sem.students.models.Student;
 import org.sem.students.models.StudentDAO;
-import org.sem.students.models.StudentTableModel;
 import org.sem.students.services.StudentService;
 import org.sem.view.ViewPanel;
 
@@ -32,10 +34,12 @@ public class SelectStudent extends ViewPanel {
     private javax.swing.JButton selectBtn;
 
     public StudentService studentService;
-    public StudentTableModel studentTableModel;
+    public SelectStudentModel studentTableModel;
     public Class classData;
+    public Schedule scheduleData;
     public StudentDAO studentDAO;
-    public ClassService classService;
+    public DailyService dailyService;
+    public Staff staffData;
 
     public SelectStudent(Context context) {
         super(context);
@@ -44,11 +48,12 @@ public class SelectStudent extends ViewPanel {
     @Override
     protected void beforeInitComponents() {
         studentService = new StudentService();
-        studentTableModel = new StudentTableModel();
-        studentDAO = new StudentDAO();
-        classService = new ClassService();
-
+        studentTableModel = new SelectStudentModel();
         classData = (Class) getContext().getSession().getData("class");
+        scheduleData = (Schedule) getContext().getSession().getData("schedule");
+        staffData = (Staff) getContext().getSession().getData("user_information");
+        studentDAO = new StudentDAO();
+        dailyService = new DailyService();
     }
 
     @Override
@@ -89,7 +94,7 @@ public class SelectStudent extends ViewPanel {
         firstBtn.setBackground(new java.awt.Color(204, 204, 255));
         firstBtn.setText("First");
 
-        searchInput.setText("Search...");
+        searchInput.setText("");
         searchInput.setPreferredSize(new java.awt.Dimension(64, 23));
 
         searchBtn.setBackground(new java.awt.Color(255, 229, 229));
@@ -176,10 +181,10 @@ public class SelectStudent extends ViewPanel {
     @Override
     protected void afterInitComponents() {
         super.afterInitComponents();
-
+        selectBtn.setText("Mark present");
         jTable1.setModel(studentTableModel);
-        changeTableModelData(studentService.getStudentNotInClassByClassId(classData.getId()));
-        searchInput.setText("");
+
+        changeTableModelData(processStudentData(studentDAO.getByClass(classData)));
     }
 
     @Override
@@ -187,7 +192,7 @@ public class SelectStudent extends ViewPanel {
         jButton1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Redirect.target(new EditPage(getContext()));
+                Redirect.target(new ScheduleClassList(getContext()));
             }
         });
 
@@ -195,15 +200,15 @@ public class SelectStudent extends ViewPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    int[] listRow = jTable1.getSelectedRows();
-                    for (int row : listRow) {
-                        Long id = (Long) jTable1.getValueAt(row, 0);
-                        classService.addStudentToClass(classData.getId(), id);
-                    }
+                    Integer row = jTable1.getSelectedRow();
+                    Student student = studentTableModel.getAtRow(row);
 
-                    Redirect.target(new EditPage(getContext()));
+                    if (student.getDaily() == null || student.getDaily().getId() == null) {
+                        dailyService.markPresent(staffData, student, scheduleData);
+                        Redirect.target(new SelectStudent(getContext()));
+                    }
                 } catch (Exception ex) {
-                    getContext().getSession().setData("message", ex.getCause().getMessage());
+                    throw new RuntimeException(ex);
                 }
             }
         });
@@ -214,7 +219,7 @@ public class SelectStudent extends ViewPanel {
                 String searchValue = searchInput.getText();
 
                 List<Student> students = studentDAO.searchByNameWithClass(classData, searchValue);
-                changeTableModelData(students);
+                changeTableModelData(processStudentData(students));
             }
         });
 
@@ -261,6 +266,14 @@ public class SelectStudent extends ViewPanel {
     @Override
     public JPanel getMainLayer() {
         return main;
+    }
+
+    public List<Student> processStudentData(List<Student> students) {
+        for (Student st: students) {
+            dailyService.getStudentDaily(st, scheduleData);
+        }
+
+        return students;
     }
 
     public void changeTableModelData(List<Student> students) {
