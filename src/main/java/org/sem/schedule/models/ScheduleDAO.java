@@ -119,7 +119,7 @@ public class ScheduleDAO extends DAO<Schedule> {
                 ps.setLong(5, schedule.getSubject().getId());
                 ps.setLong(6, schedule.getId());
             } else {
-                sql = String.format("INSERT INTO `%s` (`class_name`,`day`,`start_time`,`end_time`,`subject_id`) VALUES (?,?,?,?,?)", getTableName());
+                sql = String.format("INSERT INTO `%s` (`class_id`,`day`,`start_time`,`end_time`,`subject_id`) VALUES (?,?,?,?,?)", getTableName());
                 ps = con.prepareStatement(sql);
 
                 ps.setLong(1, schedule.getClassS().getId());
@@ -191,7 +191,7 @@ public class ScheduleDAO extends DAO<Schedule> {
         try {
             Schedule schedule = new Schedule(
                     rs.getLong("id"),
-                    rs.getDate("date"),
+                    rs.getDate("day"),
                     rs.getString("start_time"),
                     rs.getString("end_time"),
                     rs.getTimestamp("created_at"),
@@ -210,6 +210,146 @@ public class ScheduleDAO extends DAO<Schedule> {
             return schedule;
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public List<Schedule> getAllUpcoming() {
+        try {
+            // 1.get connection
+            Connection con = this.connector
+                    .startConnection().getConnection();
+
+            // 2.prepare query
+            String sql = String.format("SELECT * FROM `%s` WHERE DATE(NOW()) <= `day`", getTableName());
+            PreparedStatement ps = con.prepareStatement(sql);
+
+            // 3.execute query
+            ResultSet rs = ps.executeQuery();
+
+            // 4.process query return data
+            List<Schedule> result = new ArrayList<>();
+            while (rs.next()) {
+                result.add(processScheduleData(rs));
+            }
+
+            // 5.close transaction
+            ps.close();
+            rs.close();
+
+            // 6.return result
+            return result;
+        } catch (Exception e) {
+            // 7.handle errors
+            throw new RuntimeException(e);
+        } finally {
+            // 8.close database connection
+            this.connector.closeConnection();
+        }
+    }
+
+    public List<Schedule> searchBySubjectName(String name) {
+        try {
+            // 1.get connection
+            Connection con = this.connector
+                    .startConnection().getConnection();
+
+            // 2.prepare query
+            String sql = "SELECT * FROM `" + getTableName() + "` AS `m` LEFT JOIN `subject` AS `s` ON `m`.`subject_id` = `s`.`id` WHERE (`s`.`subject_name` is null or `s`.`subject_name` like concat('%', ?, '%') AND DATE(NOW()) <= `m`.`day`)";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, name);
+
+            // 3.execute query
+            ResultSet rs = ps.executeQuery();
+
+            // 4.process query return data
+            List<Schedule> result = new ArrayList<>();
+            while (rs.next()) {
+                result.add(processScheduleData(rs));
+            }
+
+            // 5.close transaction
+            ps.close();
+            rs.close();
+
+            // 6.return result
+            return result;
+        } catch (Exception e) {
+            // 7.handle errors
+            throw new RuntimeException(e);
+        } finally {
+            // 8.close database connection
+            this.connector.closeConnection();
+        }
+    }
+
+    public List<Schedule> getAllByClass(Class classData) {
+        try {
+            // 1.get connection
+            Connection con = this.connector
+                    .startConnection().getConnection();
+
+            // 2.prepare query
+            String sql = String.format("SELECT * FROM `%s` WHERE `class_id` = ?", getTableName());
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setLong(1, classData.getId());
+
+            // 3.execute query
+            ResultSet rs = ps.executeQuery();
+
+            // 4.process query return data
+            List<Schedule> result = new ArrayList<>();
+            while (rs.next()) {
+                result.add(processScheduleData(rs));
+            }
+
+            // 5.close transaction
+            ps.close();
+            rs.close();
+
+            // 6.return result
+            return result;
+        } catch (Exception e) {
+            // 7.handle errors
+            throw new RuntimeException(e);
+        } finally {
+            // 8.close database connection
+            this.connector.closeConnection();
+        }
+    }
+
+    public List<Schedule> searchBySubjectNameWithClass(String name, Class classData) {
+        try {
+            // 1.get connection
+            Connection con = this.connector
+                    .startConnection().getConnection();
+
+            // 2.prepare query
+            String sql = "SELECT * FROM `" + getTableName() + "` AS `m` LEFT JOIN `subject` AS `s` ON `m`.`subject_id` = `s`.`id` WHERE (`s`.`subject_name` is null or `s`.`subject_name` like concat('%', ?, '%') AND `m`.`class_id` = ?)";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, name);
+            ps.setLong(2, classData.getId());
+
+            // 3.execute query
+            ResultSet rs = ps.executeQuery();
+
+            // 4.process query return data
+            List<Schedule> result = new ArrayList<>();
+            while (rs.next()) {
+                result.add(processScheduleData(rs));
+            }
+
+            // 5.close transaction
+            ps.close();
+            rs.close();
+
+            // 6.return result
+            return result;
+        } catch (Exception e) {
+            // 7.handle errors
+            throw new RuntimeException(e);
+        } finally {
+            // 8.close database connection
+            this.connector.closeConnection();
         }
     }
 }

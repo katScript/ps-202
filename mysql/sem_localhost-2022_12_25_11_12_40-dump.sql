@@ -50,7 +50,7 @@ DROP TABLE IF EXISTS `daily`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `daily` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `staff_id` int unsigned NOT NULL,
+  `staff_id` int unsigned DEFAULT NULL,
   `student_id` int unsigned NOT NULL,
   `schedule_id` int unsigned NOT NULL,
   `present` tinyint DEFAULT '0',

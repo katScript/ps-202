@@ -1,10 +1,13 @@
-package org.sem.marks.views;
+package org.sem.schedule.views;
 
+import org.sem.classes.models.Class;
 import org.sem.context.Context;
 import org.sem.context.Redirect;
-import org.sem.subjects.models.Subject;
-import org.sem.subjects.models.SubjectDAO;
-import org.sem.subjects.models.SubjectTableModel;
+import org.sem.schedule.models.Schedule;
+import org.sem.schedule.models.ScheduleDAO;
+import org.sem.schedule.models.ScheduleTableModel;
+import org.sem.students.models.Student;
+import org.sem.students.views.Attendance;
 import org.sem.view.ViewPanel;
 
 import javax.swing.*;
@@ -12,11 +15,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-public class SubjectListPage extends ViewPanel {
+public class ScheduleStudentList extends ViewPanel {
     private javax.swing.JButton firstBtn;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JButton lastBtn;
@@ -27,17 +32,21 @@ public class SubjectListPage extends ViewPanel {
     private javax.swing.JButton searchBtn;
     private javax.swing.JTextField searchInput;
 
-    public SubjectTableModel subjectTableModel;
-    public SubjectDAO subjectDAO;
+    public ScheduleTableModel scheduleTableModel;
+    public Student studentData;
+    public ScheduleDAO scheduleDAO;
+    public Class classData;
 
-    public SubjectListPage(Context context) {
+    public ScheduleStudentList(Context context) {
         super(context);
     }
 
     @Override
     protected void beforeInitComponents() {
-        subjectDAO = new SubjectDAO();
-        subjectTableModel = new SubjectTableModel();
+        scheduleTableModel = new ScheduleTableModel();
+        studentData = (Student) getContext().getSession().getData("student");
+        scheduleDAO = new ScheduleDAO();
+        classData = (Class) getContext().getSession().getData("class");
     }
 
     @Override
@@ -52,6 +61,8 @@ public class SubjectListPage extends ViewPanel {
         firstBtn = new javax.swing.JButton();
         searchInput = new javax.swing.JTextField();
         searchBtn = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jButton2 = new javax.swing.JButton();
@@ -63,7 +74,7 @@ public class SubjectListPage extends ViewPanel {
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 204));
-        jLabel1.setText("SUBJECT MANAGEMENT SYSTEM");
+        jLabel1.setText("SCHEDULE MANAGEMENT SYSTEM");
 
         lastBtn.setBackground(new java.awt.Color(204, 204, 255));
         lastBtn.setText("Last");
@@ -78,28 +89,44 @@ public class SubjectListPage extends ViewPanel {
         firstBtn.setBackground(new java.awt.Color(204, 204, 255));
         firstBtn.setText("First");
 
-        searchInput.setText("Search...");
         searchInput.setPreferredSize(new java.awt.Dimension(64, 23));
 
         searchBtn.setBackground(new java.awt.Color(255, 229, 229));
         searchBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/search-interface-symbol.png"))); // NOI18N
 
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel2.setText("Rollnumer");
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel3.setText("C2109I4533");
+
         jScrollPane1.setViewportView(jTable1);
 
-        jButton2.setBackground(new java.awt.Color(255, 204, 204));
+        jButton2.setBackground(new java.awt.Color(0, 51, 255));
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton2.setText("Select");
+        jButton2.setForeground(new java.awt.Color(255, 255, 204));
+        jButton2.setText("View Detail");
+        jButton2.setPreferredSize(new java.awt.Dimension(107, 39));
 
         javax.swing.GroupLayout mainLayout = new javax.swing.GroupLayout(main);
         main.setLayout(mainLayout);
         mainLayout.setHorizontalGroup(
                 mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainLayout.createSequentialGroup()
-                                .addGap(127, 127, 127)
-                                .addComponent(searchInput, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, 0)
-                                .addComponent(searchBtn)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 215, Short.MAX_VALUE)
+                        .addGroup(mainLayout.createSequentialGroup()
+                                .addGap(14, 14, 14)
+                                .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addGroup(mainLayout.createSequentialGroup()
+                                                .addComponent(jLabel2)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(searchInput, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(0, 0, 0)
+                                                .addComponent(searchBtn))
+                                        .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(jLabel1)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 132, Short.MAX_VALUE)
                                 .addComponent(firstBtn)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(previousBtn)
@@ -109,22 +136,15 @@ public class SubjectListPage extends ViewPanel {
                                 .addComponent(nextBtn)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(lastBtn)
-                                .addGap(37, 37, 37))
+                                .addGap(23, 23, 23))
                         .addGroup(mainLayout.createSequentialGroup()
                                 .addContainerGap()
                                 .addComponent(jScrollPane1)
                                 .addContainerGap())
-                        .addGroup(mainLayout.createSequentialGroup()
-                                .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(mainLayout.createSequentialGroup()
-                                                .addGap(15, 15, 15)
-                                                .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 512, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addGroup(mainLayout.createSequentialGroup()
-                                                .addGap(335, 335, 335)
-                                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainLayout.createSequentialGroup()
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(114, 114, 114))
         );
         mainLayout.setVerticalGroup(
                 mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -133,36 +153,30 @@ public class SubjectListPage extends ViewPanel {
                                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel1)
-                                .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(mainLayout.createSequentialGroup()
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(lastBtn)
-                                                        .addComponent(nextBtn)))
-                                        .addGroup(mainLayout.createSequentialGroup()
-                                                .addGap(6, 6, 6)
-                                                .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(pageSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(previousBtn)))
-                                        .addGroup(mainLayout.createSequentialGroup()
-                                                .addGap(6, 6, 6)
-                                                .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(firstBtn)
-                                                        .addComponent(searchInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(searchBtn))))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(lastBtn)
+                                        .addComponent(nextBtn)
+                                        .addComponent(pageSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(previousBtn)
+                                        .addComponent(firstBtn)
+                                        .addComponent(searchInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(searchBtn)
+                                        .addComponent(jLabel2)
+                                        .addComponent(jLabel3))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(15, Short.MAX_VALUE))
+                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(16, Short.MAX_VALUE))
         );
     }
 
     @Override
     protected void afterInitComponents() {
         super.afterInitComponents();
-        jTable1.setModel(subjectTableModel);
-        changeTableModelData(subjectDAO.getAll());
+        jTable1.setModel(scheduleTableModel);
+        changeTableModelData(scheduleDAO.getAllByClass(classData));
     }
 
     @Override
@@ -170,7 +184,7 @@ public class SubjectListPage extends ViewPanel {
         jButton1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                backFunction();
+                Redirect.target(new org.sem.students.views.EditPage(getContext()));
             }
         });
 
@@ -182,12 +196,13 @@ public class SubjectListPage extends ViewPanel {
                     Long id = (Long) jTable1.getValueAt(row, 0);
 
                     if (id != null) {
-                        Subject subject = subjectDAO.get(id).orElseThrow(() -> new RuntimeException("Subject not found!"));
-                        getContext().getSession().setData("subject", subject);
-                        Redirect.target(new EditPage(getContext()));
+                        Schedule schedule = scheduleDAO.get(id).orElseThrow(() -> new RuntimeException("Schedule not found!"));
+                        getContext().getSession().setData("schedule", schedule);
+                        Redirect.target(new Attendance(getContext()));
                     }
                 } catch (Exception ex) {
-                    throw new RuntimeException(ex);
+                    getContext().getSession().setData("message", ex.getMessage());
+                    showMessage();
                 }
             }
         });
@@ -197,8 +212,8 @@ public class SubjectListPage extends ViewPanel {
             public void actionPerformed(ActionEvent e) {
                 String searchValue = searchInput.getText();
 
-                List<Subject> subject = subjectDAO.searchByName(searchValue);
-                changeTableModelData(subject);
+                List<Schedule> schedules = scheduleDAO.searchBySubjectNameWithClass(searchValue, classData);
+                changeTableModelData(schedules);
             }
         });
 
@@ -213,7 +228,7 @@ public class SubjectListPage extends ViewPanel {
         lastBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Integer totalPage = subjectTableModel.getTotalPage();
+                Integer totalPage = scheduleTableModel.getTotalPage();
                 changePageNumber(totalPage);
             }
         });
@@ -242,38 +257,34 @@ public class SubjectListPage extends ViewPanel {
         });
     }
 
-    public void backFunction() {
-        Redirect.target(new EditPage(getContext()));
-    }
-
     @Override
     public JPanel getMainLayer() {
         return main;
     }
 
-    public void changeTableModelData(List<Subject> subjects) {
-        subjectTableModel.setPageData(subjects);
+    public void changeTableModelData(List<Schedule> schedules) {
+        scheduleTableModel.setPageData(schedules);
         updateToolBar();
     }
 
     public void changePageNumber(Integer pageNumber) {
-        subjectTableModel.setCurrentPageNumber(pageNumber);
+        scheduleTableModel.setCurrentPageNumber(pageNumber);
         updateToolBar();
-        pageSelect.setSelectedIndex(subjectTableModel.getCurrentPageNumber() - 1);
+        pageSelect.setSelectedIndex(scheduleTableModel.getCurrentPageNumber() - 1);
     }
 
     private void updateToolBar() {
-        Integer length = subjectTableModel.getTotalPage();
+        Integer length = scheduleTableModel.getTotalPage();
         String[] pageNumbers = new String[length];
         for (int i = 1; i <= length; ++i) {
             pageNumbers[i - 1] = String.valueOf(i);
         }
 
         pageSelect.setModel(new javax.swing.DefaultComboBoxModel<>(pageNumbers));
-        lastBtn.setEnabled(!subjectTableModel.getLast());
-        firstBtn.setEnabled(!subjectTableModel.getFirst());
+        lastBtn.setEnabled(!scheduleTableModel.getLast());
+        firstBtn.setEnabled(!scheduleTableModel.getFirst());
 
-        nextBtn.setEnabled(!subjectTableModel.getLast());
-        previousBtn.setEnabled(!subjectTableModel.getFirst());
+        nextBtn.setEnabled(!scheduleTableModel.getLast());
+        previousBtn.setEnabled(!scheduleTableModel.getFirst());
     }
 }
