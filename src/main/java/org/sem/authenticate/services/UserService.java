@@ -58,6 +58,7 @@ public class UserService {
     public void logout(Context context) {
         context.getSession().removeData("user");
         context.getSession().removeData("user_information");
+        context.getJMenuBar().getMenu(0).setVisible(false);
         Redirect.target(new Dashboard(context));
     }
 
