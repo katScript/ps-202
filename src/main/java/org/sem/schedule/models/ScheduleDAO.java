@@ -6,10 +6,7 @@ import org.sem.database.DAO;
 import org.sem.subjects.models.Subject;
 import org.sem.subjects.models.SubjectDAO;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -110,12 +107,12 @@ public class ScheduleDAO extends DAO<Schedule> {
 
             if (schedule.getId() != null) {
                 sql = String.format("UPDATE `%s` SET `class_id` = ?, `day` = ?, `start_time` = ?, `end_time` = ?, `subject_id` = ? WHERE `id` = ?", getTableName());
-                ps = con.prepareStatement(sql);
+                ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
                 ps.setLong(6, schedule.getId());
             } else {
                 sql = String.format("INSERT INTO `%s` (`class_id`,`day`,`start_time`,`end_time`,`subject_id`) VALUES (?,?,?,?,?)", getTableName());
-                ps = con.prepareStatement(sql);
+                ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             }
 
             ps.setLong(1, schedule.getClassS().getId());
@@ -213,7 +210,7 @@ public class ScheduleDAO extends DAO<Schedule> {
                     .startConnection().getConnection();
 
             // 2.prepare query
-            String sql = String.format("SELECT * FROM `%s` WHERE DATE(NOW()) <= `day`", getTableName());
+            String sql = String.format("SELECT * FROM `%s` WHERE", getTableName());
             PreparedStatement ps = con.prepareStatement(sql);
 
             // 3.execute query
@@ -247,7 +244,7 @@ public class ScheduleDAO extends DAO<Schedule> {
                     .startConnection().getConnection();
 
             // 2.prepare query
-            String sql = "SELECT * FROM `" + getTableName() + "` AS `m` LEFT JOIN `subject` AS `s` ON `m`.`subject_id` = `s`.`id` WHERE (`s`.`subject_name` is null or `s`.`subject_name` like concat('%', ?, '%') AND DATE(NOW()) <= `m`.`day`)";
+            String sql = "SELECT * FROM `" + getTableName() + "` AS `m` LEFT JOIN `subject` AS `s` ON `m`.`subject_id` = `s`.`id` WHERE (`s`.`subject_name` is null or `s`.`subject_name` like concat('%', ?, '%'))";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, name);
 
