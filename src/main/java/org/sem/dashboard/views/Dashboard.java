@@ -4,6 +4,7 @@ import org.sem.authenticate.services.UserService;
 import org.sem.context.Context;
 import org.sem.context.Redirect;
 import org.sem.helper.ImageHelper;
+import org.sem.staffs.models.Staff;
 import org.sem.view.ViewPanel;
 
 import javax.swing.*;
@@ -24,6 +25,7 @@ public class Dashboard extends ViewPanel {
 
     public ImageHelper imageHelper;
     public UserService userService;
+    public Staff staffData;
 
     public Dashboard(Context context) {
         super(context, "Management / Dashboard");
@@ -33,6 +35,7 @@ public class Dashboard extends ViewPanel {
     protected void beforeInitComponents() {
         imageHelper = new ImageHelper();
         userService = new UserService();
+        staffData = (Staff) getContext().getSession().getData("user_information");
     }
 
     @Override
@@ -128,6 +131,12 @@ public class Dashboard extends ViewPanel {
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(main, javax.swing.GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE)
         );
+    }
+
+    @Override
+    protected void afterInitComponents() {
+        super.afterInitComponents();
+        jMenu1.setText(staffData.getFullname());
     }
 
     @Override
