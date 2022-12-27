@@ -4,6 +4,7 @@ import org.sem.authenticate.views.LoginPage;
 import org.sem.classes.views.EditPage;
 import org.sem.classes.views.ListingPage;
 import org.sem.context.Context;
+import org.sem.context.Redirect;
 import org.sem.context.Session;
 
 import javax.swing.*;
@@ -30,8 +31,7 @@ public abstract class ViewPanel {
         if (this.context.isValidateUser() && session.getData("user") == null) {
             this.context.setIsValidateUser(false);
 
-            LoginPage page = new LoginPage(this.context);
-            this.context.changeLayer(page.getMainLayer());
+            Redirect.target(new LoginPage(this.context));
         } else {
             beforeInitComponents();
             initComponents();

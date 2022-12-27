@@ -63,7 +63,7 @@ CREATE TABLE `daily` (
   CONSTRAINT `fk_daily_schedule_id` FOREIGN KEY (`schedule_id`) REFERENCES `schedule` (`id`) ON DELETE CASCADE,
   CONSTRAINT `fk_daily_staff_id` FOREIGN KEY (`staff_id`) REFERENCES `staff` (`id`) ON DELETE CASCADE,
   CONSTRAINT `fk_daily_student_id` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -72,6 +72,7 @@ CREATE TABLE `daily` (
 
 LOCK TABLES `daily` WRITE;
 /*!40000 ALTER TABLE `daily` DISABLE KEYS */;
+INSERT INTO `daily` VALUES (4,3,3,1,1,'2022-12-27 07:46:20','2022-12-27 14:46:20');
 /*!40000 ALTER TABLE `daily` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -131,7 +132,7 @@ CREATE TABLE `schedule` (
   KEY `fk_schedule_class_id` (`class_id`),
   CONSTRAINT `fk_schedule_class_id` FOREIGN KEY (`class_id`) REFERENCES `class` (`id`) ON DELETE CASCADE,
   CONSTRAINT `fk_schedule_subject_id` FOREIGN KEY (`subject_id`) REFERENCES `subject` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -140,6 +141,7 @@ CREATE TABLE `schedule` (
 
 LOCK TABLES `schedule` WRITE;
 /*!40000 ALTER TABLE `schedule` DISABLE KEYS */;
+INSERT INTO `schedule` VALUES (1,1,'2022-12-30','12h','14h',3,'2022-12-26 12:44:29','2022-12-26 19:44:29');
 /*!40000 ALTER TABLE `schedule` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -164,7 +166,7 @@ CREATE TABLE `staff` (
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unq_email` (`email`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -173,7 +175,7 @@ CREATE TABLE `staff` (
 
 LOCK TABLES `staff` WRITE;
 /*!40000 ALTER TABLE `staff` DISABLE KEYS */;
-INSERT INTO `staff` VALUES (2,'qwe','qwe','qwe','123123',0,'2022-12-14','qweqwe',3,'2022-12-24 11:32:45','2022-12-24 18:32:45');
+INSERT INTO `staff` VALUES (3,'STFF102931','Trần Văn Dương','tranduong@gmail.com','0123456789',1,'2001-11-03','Ngọc Khánh - Hà Nội',4,'2022-12-27 07:01:36','2022-12-27 14:01:36');
 /*!40000 ALTER TABLE `staff` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -205,7 +207,7 @@ CREATE TABLE `student` (
 
 LOCK TABLES `student` WRITE;
 /*!40000 ALTER TABLE `student` DISABLE KEYS */;
-INSERT INTO `student` VALUES (2,'test','test','qwe@rty/uio','1234567122','1','2012-10-12','asdasdassadasd','2022-12-23 08:00:09','2022-12-23 21:21:13'),(3,'other','other','other@other.other','1234567890','0','2012-05-23','12312asdasdas','2022-12-23 08:00:50','2022-12-23 21:21:02'),(4,'rttryrty','asdsa','qwewq@xczxc.vbnvbn','123123123','1','2011-03-23','sdadsfgarefdsaf','2022-12-23 09:58:38','2022-12-23 16:58:38'),(5,'zxczxc','test new','qwe@asd.zxc','0123456789','0','2012-12-12','qwewqeqwe','2022-12-24 07:42:59','2022-12-24 14:42:59');
+INSERT INTO `student` VALUES (2,'test','test','qwe@rty/uio','1234567122','1','2012-10-12','asdasdassadasd','2022-12-23 08:00:09','2022-12-23 21:21:13'),(3,'other','other','other@other.other','1234567890','0','2012-05-23','12312asdasdas','2022-12-23 08:00:50','2022-12-23 21:21:02'),(4,'rttryrty','asdsa','qwewq@xczxc.vbnvbn','123123123','1','2011-03-23','sdadsfgarefdsaf','2022-12-23 09:58:38','2022-12-23 16:58:38');
 /*!40000 ALTER TABLE `student` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -234,7 +236,7 @@ CREATE TABLE `student_class` (
 
 LOCK TABLES `student_class` WRITE;
 /*!40000 ALTER TABLE `student_class` DISABLE KEYS */;
-INSERT INTO `student_class` VALUES (1,2,'2022-12-24 02:47:56','2022-12-24 09:47:56'),(1,3,'2022-12-24 07:56:32','2022-12-24 14:56:32'),(1,4,'2022-12-24 07:56:32','2022-12-24 14:56:32'),(2,3,'2022-12-24 07:57:54','2022-12-24 14:57:54'),(2,4,'2022-12-24 07:57:54','2022-12-24 14:57:54'),(2,5,'2022-12-24 07:57:54','2022-12-24 14:57:54'),(5,2,'2022-12-24 08:07:21','2022-12-24 15:07:21'),(5,3,'2022-12-24 08:07:21','2022-12-24 15:07:21'),(5,4,'2022-12-24 08:07:21','2022-12-24 15:07:21'),(5,5,'2022-12-24 08:07:21','2022-12-24 15:07:21');
+INSERT INTO `student_class` VALUES (1,2,'2022-12-24 02:47:56','2022-12-24 09:47:56'),(1,3,'2022-12-24 07:56:32','2022-12-24 14:56:32'),(1,4,'2022-12-24 07:56:32','2022-12-24 14:56:32'),(2,3,'2022-12-24 07:57:54','2022-12-24 14:57:54'),(2,4,'2022-12-24 07:57:54','2022-12-24 14:57:54'),(5,2,'2022-12-24 08:07:21','2022-12-24 15:07:21'),(5,3,'2022-12-24 08:07:21','2022-12-24 15:07:21'),(5,4,'2022-12-24 08:07:21','2022-12-24 15:07:21');
 /*!40000 ALTER TABLE `student_class` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -281,7 +283,7 @@ CREATE TABLE `user` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -290,7 +292,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (3,'test','098f6bcd4621d373cade4e832627b4f6','test','2022-12-23 07:59:40','2022-12-23 14:59:40');
+INSERT INTO `user` VALUES (4,'admin','c93ccd78b2076528346216b3b2f701e6','tranduong@gmail.com','2022-12-27 06:59:53','2022-12-27 14:09:08'),(13,'qwe','76d80224611fc919a5d54f0ff9fba446','qwe@qwe.qwe','2022-12-27 07:34:48','2022-12-27 14:34:48');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -303,4 +305,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-12-25 11:12:40
+-- Dump completed on 2022-12-27 14:53:06

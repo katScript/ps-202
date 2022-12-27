@@ -5,6 +5,7 @@ import org.sem.authenticate.models.UserDAO;
 import org.sem.authenticate.views.LoginPage;
 import org.sem.context.Context;
 import org.sem.context.Redirect;
+import org.sem.dashboard.views.Dashboard;
 import org.sem.utils.sercurity.MD5Utils;
 
 import java.util.Optional;
@@ -57,7 +58,7 @@ public class UserService {
     public void logout(Context context) {
         context.getSession().removeData("user");
         context.getSession().removeData("user_information");
-        Redirect.target(new LoginPage(context));
+        Redirect.target(new Dashboard(context));
     }
 
     public void changePassword(User user, String password) {
