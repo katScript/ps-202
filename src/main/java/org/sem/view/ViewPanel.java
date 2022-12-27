@@ -69,6 +69,14 @@ public abstract class ViewPanel {
         getContext().getSession().setData("message", null);
     }
 
+    public boolean showOptionPanel(String message, String title) {
+        int result = JOptionPane.showConfirmDialog(getMainLayer(),message, title,
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE);
+
+        return result == JOptionPane.YES_OPTION;
+    }
+
     public void setContext(Context context) {
         this.context = context;
     }

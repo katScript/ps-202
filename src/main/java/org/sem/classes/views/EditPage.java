@@ -240,6 +240,7 @@ public class EditPage extends ViewPanel {
         super.afterInitComponents();
         jLabel2.setText(classData.getClassName());
         jTable1.setModel(studentTableModel);
+        jButton5.setVisible(false);
 
         changeTableModelData(studentService.getStudentByClassId(classData.getId()));
     }
@@ -273,8 +274,10 @@ public class EditPage extends ViewPanel {
                 try {
                     int row = jTable1.getSelectedRow();
                     Long id = (Long) jTable1.getValueAt(row, 0);
-                    classService.removeStudent(classData.getId(), id);
-                    changeTableModelData(studentService.getStudentByClassId(classData.getId()));
+                    if (showOptionPanel("Do you want to remove student id " + id + " from class?", "Remove student from class")) {
+                        classService.removeStudent(classData.getId(), id);
+                        changeTableModelData(studentService.getStudentByClassId(classData.getId()));
+                    }
                 } catch (Exception ex) {
                     getContext().getSession().setData("message", ex.getMessage());
                     showMessage();

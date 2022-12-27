@@ -245,12 +245,13 @@ public class ListingPage extends ViewPanel {
                     Long id = (Long) jTable1.getValueAt(row, 0);
 
                     if (id != null) {
-                        classService.deleteClass(id);
-                        ListingPage page = new ListingPage(getContext());
-                        getContext().changeLayer(page.getMainLayer());
+                        if (showOptionPanel("Do you want to delete class id " + id, "Delete class alert!")) {
+                            classService.deleteClass(id);
+                            Redirect.target(new ListingPage(getContext()));
+                        }
                     }
                 } catch (Exception ex) {
-                    getContext().getSession().setData("message", ex.getCause().getMessage());
+                    getContext().getSession().setData("message", ex.getMessage());
                     showMessage();
                 }
             }

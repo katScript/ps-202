@@ -1,6 +1,7 @@
 package org.sem.subjects.views;
 
 import org.sem.context.Context;
+import org.sem.context.Redirect;
 import org.sem.dashboard.views.Dashboard;
 import org.sem.marks.models.Mark;
 import org.sem.subjects.models.Subject;
@@ -226,13 +227,14 @@ public class ListingPage extends ViewPanel {
                     Long id = (Long) jTable1.getValueAt(row, 0);
 
                     if (id != null) {
-                        subjectService.deleteSubject(id);
-                        ListingPage page = new ListingPage(getContext());
-                        getContext().changeLayer(page.getMainLayer());
+                        if (showOptionPanel("Do you want to delete subject id " + id, "Delete alert!")) {
+                            subjectService.deleteSubject(id);
+                            Redirect.target(new ListingPage(getContext()));
+                        }
                     }
 
                 } catch (Exception ex) {
-                    getContext().getSession().setData("message", ex.getCause().getMessage());
+                    getContext().getSession().setData("message", ex.getMessage());
                     showMessage();
                 }
             }

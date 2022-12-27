@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class StaffTableModel extends AbstractTableModel {
     private List<String> columnNames = new ArrayList<>(
-            Arrays.asList("ID", "Staff no", "Full name", "Email", "Phone number", "Gender", "Date of bird", "Address")
+            Arrays.asList("ID", "Staff no", "Full name", "Email", "Phone number", "Gender", "Date of birth", "Address")
     );
 
     private List<Staff> staff = new ArrayList<>();

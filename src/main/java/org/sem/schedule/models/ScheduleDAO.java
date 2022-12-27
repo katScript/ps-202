@@ -112,31 +112,24 @@ public class ScheduleDAO extends DAO<Schedule> {
                 sql = String.format("UPDATE `%s` SET `class_id` = ?, `day` = ?, `start_time` = ?, `end_time` = ?, `subject_id` = ? WHERE `id` = ?", getTableName());
                 ps = con.prepareStatement(sql);
 
-                ps.setLong(1, schedule.getClassS().getId());
-                ps.setDate(2, schedule.getDate());
-                ps.setString(3, schedule.getStartTime());
-                ps.setString(4, schedule.getEndTime());
-                ps.setLong(5, schedule.getSubject().getId());
                 ps.setLong(6, schedule.getId());
             } else {
                 sql = String.format("INSERT INTO `%s` (`class_id`,`day`,`start_time`,`end_time`,`subject_id`) VALUES (?,?,?,?,?)", getTableName());
                 ps = con.prepareStatement(sql);
-
-                ps.setLong(1, schedule.getClassS().getId());
-                ps.setDate(2, schedule.getDate());
-                ps.setString(3, schedule.getStartTime());
-                ps.setString(4, schedule.getEndTime());
-                ps.setLong(5, schedule.getSubject().getId());
             }
 
+            ps.setLong(1, schedule.getClassS().getId());
+            ps.setDate(2, schedule.getDate());
+            ps.setString(3, schedule.getStartTime());
+            ps.setString(4, schedule.getEndTime());
+            ps.setLong(5, schedule.getSubject().getId());
+
             // 3.execute query
-            Boolean result = ps.execute();
-
+            ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
             // 4.process query return data
-            if (result) {
-                ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
                 schedule.setId(rs.getLong(1));
-
                 rs.close();
             }
 

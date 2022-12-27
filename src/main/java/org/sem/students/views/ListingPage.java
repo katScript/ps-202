@@ -228,9 +228,11 @@ public class ListingPage extends ViewPanel {
                     Long id = (Long) jTable1.getValueAt(row, 0);
 
                     if (id != null) {
-                        studentService.deleteStudent(id);
-                        ListingPage page = new ListingPage(getContext());
-                        getContext().changeLayer(page.getMainLayer());
+                        if (showOptionPanel("Delete student id " + id, "Delete student alert!")) {
+                            studentService.deleteStudent(id);
+                            ListingPage page = new ListingPage(getContext());
+                            getContext().changeLayer(page.getMainLayer());
+                        }
                     }
 
                 } catch (Exception ex) {

@@ -1,5 +1,6 @@
 package org.sem.dashboard.views;
 
+import org.sem.authenticate.services.UserService;
 import org.sem.context.Context;
 import org.sem.context.Redirect;
 import org.sem.helper.ImageHelper;
@@ -11,14 +12,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Dashboard extends ViewPanel {
-    private JButton jButton2;
-    private JButton jButton3;
-    private JButton jButton4;
-    private JButton jButton5;
-    private JLabel jLabel2;
-    private JPanel main;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JPanel main;
 
     public ImageHelper imageHelper;
+    public UserService userService;
 
     public Dashboard(Context context) {
         super(context, "Management / Dashboard");
@@ -27,76 +32,101 @@ public class Dashboard extends ViewPanel {
     @Override
     protected void beforeInitComponents() {
         imageHelper = new ImageHelper();
+        userService = new UserService();
     }
 
     @Override
     protected void initComponents() {
-        main = new JPanel();
-        jButton2 = new JButton();
-        jButton3 = new JButton();
-        jButton4 = new JButton();
-        jButton5 = new JButton();
-        jLabel2 = new JLabel();
+        main = new javax.swing.JPanel();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItem2 = new javax.swing.JMenuItem();
 
-        main.setPreferredSize(new Dimension(584, 374));
+        main.setPreferredSize(new java.awt.Dimension(584, 374));
 
-        jButton2.setBackground(new Color(255, 255, 204));
-        jButton2.setFont(new Font("Segoe UI", 1, 18)); // NOI18N
-        jButton2.setIcon(new ImageIcon(imageHelper.getImage("/icons/steward.png"))); // NOI18N
+        jButton2.setBackground(new java.awt.Color(255, 255, 204));
+        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/steward.png"))); // NOI18N
         jButton2.setText("Staff");
-        jButton2.setPreferredSize(new Dimension(134, 39));
+        jButton2.setPreferredSize(new java.awt.Dimension(134, 39));
 
-        jButton3.setBackground(new Color(255, 255, 204));
-        jButton3.setFont(new Font("Segoe UI", 1, 18)); // NOI18N
-        jButton3.setIcon(new ImageIcon(imageHelper.getImage("/icons/seminar.png"))); // NOI18N
+        jButton3.setBackground(new java.awt.Color(255, 255, 204));
+        jButton3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/seminar.png"))); // NOI18N
         jButton3.setText("Class");
 
-        jButton4.setBackground(new Color(255, 255, 204));
-        jButton4.setFont(new Font("Segoe UI", 1, 18)); // NOI18N
-        jButton4.setIcon(new ImageIcon(imageHelper.getImage("/icons/checklist.png"))); // NOI18N
-        jButton4.setText("Subject");
+        jButton4.setBackground(new java.awt.Color(255, 255, 204));
+        jButton4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/checklist.png"))); // NOI18N
+        jButton4.setText("Mark");
 
-        jButton5.setBackground(new Color(255, 255, 204));
-        jButton5.setFont(new Font("Segoe UI", 1, 18)); // NOI18N
-        jButton5.setIcon(new ImageIcon(imageHelper.getImage("/icons/graduated.png"))); // NOI18N
+        jButton5.setBackground(new java.awt.Color(255, 255, 204));
+        jButton5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/graduated.png"))); // NOI18N
         jButton5.setText("Student");
+        jButton5.setPreferredSize(new java.awt.Dimension(134, 39));
 
-        jLabel2.setFont(new Font("Times New Roman", 1, 24)); // NOI18N
-        jLabel2.setForeground(new Color(0, 0, 204));
-        jLabel2.setHorizontalAlignment(SwingConstants.CENTER);
-        jLabel2.setIcon(new ImageIcon(imageHelper.getImage("/icons/settings.png"))); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(0, 0, 204));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/settings.png"))); // NOI18N
         jLabel2.setText("MANAGEMENT SYSTEM");
 
-        GroupLayout mainLayout = new GroupLayout(main);
+        javax.swing.GroupLayout mainLayout = new javax.swing.GroupLayout(main);
         main.setLayout(mainLayout);
         mainLayout.setHorizontalGroup(
-                mainLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(mainLayout.createSequentialGroup()
                                 .addGap(122, 122, 122)
-                                .addGroup(mainLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(jButton3, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jButton5, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
-                                .addGroup(mainLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(jButton2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jButton4, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
+                                .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(122, 122, 122))
-                        .addComponent(jLabel2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         mainLayout.setVerticalGroup(
-                mainLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(mainLayout.createSequentialGroup()
                                 .addGap(41, 41, 41)
                                 .addComponent(jLabel2)
                                 .addGap(49, 49, 49)
-                                .addGroup(mainLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jButton5, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jButton2, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE))
+                                .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(67, 67, 67)
-                                .addGroup(mainLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jButton3, GroupLayout.PREFERRED_SIZE, 61, GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jButton4, GroupLayout.PREFERRED_SIZE, 61, GroupLayout.PREFERRED_SIZE))
-                                .addContainerGap(49, Short.MAX_VALUE))
+                                .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addContainerGap(7, Short.MAX_VALUE))
+        );
+
+        jMenu1.setText("Account");
+
+        jMenuItem2.setText("Log Out");
+        jMenu1.add(jMenuItem2);
+
+        jMenuBar1.add(jMenu1);
+
+        getContext().setJMenuBar(jMenuBar1);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContext().getContentPane());
+        getContext().getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(main, javax.swing.GroupLayout.DEFAULT_SIZE, 604, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(main, javax.swing.GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE)
         );
     }
 
@@ -126,6 +156,13 @@ public class Dashboard extends ViewPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Redirect.target(new org.sem.staffs.views.ListingPage(getContext()));
+            }
+        });
+
+        jMenuItem2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                userService.logout(getContext());
             }
         });
     }

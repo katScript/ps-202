@@ -245,8 +245,10 @@ public class ScheduleClassList extends ViewPanel {
                     Long id = (Long) jTable1.getValueAt(row, 0);
 
                     if (id != null) {
-                        scheduleService.deleteSchedule(id);
-                        Redirect.target(new ScheduleClassList(getContext()));
+                        if (showOptionPanel("Delete sechedule id " + id + " from class " + classData.getClassName(), "Delete class schedule!")) {
+                            scheduleService.deleteSchedule(id);
+                            Redirect.target(new ScheduleClassList(getContext()));
+                        }
                     }
                 } catch (Exception ex) {
                     getContext().getSession().setData("message", ex.getMessage());
