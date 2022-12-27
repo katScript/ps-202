@@ -17,7 +17,7 @@ import javax.swing.table.AbstractTableModel;
  */
 public class MarkTableModel extends AbstractTableModel{
     private List<String> columnNames = new ArrayList<>(
-            Arrays.asList("Id", "Subject Name", "Writing first attempt", "Practice first attempt", "Writing second attempt", "Practice second attempt")
+            Arrays.asList("Id", "Subject Name", "Subject code", "Writing first attempt", "Practice first attempt", "Writing second attempt", "Practice second attempt")
     );
     private List<Mark> marks = new ArrayList<>();
 
@@ -73,12 +73,14 @@ public class MarkTableModel extends AbstractTableModel{
             case 1:
                 return m.getSubject().getSubject_name();
             case 2:
-                return m.getW_first_atterm();
+                return m.getSubject().getCode();
             case 3:
-                return m.getP_first_atterm();
+                return m.getW_first_atterm();
             case 4:
-                return m.getW_second_atterm();
+                return m.getP_first_atterm();
             case 5:
+                return m.getW_second_atterm();
+            case 6:
                 return m.getP_second_atterm();
         }
         return null;

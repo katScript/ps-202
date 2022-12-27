@@ -210,7 +210,7 @@ public class ScheduleDAO extends DAO<Schedule> {
                     .startConnection().getConnection();
 
             // 2.prepare query
-            String sql = String.format("SELECT * FROM `%s` WHERE", getTableName());
+            String sql = String.format("SELECT * FROM `%s`", getTableName());
             PreparedStatement ps = con.prepareStatement(sql);
 
             // 3.execute query
