@@ -242,6 +242,7 @@ public class EditPage extends ViewPanel {
         } else {
             jButton2.setText("Create");
             getContext().setPageTitle("Staff / Create new");
+            jButton3.setVisible(false);
         }
     }
 
@@ -299,6 +300,27 @@ public class EditPage extends ViewPanel {
                     showMessage();
                 }
             }
+
+        });
+
+        jButton3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    String password = jPasswordField1.getText();
+                    User user = staffData.getUser();
+                    userService.changePassword(user, password);
+
+                    Redirect.target(new EditPage(getContext()));
+
+                    getContext().getSession().setData("message", "Update password success!");
+                    showMessage();
+                } catch (Exception ex) {
+                    getContext().getSession().setData("message", ex.getMessage());
+                    showMessage();
+                }
+            }
+
         });
     }
 

@@ -4,10 +4,7 @@
  */
 package org.sem.staffs.models;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -112,34 +109,26 @@ public class StaffDAO extends DAO<Staff> {
 
             if (t.getId() != null) {
                 sql = String.format("UPDATE `%s`SET staff_no=?,full_name=?,email=?,phone=?,gender=?,dob=?,address=?, user_id=? WHERE id = ?", getTableName());
-                ps = con.prepareStatement(sql);
+                ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
-                ps.setString(1, t.getStaffNo());
-                ps.setString(2, t.getFullname());
-                ps.setString(3, t.getEmail());
-                ps.setString(4, t.getPhone());
-                ps.setBoolean(5, t.getGender());
-                ps.setDate(6, t.getDob());
-                ps.setString(7, t.getAddress());
-                ps.setLong(8, t.getUser().getId());
                 ps.setLong(9, t.getId());
             } else {
                 sql = String.format("INSERT INTO`%s` (staff_no,full_name,email,phone,gender,dob,address, user_id) VALUES(?,?,?,?,?,?,?,?)", getTableName());
-                ps = con.prepareStatement(sql);
-
-                ps.setString(1, t.getStaffNo());
-                ps.setString(2, t.getFullname());
-                ps.setString(3, t.getEmail());
-                ps.setString(4, t.getPhone());
-                ps.setBoolean(5, t.getGender());
-                ps.setDate(6, t.getDob());
-                ps.setString(7, t.getAddress());
-                ps.setLong(8, t.getUser().getId());
+                ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             }
 
-            Boolean result = ps.execute();
-            if (result) {
-                ResultSet rs = ps.getGeneratedKeys();
+            ps.setString(1, t.getStaffNo());
+            ps.setString(2, t.getFullname());
+            ps.setString(3, t.getEmail());
+            ps.setString(4, t.getPhone());
+            ps.setBoolean(5, t.getGender());
+            ps.setDate(6, t.getDob());
+            ps.setString(7, t.getAddress());
+            ps.setLong(8, t.getUser().getId());
+
+            ps.execute();
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
                 t.setId(rs.getLong(1));
                 rs.close();
             }

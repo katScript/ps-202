@@ -208,8 +208,14 @@ public class ListingPage extends ViewPanel {
                     Long id = (Long) jTable1.getValueAt(row, 0);
 
                     if (id != null) {
-                        staffService.deleteStaff(id);
-                        Redirect.target(new org.sem.staffs.views.ListingPage(getContext()));
+                        Staff staff = (Staff) getContext().getSession().getData("user_information");
+                        if (id.equals(staff.getId()))
+                            throw new RuntimeException("You can not delete your account! Please request to other admin!");
+
+                        if (showOptionPanel("Do you want to delete staff " + String.valueOf(id), "Delete staff!")) {
+                            staffService.deleteStaff(id);
+                            Redirect.target(new org.sem.staffs.views.ListingPage(getContext()));
+                        }
                     }
                 } catch (Exception ex) {
                     getContext().getSession().setData("message", ex.getCause().getMessage());
@@ -233,7 +239,7 @@ public class ListingPage extends ViewPanel {
                         Redirect.target(new EditPage(getContext()));
                     }
                 } catch (Exception ex) {
-                    getContext().getSession().setData("message", ex.getCause().getMessage());
+                    getContext().getSession().setData("message", ex.getMessage());
                     showMessage();
                 }
             }

@@ -2,6 +2,9 @@ package org.sem.authenticate.services;
 
 import org.sem.authenticate.models.User;
 import org.sem.authenticate.models.UserDAO;
+import org.sem.authenticate.views.LoginPage;
+import org.sem.context.Context;
+import org.sem.context.Redirect;
 import org.sem.utils.sercurity.MD5Utils;
 
 import java.util.Optional;
@@ -48,6 +51,21 @@ public class UserService {
             return Optional.ofNullable(user);
         } catch (Exception e) {
             return Optional.empty();
+        }
+    }
+
+    public void logout(Context context) {
+        context.getSession().removeData("user");
+        context.getSession().removeData("user_information");
+        Redirect.target(new LoginPage(context));
+    }
+
+    public void changePassword(User user, String password) {
+        try {
+            user.setPassword(MD5Utils.encode(password));
+            userDAO.save(user);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 }

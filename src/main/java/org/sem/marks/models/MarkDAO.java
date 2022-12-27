@@ -4,10 +4,7 @@
  */
 package org.sem.marks.models;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -123,33 +120,27 @@ public class MarkDAO extends DAO<Mark> {
             
             if (t.getId() != null) {
                 sql = String.format("UPDATE `%s` SET w_first_atterm = ?, w_second_atterm = ?, p_first_atterm = ?, p_second_atterm = ?, student_id = ?, subject_id = ? WHERE id = ?", getTableName());
-                ps = con.prepareStatement(sql);
-                
-                ps.setFloat(1, t.getW_first_atterm());
-                ps.setFloat(2, t.getW_second_atterm());
-                ps.setFloat(3, t.getP_first_atterm());
-                ps.setFloat(4, t.getP_second_atterm());
-                ps.setLong(5, t.getStudent().getId());
-                ps.setLong(6, t.getSubject().getId());
+                ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
                 ps.setLong(7, t.getId());
             } else {
                 sql = String.format("INSERT INTO `%s` (w_first_atterm, w_second_atterm, p_first_atterm,p_second_atterm, student_id, subject_id) VALUES (?,?,?,?,?,?)", getTableName());
-                ps = con.prepareStatement(sql);
-                
-                ps.setFloat(1, t.getW_first_atterm());
-                ps.setFloat(2, t.getW_second_atterm());
-                ps.setFloat(3, t.getP_first_atterm());
-                ps.setFloat(4, t.getP_second_atterm());
-                ps.setLong(5, t.getStudent().getId());
-                ps.setLong(6, t.getSubject().getId());
+                ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             }
 
+            ps.setFloat(1, t.getW_first_atterm());
+            ps.setFloat(2, t.getW_second_atterm());
+            ps.setFloat(3, t.getP_first_atterm());
+            ps.setFloat(4, t.getP_second_atterm());
+            ps.setLong(5, t.getStudent().getId());
+            ps.setLong(6, t.getSubject().getId());
+
             // 3.execute query
-            Boolean result = ps.execute();
+            ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
             
             // 4.process query return data
-            if (result) {
-                ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
                 t.setId(rs.getLong(1));
                 
                 rs.close();

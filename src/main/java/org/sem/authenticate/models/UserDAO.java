@@ -4,10 +4,7 @@ import org.sem.database.DAO;
 import org.sem.staffs.models.Staff;
 import org.sem.staffs.models.StaffDAO;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -102,24 +99,20 @@ public class UserDAO extends DAO<User> {
 
             if (user.getId() != null) {
                 sql = String.format("UPDATE `%s`SET `user_name` = ?,`password` = ?, `email` = ? WHERE `id` = ?", getTableName());
-                ps = con.prepareStatement(sql);
+                ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
-                ps.setString(1, user.getUserName());
-                ps.setString(2, user.getPassword());
-                ps.setString(3, user.getEmail());
                 ps.setLong(4, user.getId());
             } else {
                 sql = String.format("INSERT INTO`%s` (`user_name`, `password`, `email`) VALUES(?,?,?)", getTableName());
-                ps = con.prepareStatement(sql);
-
-                ps.setString(1, user.getUserName());
-                ps.setString(2, user.getPassword());
-                ps.setString(3, user.getEmail());
+                ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             }
+            ps.setString(1, user.getUserName());
+            ps.setString(2, user.getPassword());
+            ps.setString(3, user.getEmail());
 
-            Boolean result = ps.execute();
-            if (result) {
-                ResultSet rs = ps.getGeneratedKeys();
+            ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
                 user.setId(rs.getLong(1));
                 rs.close();
             }

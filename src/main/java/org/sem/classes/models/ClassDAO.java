@@ -6,6 +6,7 @@ import org.sem.students.models.Student;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -111,24 +112,22 @@ public class ClassDAO extends DAO<Class> {
             
             if (aClass.getId() != null) {
                 sql = String.format("UPDATE `%s` SET `class_name` = ? WHERE `id` = ?", getTableName());
-                ps = con.prepareStatement(sql);
-                
-                ps.setString(1, aClass.getClassName());
+                ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
                 ps.setLong(2, aClass.getId());
-                
             } else {
                 sql = String.format("INSERT INTO `%s` (`class_name`) VALUES (?)", getTableName());
-                ps = con.prepareStatement(sql);
-                
-                ps.setString(1, aClass.getClassName());
+                ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             }
 
+            ps.setString(1, aClass.getClassName());
+
             // 3.execute query
-            Boolean result = ps.execute();
+            ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
 
             // 4.process query return data
-            if (result) {
-                ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
                 aClass.setId(rs.getLong(1));
                 
                 rs.close();

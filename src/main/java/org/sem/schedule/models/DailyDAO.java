@@ -110,12 +110,12 @@ public class DailyDAO extends DAO<Daily> {
 
             if (daily.getId() != null) {
                 sql = String.format("UPDATE `%s` SET `staff_id` = ?, `student_id` = ?, `schedule_id` = ?, `present` = ? WHERE `id` = ?", getTableName());
-                ps = con.prepareStatement(sql);
+                ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
                 ps.setLong(5, daily.getId());
             } else {
                 sql = String.format("INSERT INTO `%s` (`staff_id`,`student_id`,`schedule_id`,`present`) VALUES (?,?,?,?)", getTableName());
-                ps = con.prepareStatement(sql);
+                ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             }
 
             if (daily.getStaff() == null || daily.getStaff().getId() == null) {
@@ -129,11 +129,10 @@ public class DailyDAO extends DAO<Daily> {
             ps.setBoolean(4, daily.getPresent());
 
             // 3.execute query
-            Boolean result = ps.execute();
-
+            ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
             // 4.process query return data
-            if (result) {
-                ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
                 daily.setId(rs.getLong(1));
 
                 rs.close();

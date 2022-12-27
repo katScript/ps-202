@@ -77,6 +77,7 @@ public class LoginPage extends ViewPanel {
         jButton2.setBackground(new Color(255, 255, 204));
         jButton2.setFont(new Font("Segoe UI", 1, 14)); // NOI18N
         jButton2.setText("Register");
+        jButton2.setVisible(false);
 
         GroupLayout mainLayout = new GroupLayout(main);
         main.setLayout(mainLayout);
@@ -141,18 +142,10 @@ public class LoginPage extends ViewPanel {
                     Dashboard page = new Dashboard(getContext());
                     getContext().changeLayer(page.getMainLayer());
                 } catch (Exception ex) {
-                    getContext().getSession().setData("message", ex.getCause().getMessage());
+                    getContext().getSession().setData("message", ex.getMessage());
                     showMessage();
                 }
 
-            }
-        });
-
-        jButton2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                RegisterPage page = new RegisterPage(getContext());
-                getContext().changeLayer(page.getMainLayer());
             }
         });
     }

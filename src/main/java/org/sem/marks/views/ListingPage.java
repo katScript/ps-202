@@ -248,6 +248,28 @@ public class ListingPage extends ViewPanel {
             }
         });
 
+        jButton2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    int row = jTable1.getSelectedRow();
+                    Long id = (Long) jTable1.getValueAt(row, 0);
+
+                    if (id != null) {
+                        Mark mark = markDAO.get(id).orElseThrow(() -> new RuntimeException("Mark not found! Please try again!"));
+                        if (showOptionPanel("Do you want delete mark " + mark.getId(), "Delete alert!")) {
+                            markDAO.delete(mark);
+                            Redirect.target(new EditPage(getContext()));
+                        }
+                    }
+                } catch (Exception ex) {
+                    getContext().getSession().setData("message", ex.getCause().getMessage());
+                    showMessage();
+                }
+            }
+        });
+
+
         searchBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

@@ -4,10 +4,7 @@
  */
 package org.sem.subjects.models;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -113,29 +110,24 @@ public class SubjectDAO extends DAO<Subject> {
             
             if (t.getId() != null) {
                 sql = String.format("UPDATE `%s` SET subject_name = ?, code = ?, total_hour = ? WHERE id = ?", getTableName());
-                ps = con.prepareStatement(sql);
-                
-                ps.setString(1, t.getSubject_name());
-                ps.setString(2, t.getCode());
-                ps.setDouble(3, t.getTotalhour());
+                ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                 ps.setLong(4, t.getId());
             } else {
                 sql = String.format("INSERT INTO `%s` (subject_name, code, total_hour) VALUES (?,?,?)", getTableName());
-                ps = con.prepareStatement(sql);
-                
-                ps.setString(1, t.getSubject_name());
-                ps.setString(2, t.getCode());
-                ps.setDouble(3, t.getTotalhour());
+                ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             }
 
+            ps.setString(1, t.getSubject_name());
+            ps.setString(2, t.getCode());
+            ps.setDouble(3, t.getTotalhour());
+
             // 3.execute query
-            Boolean result = ps.execute();
+            ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
             
             // 4.process query return data
-            if (result) {
-                ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
                 t.setId(rs.getLong(1));
-                
                 rs.close();
             }
             
