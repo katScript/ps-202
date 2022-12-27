@@ -45,7 +45,7 @@ public class ListingPage extends ViewPanel {
         staffDAO = new StaffDAO();
         staffService = new StaffService();
         staffTableModel = new StaffTableModel();
-        getContext().getSession().setData("staff", null);
+        getContext().getSession().removeData("staff");
     }
 
     @Override

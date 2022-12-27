@@ -46,7 +46,7 @@ public class ListingPage extends ViewPanel {
         studentDAO = new StudentDAO();
         studentService = new StudentService();
         studentTableModel = new StudentTableModel();
-        getContext().getSession().setData("student", null);
+        getContext().getSession().removeData("student");
     }
 
     @Override
