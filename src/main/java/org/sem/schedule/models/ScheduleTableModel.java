@@ -10,7 +10,7 @@ import java.util.List;
 public class ScheduleTableModel extends AbstractTableModel {
 
     private List<String> columnNames = new ArrayList<>(
-            Arrays.asList("Id", "Subject", "Day", "Start time", "End time")
+            Arrays.asList("Id", "Subject", "Subject Code", "Day", "Start time", "End time")
     );
 
     private List<Schedule> schedules = new ArrayList<>();
@@ -41,10 +41,12 @@ public class ScheduleTableModel extends AbstractTableModel {
             case 1:
                 return c.getSubject().getSubject_name();
             case 2:
-                return DateTimeHelper.dateToString(c.getDate(), "dd/MM/yyyy");
+                return c.getSubject().getCode();
             case 3:
-                return c.getStartTime();
+                return DateTimeHelper.dateToString(c.getDate(), "dd/MM/yyyy");
             case 4:
+                return c.getStartTime();
+            case 5:
                 return c.getEndTime();
         }
 

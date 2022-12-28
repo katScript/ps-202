@@ -210,7 +210,7 @@ public class ScheduleDAO extends DAO<Schedule> {
                     .startConnection().getConnection();
 
             // 2.prepare query
-            String sql = String.format("SELECT * FROM `%s`", getTableName());
+            String sql = String.format("SELECT * FROM `%s` ORDER BY `day` ASC, `start_time` ASC", getTableName());
             PreparedStatement ps = con.prepareStatement(sql);
 
             // 3.execute query
@@ -244,7 +244,7 @@ public class ScheduleDAO extends DAO<Schedule> {
                     .startConnection().getConnection();
 
             // 2.prepare query
-            String sql = "SELECT * FROM `" + getTableName() + "` AS `m` LEFT JOIN `subject` AS `s` ON `m`.`subject_id` = `s`.`id` WHERE (`s`.`subject_name` is null or `s`.`subject_name` like concat('%', ?, '%'))";
+            String sql = "SELECT * FROM `" + getTableName() + "` AS `m` LEFT JOIN `subject` AS `s` ON `m`.`subject_id` = `s`.`id` WHERE (`s`.`subject_name` is null or `s`.`subject_name` like concat('%', ?, '%')  ORDER BY `m`.`day` ASC, `m`.`start_time` ASC)";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, name);
 

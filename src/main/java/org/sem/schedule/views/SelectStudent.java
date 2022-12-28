@@ -136,7 +136,7 @@ public class SelectStudent extends ViewPanel {
                                                                         .addComponent(lastBtn)))
                                                         .addGroup(mainLayout.createSequentialGroup()
                                                                 .addGap(362, 362, 362)
-                                                                .addComponent(selectBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                .addComponent(selectBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                         .addGroup(mainLayout.createSequentialGroup()
                                                                 .addGap(20, 20, 20)
                                                                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -181,7 +181,7 @@ public class SelectStudent extends ViewPanel {
     @Override
     protected void afterInitComponents() {
         super.afterInitComponents();
-        selectBtn.setText("Mark present");
+        selectBtn.setText("Attendance");
         jTable1.setModel(studentTableModel);
 
         changeTableModelData(processStudentData(studentDAO.getByClass(classData)));
