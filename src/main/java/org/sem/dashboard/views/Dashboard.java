@@ -66,7 +66,7 @@ public class Dashboard extends ViewPanel {
         jButton4.setBackground(new java.awt.Color(255, 255, 204));
         jButton4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/checklist.png"))); // NOI18N
-        jButton4.setText("Mark");
+        jButton4.setText("Subject");
 
         jButton5.setBackground(new java.awt.Color(255, 255, 204));
         jButton5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
